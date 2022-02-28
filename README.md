@@ -1,2 +1,2 @@
-# cs554a_koth_inTouch
+# cs554a_inTouch
 Final project for CS 554A Spring 2022
