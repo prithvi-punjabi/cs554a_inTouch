@@ -1,38 +1,149 @@
 .App {
   text-align: center;
 }
-
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
 .App-logo {
-  height: 40vmin;
-  pointer-events: none;
+  height: 200px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+input {
+  border: 1px solid #ed1a23;
+}
+.show-body {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  background-color: white;
+  height: 200px;
+  padding: 20px;
+  color: #222;
+}
+
+.App-title {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #a32638;
+}
+
+cite {
+  font-weight: bold;
+}
+table {
+  align-content: center;
+  margin: auto;
+}
+td {
+  padding: 10px;
+}
+
+.App-intro {
+  font-size: large;
+}
+.cap-first-letter:first-letter {
+  text-transform: capitalize;
+}
+.col-sm-6,
+col-md-4 {
+  border: 1px;
+}
+
+.hometext {
+  max-width: 60%;
+}
+.showlink {
+  padding: 0.4rem 0.8rem;
+  background-color: white;
+  border-radius: 3px;
+  color: #ed1a23;
+  text-decoration: none !important;
+  margin: 5px;
+}
+
+.showlink:hover {
+  background-color: transparent;
   color: white;
+  border: 2px solid white;
 }
 
-.App-link {
-  color: #61dafb;
+li {
+  padding: 20px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.charList {
+  padding: 5px;
+  margin-left: -5%;
+  text-align: center;
+}
+
+li.charList > a {
+  color: blue;
+}
+
+p {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+div {
+  text-align: center;
+}
+
+a {
+  color: #a32638;
+}
+
+ul a:hover {
+  background-color: transparent;
+  color: purple;
+}
+
+ul {
+  list-style: none;
+}
+
+.title {
+  font-weight: bold;
+  color: #ed1a23;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  input {
+    font-size: 16px;
   }
-  to {
-    transform: rotate(360deg);
-  }
+}
+
+dt,
+dl {
+  padding: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+dt {
+  display: inline-block;
+}
+
+dd {
+  display: inline;
+  margin-left: 5px;
+}
+
+.stanGif {
+  width: 50%;
+  height: 50%;
+  margin-right: 5%;
+}
+
+.prevNext {
+  text-decoration: none !important;
 }
