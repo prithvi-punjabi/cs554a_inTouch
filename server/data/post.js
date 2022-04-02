@@ -96,7 +96,7 @@ const getByQuery = async (query) => {
   if (!Array.isArray(posts) || posts.length == 0) {
     throw new MyError(errorCode.NOT_FOUND, `No post found`);
   }
-  posts = await manipulatePosts(posts, rate);
+  posts = await manipulatePosts(posts);
   return posts;
 };
 
@@ -179,7 +179,7 @@ const update = async (postId, user, text, category) => {
   return post;
 };
 
-const remove = async (postId) => {
+const remove = async (postId, user) => {
   postId = validator.checkObjectID(postId);
   const postCol = await postCollection();
   const oldPost = await getById(postId.toString());
@@ -187,6 +187,16 @@ const remove = async (postId) => {
     throw new MyError(
       errorCode.NOT_FOUND,
       `No post found with id - ${postId.toString()}`
+    );
+  }
+  if (
+    oldPost.user.userId.toString() != user._id.toString() &&
+    user.designation != common.designation.ADMIN &&
+    user.designation != common.designation.SUPER_ADMIN
+  ) {
+    throw new MyError(
+      errorCode.UNAUTHORIZED,
+      `Cannot delete someone else's post`
     );
   }
   const deleteInfo = await postCol.deleteOne({ _id: postId });
