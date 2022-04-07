@@ -7,6 +7,54 @@ const MyError = require("../helper/message").MyError;
 const { ObjectId } = require("mongodb");
 const common = require("../helper/common");
 const bcrypt = require("bcryptjs");
+const axios = require("axios");
+
+const fetchUser = async (accessKey) => {
+  validator.checkNonNull(accessKey);
+  validator.checkString(accessKey);
+  const { data } = await axios.get(
+    "https://sit.instructure.com/api/v1/users/self/profile",
+    {
+      headers: {
+        Authorization: `Bearer ${accessKey}`,
+      },
+    }
+  );
+  const thisUser = {};
+  thisUser.name = data.name;
+  thisUser.profilePicture = data.avatar_url;
+  thisUser.email = data.primary_email;
+  thisUser.bio = data.bio ? data.bio : "No bio set in canvas";
+  thisUser.calendar = data.calendar.ics;
+  return thisUser;
+};
+
+const fetchCourses = async (accessKey) => {
+  validator.checkNonNull(accessKey);
+  validator.checkString(accessKey);
+  const { data } = await axios.get(
+    "https://sit.instructure.com/api/v1/courses?enrollment_type=student",
+    {
+      headers: {
+        Authorization: `Bearer ${accessKey}`,
+      },
+    }
+  );
+  let courses = [];
+  let today = new Date();
+  data.forEach((x) => {
+    let temp = {};
+    temp.id = x.id;
+    temp.name = x.course_code;
+    temp.code = x.name;
+    temp.end_date = x.end_at;
+    if (new Date(temp.end_date) > today) {
+      courses.push(temp);
+    }
+    temp = {};
+  });
+  return courses;
+};
 
 const create = async (
   name,
@@ -59,7 +107,7 @@ const create = async (
   const insertInfo = await userCol.insertOne(newUser);
   if (insertInfo.insertedCount === 0) throw "Could not add user";
   const newId = insertInfo.insertedId;
-  const curruser = await this.get(newId.toString());
+  const curruser = await getUser(newId.toString());
   return curruser;
 };
 
@@ -158,6 +206,8 @@ const delFriend = async (userId, friendId) => {
 };
 
 module.exports = {
+  fetchUser,
+  fetchCourses,
   create,
   getUser,
   loginUser,

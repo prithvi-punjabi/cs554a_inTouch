@@ -5,7 +5,7 @@ const { ObjectId } = require("mongodb");
 async function main() {
   const db = await dbConnection();
   try {
-    await db.dropDatabase();
+    // await db.dropDatabase();
 
     const user = {
       _id: ObjectId(),
@@ -13,6 +13,27 @@ async function main() {
       profilePicture: "https://www.w3schools.com/howto/img_avatar.png",
     };
 
+    let thisUser = await data.userData.create(
+      "Prithvi",
+      "prithvi@stevens.edu",
+      "Password123!",
+      "https://www.w3schools.com/howto/img_avatar.png",
+      "prithvipun",
+      "Hi i am prithvi",
+      "He/Him",
+      ["546", "554", "583"],
+      0,
+      "646-904-0663",
+      "06/04/1998"
+    );
+
+    let addFriend = await data.userData.addFriend(
+      thisUser._id,
+      "624e62334f91d590426d4684"
+    );
+    console.log(addFriend);
+    console.log("New User:");
+    console.log(thisUser);
     let post = await data.postData.create(
       user,
       "My first post",

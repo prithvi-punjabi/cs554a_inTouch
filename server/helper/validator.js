@@ -52,7 +52,7 @@ module.exports = {
     this.checkString(userName, "username");
   },
 
-  checkGender(genderCode) {
+  checkGender(genderCode, varName) {
     if (genderCode == null) throw `Must pass gender`;
     genderCode = Number(genderCode);
     if (isNaN(genderCode)) throw `${varName} must be a number`;

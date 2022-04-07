@@ -3,7 +3,7 @@ const router = express.Router();
 const utils = require("../helper/utils");
 const validator = require("../helper/validator");
 const { ErrorMessage, MyError, SuccessMessage } = require("../helper/message");
-const { postData } = require("../data");
+const postData = require("../data").postData;
 const { ObjectId } = require("mongodb");
 const { errorCode } = require("../helper/common");
 
