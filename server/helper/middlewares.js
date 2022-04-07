@@ -1,9 +1,11 @@
 const xss = require("xss");
+
 module.exports = async (app) => {
   app.use((req, res, next) => {
     res.header("Cache-Control", "private, no-cache, no-store, must-revalidate");
     res.header("Expires", "-1");
     res.header("Pragma", "no-cache");
+    if (!req.query.currency) req.query.currency = "INR";
     next();
   });
 

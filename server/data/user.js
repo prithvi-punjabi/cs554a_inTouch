@@ -1,0 +1,166 @@
+const mongoCollections = require("../config/mongoCollections");
+const userCollection = mongoCollections.users;
+const validator = require("../helper/validator");
+const utils = require("../helper/utils");
+const errorCode = require("../helper/common").errorCode;
+const MyError = require("../helper/message").MyError;
+const { ObjectId } = require("mongodb");
+const common = require("../helper/common");
+const bcrypt = require("bcryptjs");
+
+const create = async (
+  name,
+  email,
+  password,
+  profilePicture,
+  userName,
+  bio,
+  pronouns,
+  courses,
+  gender,
+  contactNo,
+  dob
+) => {
+  validator.checkString(name, "Name");
+  validator.checkEmail(email);
+  validator.checkPassword(password);
+  validator.checkString(profilePicture, "Profile Picture");
+  validator.checkString(userName, "Username");
+  validator.checkString(bio, "Bio");
+  validator.checkString(pronouns, "Pronouns");
+  validator.checkStringArray(courses, "Courses");
+  validator.checkGender(gender, "Gender");
+  validator.checkPhoneNumber(contactNo, "Phone number");
+  validator.checkDob(dob, "Date of Birth");
+
+  const userCol = await userCollection();
+  const existingUser = await userCol.findOne({ userName: userName });
+  if (existingUser != null) {
+    throw `Username not available!`;
+  }
+
+  password = await bcrypt.hash(password, common.saltRounds);
+
+  const newUser = {
+    name: name,
+    email: email,
+    password: password,
+    profilePicture: profilePicture,
+    userName: userName,
+    bio: bio,
+    pronouns: pronouns,
+    courses: courses,
+    gender: gender,
+    contactNo: contactNo,
+    dob: dob,
+    friends: [],
+    privacy: [],
+  };
+  const insertInfo = await userCol.insertOne(newUser);
+  if (insertInfo.insertedCount === 0) throw "Could not add user";
+  const newId = insertInfo.insertedId;
+  const curruser = await this.get(newId.toString());
+  return curruser;
+};
+
+const getUser = async (userId) => {
+  validator.checkNonNull(userId);
+  validator.checkString(userId);
+  validator.checkObjectID(userId);
+  userId = utils.parseObjectId(userId);
+
+  const userCol = await userCollection();
+  const user = await userCol.findOne({ _id: userId });
+  if (user) {
+    user._id = user._id.toString();
+    return user;
+  } else {
+    const error = new Error("User does not exist");
+    error.code = common.errorCode.NOT_FOUND;
+    throw error;
+  }
+};
+
+const loginUser = async (username, password) => {
+  validator.checkNonNull(username);
+  validator.checkNonNull(password);
+
+  validator.checkString(username);
+  validator.checkString(password);
+
+  const usercol = await userCollection();
+  const user = await usercol.findOne({ userName: username.toLowerCase() });
+  if (user == null) {
+    const error = new Error("Either username or password is invalid");
+    error.code = common.errorCode.FORBIDDEN;
+    throw error;
+  }
+
+  let isAuthenticated = false;
+  try {
+    isAuthenticated = await bcrypt.compare(password, user.password);
+  } catch (e) {
+    throw new Error(e.message);
+  }
+
+  if (!isAuthenticated) {
+    const error = new Error("Either username or password is invalid");
+    error.code = common.errorCode.FORBIDDEN;
+    throw error;
+  } else {
+    return user;
+  }
+};
+
+const addFriend = async (userId, friendId) => {
+  validator.checkNonNull(friendId);
+  validator.checkNonNull(userId);
+  validator.checkObjectID(friendId);
+  validator.checkObjectID(userId);
+  userId = utils.parseObjectId(userId);
+  const userCol = await userCollection();
+
+  const addedFriend = await userCol.updateOne(
+    { _id: userId },
+    { $push: { friends: friendId } }
+  );
+  if (addedFriend.modifiedCount == 0) {
+    const error = new Error("Could not add friend");
+    error.code = common.errorCode.INTERNAL_SERVER_ERROR;
+    throw error;
+  }
+  let thisFriend = await getUser(friendId);
+
+  return `${thisFriend.name} was added to your friend list.`;
+};
+
+const delFriend = async (userId, friendId) => {
+  validator.checkNonNull(friendId);
+  validator.checkNonNull(userId);
+  validator.checkObjectID(friendId);
+  validator.checkObjectID(userId);
+  userId = utils.parseObjectId(userId);
+  const userCol = await userCollection();
+
+  let thisFriend = await getUser(friendId);
+
+  const deletedFriend = await userCol.updateOne(
+    { _id: userId },
+    { $pull: { friends: friendId } }
+  );
+  if (deletedFriend.modifiedCount == 0) {
+    const error = new Error("Could not remove friend");
+    error.code = common.errorCode.INTERNAL_SERVER_ERROR;
+    throw error;
+  }
+
+  return `${thisFriend.name} was removed from your friend list`;
+};
+
+module.exports = {
+  create,
+  getUser,
+  loginUser,
+  addFriend,
+  delFriend,
+};
