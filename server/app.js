@@ -5,7 +5,7 @@ const configRoutes = require("./routes");
 const configMiddlewares = require("./helper/middlewares");
 const session = require("express-session");
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
 app.use(
   session({

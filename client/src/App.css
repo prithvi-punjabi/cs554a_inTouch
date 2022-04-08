@@ -152,8 +152,9 @@ button {
   color: white;
   border-style: solid;
   perspective: 1px;
+  margin-right: 1%;
 }
 
-input {
-  width: 90%;
+.color-nav {
+  background-color: #a32638;
 }
