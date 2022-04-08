@@ -98,6 +98,7 @@ const create = async (
     bio: bio,
     pronouns: pronouns,
     courses: courses,
+    designation: common.designation.USER,
     gender: gender,
     contactNo: contactNo,
     dob: dob,
