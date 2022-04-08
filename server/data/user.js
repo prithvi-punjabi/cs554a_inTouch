@@ -127,15 +127,15 @@ const getUser = async (userId) => {
   }
 };
 
-const loginUser = async (username, password) => {
-  validator.checkNonNull(username);
+const loginUser = async (email, password) => {
+  validator.checkNonNull(email);
   validator.checkNonNull(password);
 
-  validator.checkString(username);
+  validator.checkString(email);
   validator.checkString(password);
 
   const usercol = await userCollection();
-  const user = await usercol.findOne({ userName: username.toLowerCase() });
+  const user = await usercol.findOne({ email: email.toLowerCase() });
   if (user == null) {
     const error = new Error("Either username or password is invalid");
     error.code = common.errorCode.FORBIDDEN;

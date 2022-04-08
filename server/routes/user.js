@@ -130,4 +130,26 @@ router.post("/delFriend/:friendId", async (req, res) => {
   }
 });
 
+router.post("/login", async (req, res) => {
+  try {
+    let email = req.body.email;
+    let password = req.body.password;
+    validator.checkNonNull(email);
+    validator.checkNonNull(password);
+    validator.checkEmail(email);
+    validator.checkPassword(password);
+
+    const loggedIn = await userData.loginUser(email, password);
+    req.session.user = loggedIn;
+    return res.json(loggedIn);
+  } catch (e) {
+    if (typeof e == "string") {
+      e = new MyError(errorCode.BAD_REQUEST, e);
+    }
+    return res
+      .status(validator.isValidResponseStatusCode(e.code) ? e.code : 500)
+      .json(ErrorMessage(e.message));
+  }
+});
+
 module.exports = router;

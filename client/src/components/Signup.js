@@ -1,7 +1,9 @@
 import React from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
+  let navigate = useNavigate();
   let accessKey;
   let userName;
   let password;
@@ -28,6 +30,7 @@ const Signup = () => {
           contactNo.value = "";
           dob.value = "";
           alert("User added!");
+          navigate("/login");
         }}
       >
         <label>
