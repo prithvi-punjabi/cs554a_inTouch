@@ -63,7 +63,6 @@ const create = async (
   profilePicture,
   userName,
   bio,
-  pronouns,
   courses,
   gender,
   contactNo,
@@ -75,8 +74,7 @@ const create = async (
   validator.checkString(profilePicture, "Profile Picture");
   validator.checkString(userName, "Username");
   validator.checkString(bio, "Bio");
-  validator.checkString(pronouns, "Pronouns");
-  validator.checkStringArray(courses, "Courses");
+  // validator.checkStringArray(courses, "Courses");
   validator.checkGender(gender, "Gender");
   validator.checkPhoneNumber(contactNo, "Phone number");
   validator.checkDob(dob, "Date of Birth");
@@ -96,7 +94,6 @@ const create = async (
     profilePicture: profilePicture,
     userName: userName,
     bio: bio,
-    pronouns: pronouns,
     courses: courses,
     designation: common.designation.USER,
     gender: gender,

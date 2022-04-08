@@ -31,39 +31,53 @@ router.get("/:userId", async (req, res) => {
 router.post("/create", async (req, res) => {
   try {
     let accessKey = req.body.accessKey;
+    let userName = req.body.userName;
+    let password = req.body.password;
+    let gender = req.body.gender;
+    let contactNum = req.body.contactNo;
+    let dob = req.body.dob;
+    const [year, month, day] = dob.split("-");
+    const switchedDob = [month, day, year].join("/");
     validator.checkNonNull(accessKey);
-    validator.checkString(accessKey);
+    validator.checkNonNull(userName);
+    validator.checkNonNull(password);
+    validator.checkNonNull(gender);
+    validator.checkNonNull(contactNum);
+    validator.checkNonNull(dob);
+    validator.checkString(accessKey, "Access Key");
+    validator.checkString(userName, "Access Key");
+    validator.checkPassword(password, "Password");
+    validator.checkPhoneNumber(contactNum);
+    validator.checkDate(switchedDob);
 
     // ALL VALUES HAVE TO BE TAKEN FROM THE USER
-    let password = "Password123!";
-    let username = "User name";
-    let pronouns = "He/him";
-    let gender = 0;
-    let contactNum = "000-000-0000";
-    let dob = "09/08/1997";
+    // let password = "Password123!";
+    // let userName = "User name";
+    // let pronouns = "He/him";
+    // let gender = 0;
+    // let contactNum = "000-000-0000";
+    // let dob = "09/08/1997";
 
     const courses = await userData.fetchCourses(accessKey);
     const thisUser = await userData.fetchUser(accessKey);
-
     const addedUser = await userData.create(
       thisUser.name,
       thisUser.email,
       password,
       thisUser.profilePicture,
-      username,
+      userName,
       thisUser.bio,
-      pronouns,
       courses,
       gender,
       contactNum,
-      dob
+      switchedDob
     );
-
     return res.json(addedUser);
   } catch (e) {
     if (typeof e == "string") {
       e = new MyError(errorCode.BAD_REQUEST, e);
     }
+    console.log(e);
     return res
       .status(validator.isValidResponseStatusCode(e.code) ? e.code : 500)
       .json(ErrorMessage(e.message));
