@@ -1,4 +1,7 @@
 const xss = require("xss");
+const { errorCode } = require("./common");
+const { ErrorMessage } = require("./message");
+const utils = require("./utils");
 
 module.exports = async (app) => {
   app.use((req, res, next) => {
@@ -6,6 +9,24 @@ module.exports = async (app) => {
     res.header("Expires", "-1");
     res.header("Pragma", "no-cache");
     if (!req.query.currency) req.query.currency = "INR";
+    next();
+  });
+
+  app.use("/posts", (req, res, next) => {
+    if (!utils.isUserLoggedIn(req)) {
+      return res
+        .status(errorCode.FORBIDDEN)
+        .json(ErrorMessage("Login to access posts"));
+    }
+    next();
+  });
+
+  app.use("/channels", (req, res, next) => {
+    if (!utils.isUserLoggedIn(req)) {
+      return res
+        .status(errorCode.FORBIDDEN)
+        .json(ErrorMessage("Login to access channels"));
+    }
     next();
   });
 

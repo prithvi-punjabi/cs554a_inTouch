@@ -47,8 +47,7 @@ module.exports = {
     if (user == null) throw `Must pass user object`;
     if (!this.isValidObject(user)) throw `User must be an object`;
     const { _id, userName } = user;
-    if (typeof _id != typeof ObjectId())
-      throw "user._id must be of type ObjectId";
+    this.checkString(_id, "user._id");
     this.checkString(userName, "username");
   },
 

@@ -8,13 +8,6 @@ const { ObjectId } = require("mongodb");
 const { errorCode } = require("../helper/common");
 const common = require("../helper/common");
 
-let user = {
-  _id: ObjectId(),
-  userName: "Nevil",
-  profilePicture: "https://www.w3schools.com/howto/img_avatar.png",
-  designation: common.designation.ADMIN,
-};
-
 router.get("/", async (req, res) => {
   try {
     let channels = await channelData.getAll();
@@ -51,7 +44,12 @@ router.post("/add", async (req, res) => {
       return res.status(400).json(ErrorMessage("Missing body parameters"));
     const { name, displayName, description } = req.body;
 
-    // user = req.session.user;
+    if (!utils.isUserLoggedIn(req)) {
+      return res
+        .status(errorCode.FORBIDDEN)
+        .json(ErrorMessage("Login to add channel"));
+    }
+    let user = req.session.user;
 
     if (
       user.designation != common.designation.ADMIN &&
@@ -87,7 +85,12 @@ router.put("/update/:channelId", async (req, res) => {
     const { displayName, description } = req.body;
     const channelId = req.params.channelId;
 
-    // user = req.session.user;
+    if (!utils.isUserLoggedIn(req)) {
+      return res
+        .status(errorCode.FORBIDDEN)
+        .json(ErrorMessage("Login to update channel"));
+    }
+    let user = req.session.user;
 
     validator.checkUser(user);
     validator.checkObjectID(channelId, "channelId");
@@ -112,6 +115,11 @@ router.put("/update/:channelId", async (req, res) => {
 
 router.delete("/delete/:channelId", async (req, res) => {
   try {
+    if (!utils.isUserLoggedIn(req)) {
+      return res
+        .status(errorCode.FORBIDDEN)
+        .json(ErrorMessage("Login to delete channel"));
+    }
     if (user.designation != common.designation.SUPER_ADMIN) {
       throw new MyError(
         errorCode.UNAUTHORIZED,
@@ -142,7 +150,12 @@ router.post("/messages/add", async (req, res) => {
     validator.checkString(channelId, "channelId");
     validator.checkString(message, "comment");
 
-    // user = req.session.user;
+    if (!utils.isUserLoggedIn(req)) {
+      return res
+        .status(errorCode.FORBIDDEN)
+        .json(ErrorMessage("Login to add message"));
+    }
+    let user = req.session.user;
 
     const msgObj = await channelData.addMessage(channelId, user, message);
     return res.json(msgObj);
@@ -165,7 +178,12 @@ router.delete("/messages/delete/:msgId", async (req, res) => {
     const msgId = req.params.msgId;
     validator.checkString(msgId, "msgId");
 
-    // user = req.session.user;
+    if (!utils.isUserLoggedIn(req)) {
+      return res
+        .status(errorCode.FORBIDDEN)
+        .json(ErrorMessage("Login to delete message"));
+    }
+    let user = req.session.user;
 
     const msgObj = await channelData.deleteMessage(msgId, user._id.toString());
     return res.json(msgObj);
