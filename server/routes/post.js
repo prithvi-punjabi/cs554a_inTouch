@@ -11,12 +11,12 @@ router.get("/", async (req, res) => {
   try {
     let posts;
     if (utils.isEmptyObject(req.query)) {
-      posts = await postData.getAll(1);
+      posts = await postData.getPostsForUser(req.session.user, 1);
     } else {
       if (req.query.category != null) {
         req.query.category = JSON.parse(decodeURIComponent(req.query.category));
       }
-      posts = await postData.getByQuery(req.query);
+      posts = await postData.getByQuery(req.session.user, req.query);
     }
     return res.json(posts);
   } catch (e) {

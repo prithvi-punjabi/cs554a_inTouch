@@ -1,3 +1,4 @@
+const { ObjectId } = require("mongodb");
 const xss = require("xss");
 const { errorCode } = require("./common");
 const { ErrorMessage } = require("./message");
@@ -8,7 +9,12 @@ module.exports = async (app) => {
     res.header("Cache-Control", "private, no-cache, no-store, must-revalidate");
     res.header("Expires", "-1");
     res.header("Pragma", "no-cache");
-    if (!req.query.currency) req.query.currency = "INR";
+    if (utils.isUserLoggedIn(req)) {
+      req.session.user._id = ObjectId(req.session.user._id);
+      req.session.user.friends = req.session.user.friends.map((userid) =>
+        ObjectId(userid)
+      );
+    }
     next();
   });
 

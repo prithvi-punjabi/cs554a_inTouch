@@ -24,11 +24,30 @@ const getById = async (id) => {
   return post;
 };
 
-const getByQuery = async (query) => {
+const getPostsForUser = async (user, pageNumber) => {
+  validator.checkUser(user);
+  const postCol = await postCollection();
+  let posts;
+  posts = await postCol
+    .find({ "user.userId": { $in: user.friends.concat([user._id]) } })
+    .skip(pageNumber > 0 ? (pageNumber - 1) * common.PER_PAGE_POST : 0)
+    .limit(common.PER_PAGE_POST)
+    .toArray();
+  if (!Array.isArray(posts) || posts.length == 0) {
+    throw new MyError(errorCode.NOT_FOUND, `No posts found`);
+  }
+  posts = await manipulatePosts(posts);
+  return posts;
+};
+
+const getByQuery = async (user, query) => {
   validator.checkNonNull(query);
+  validator.checkUser(user);
   let { search, userId, category, page, sort_by } = query;
 
-  const main_query = [];
+  const main_query = [
+    { "user.userId": { $in: user.friends.concat([user._id]) } },
+  ];
 
   //#region master search
   const search_query = [];
@@ -328,6 +347,7 @@ module.exports = {
   create,
   getById,
   getByQuery,
+  getPostsForUser,
   getAll,
   update,
   remove,
