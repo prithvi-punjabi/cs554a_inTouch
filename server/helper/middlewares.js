@@ -36,6 +36,33 @@ module.exports = async (app) => {
     next();
   });
 
+  app.use("/channels/add", (req, res, next) => {
+    if (!utils.isAdmin(req)) {
+      return res
+        .status(errorCode.UNAUTHORIZED)
+        .json(ErrorMessage("You need admin access to add channel"));
+    }
+    next();
+  });
+
+  app.use("/channels/update", (req, res, next) => {
+    if (!utils.isAdmin(req)) {
+      return res
+        .status(errorCode.UNAUTHORIZED)
+        .json(ErrorMessage("You need admin access to update channel"));
+    }
+    next();
+  });
+
+  app.use("/channels/delete", (req, res, next) => {
+    if (!utils.isAdmin(req)) {
+      return res
+        .status(errorCode.UNAUTHORIZED)
+        .json(ErrorMessage("You need admin access to delete channel"));
+    }
+    next();
+  });
+
   app.use("/channels/all", (req, res, next) => {
     if (!utils.isAdmin(req)) {
       return res
