@@ -10,6 +10,30 @@ const common = require("../helper/common");
 
 router.get("/", async (req, res) => {
   try {
+    if (!utils.isUserLoggedIn(req)) {
+      return res
+        .status(errorCode.FORBIDDEN)
+        .json(ErrorMessage("Login to fetch channels"));
+    }
+    let channels = await channelData.getChannelsForUser(req.session.user);
+    return res.json(channels);
+  } catch (e) {
+    if (typeof e == "string") {
+      e = new MyError(errorCode.BAD_REQUEST, e);
+    }
+    return res
+      .status(validator.isValidResponseStatusCode(e.code) ? e.code : 500)
+      .json(ErrorMessage(e.message));
+  }
+});
+
+router.get("/all", async (req, res) => {
+  try {
+    if (!utils.isAdmin(req)) {
+      return res
+        .status(errorCode.UNAUTHORIZED)
+        .json(ErrorMessage("You need admin access to fetch all channels"));
+    }
     let channels = await channelData.getAll();
     return res.json(channels);
   } catch (e) {

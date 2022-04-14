@@ -173,6 +173,25 @@ const deleteMessage = async (msgId, userId) => {
   return oldChannel.messages[0];
 };
 
+const getChannelsForUser = async (user) => {
+  validator.checkUser(user);
+  const courses = [];
+  for (let i = 0; i < user.courses.length; i++) {
+    const courseName = user.courses[i].code;
+    courses.push(courseName);
+  }
+
+  const channelCol = await channelCollection();
+  let channels = await channelCol.find({ name: { $in: courses } }).toArray();
+  if (channels == null || !Array.isArray(channels) || channels.length == 0) {
+    throw new MyError(
+      errorCode.NOT_FOUND,
+      `No channel found within ${courses}`
+    );
+  }
+  return channels;
+};
+
 module.exports = {
   create,
   getById,
@@ -181,4 +200,5 @@ module.exports = {
   remove,
   addMessage,
   deleteMessage,
+  getChannelsForUser,
 };

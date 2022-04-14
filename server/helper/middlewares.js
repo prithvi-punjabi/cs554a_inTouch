@@ -30,6 +30,15 @@ module.exports = async (app) => {
     next();
   });
 
+  app.use("/channels/all", (req, res, next) => {
+    if (!utils.isAdmin(req)) {
+      return res
+        .status(errorCode.UNAUTHORIZED)
+        .json(ErrorMessage("You need admin access to fetch all channels"));
+    }
+    next();
+  });
+
   app.use((req, res, next) => {
     for (const key in req.body) {
       if (Object.hasOwnProperty.call(req.body, key)) {

@@ -48,7 +48,7 @@ const fetchCourses = async (accessKey) => {
     temp.name = x.course_code;
     temp.code = x.name;
     temp.end_date = x.end_at;
-    if (new Date(temp.end_date) > today) {
+    if (temp.end_date == null || new Date(temp.end_date) > today) {
       courses.push(temp);
     }
     temp = {};
