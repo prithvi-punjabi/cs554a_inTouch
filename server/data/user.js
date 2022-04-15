@@ -171,7 +171,7 @@ const addFriend = async (userId, friendId) => {
     friends: [friendId],
   });
   if (!friendExists) {
-    const addedFriend = await userCol.findOne(
+    const addedFriend = await userCol.updateOne(
       { _id: userId },
       { $push: { friends: friendId } }
     );
