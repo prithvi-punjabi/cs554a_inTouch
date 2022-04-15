@@ -33,7 +33,7 @@ const fetchCourses = async (accessKey) => {
   validator.checkNonNull(accessKey);
   validator.checkString(accessKey);
   const { data } = await axios.get(
-    "https://sit.instructure.com/api/v1/courses?enrollment_type=student",
+    "https://sit.instructure.com/api/v1/courses?enrollment_type=student&enrollment_state=active",
     {
       headers: {
         Authorization: `Bearer ${accessKey}`,
@@ -48,9 +48,7 @@ const fetchCourses = async (accessKey) => {
     temp.name = x.course_code;
     temp.code = x.name;
     temp.end_date = x.end_at;
-    if (temp.end_date == null || new Date(temp.end_date) > today) {
-      courses.push(temp);
-    }
+    courses.push(temp);
     temp = {};
   });
   return courses;
