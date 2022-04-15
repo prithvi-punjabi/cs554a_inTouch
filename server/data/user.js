@@ -57,28 +57,22 @@ const fetchCourses = async (accessKey) => {
 };
 
 const create = async (
-  name,
-  email,
+  accessKey,
   password,
-  profilePicture,
   userName,
-  bio,
-  courses,
   gender,
   contactNo,
   dob
 ) => {
-  validator.checkString(name, "Name");
-  validator.checkEmail(email);
   validator.checkPassword(password);
-  validator.checkString(profilePicture, "Profile Picture");
   validator.checkString(userName, "Username");
-  validator.checkString(bio, "Bio");
-  // validator.checkStringArray(courses, "Courses");
-  validator.checkGender(gender, "Gender");
+  // validator.checkGender(gender, "Gender");
   validator.checkPhoneNumber(contactNo, "Phone number");
   validator.checkDob(dob, "Date of Birth");
 
+  const canvasUser = await fetchUser(accessKey);
+  const userCourses = await fetchCourses(accessKey);
+  console.log(userCourses);
   const userCol = await userCollection();
   const existingUser = await userCol.findOne({ userName: userName });
   if (existingUser != null) {
@@ -88,13 +82,13 @@ const create = async (
   password = await bcrypt.hash(password, common.saltRounds);
 
   const newUser = {
-    name: name,
-    email: email,
+    name: canvasUser.name,
+    email: canvasUser.email,
     password: password,
-    profilePicture: profilePicture,
+    profilePicture: canvasUser.profilePicture,
     userName: userName,
-    bio: bio,
-    courses: courses,
+    bio: canvasUser.bio,
+    courses: userCourses,
     designation: common.designation.USER,
     gender: gender,
     contactNo: contactNo,
@@ -171,10 +165,11 @@ const addFriend = async (userId, friendId) => {
     friends: [friendId],
   });
   if (!friendExists) {
-    const addedFriend = await userCol.findOne(
+    const addedFriend = await userCol.updateOne(
       { _id: userId },
       { $push: { friends: friendId } }
     );
+    console.log(addedFriend.modifiedCount);
     if (addedFriend.modifiedCount == 0) {
       const error = new Error("Could not add friend");
       error.code = common.errorCode.INTERNAL_SERVER_ERROR;
@@ -215,8 +210,6 @@ const delFriend = async (userId, friendId) => {
 };
 
 module.exports = {
-  fetchUser,
-  fetchCourses,
   create,
   getUser,
   loginUser,
