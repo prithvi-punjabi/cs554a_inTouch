@@ -10,10 +10,16 @@ const typeDefs = [userDefs.typeDefs, postDefs.typeDefs];
 const resolvers = _.merge(userDefs.userResolvers, postDefs.postResolvers);
 
 async function startApolloServer(typeDefs, resolvers) {
-  const server = new ApolloServer({ typeDefs, resolvers });
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    context: (req) => {
+      return {
+        req: req.req,
+      };
+    },
+  });
   const app = express();
-  await server.start();
-  server.applyMiddleware({ app, path: "/graphql" });
   app.use(
     session({
       name: "AuthCookie",
@@ -22,6 +28,8 @@ async function startApolloServer(typeDefs, resolvers) {
       saveUninitialized: true,
     })
   );
+  await server.start();
+  server.applyMiddleware({ app, path: "/graphql" });
   app.listen(4000, () => {
     console.log(
       `🚀  Server ready at http://localhost:4000${server.graphqlPath}`

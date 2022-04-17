@@ -1,4 +1,5 @@
 const { gql } = require("apollo-server-express");
+const session = require("express-session");
 const userData = require("./data").userData;
 
 const typeDefs = gql`
@@ -48,8 +49,9 @@ const userResolvers = {
       const user = await userData.getUser(args.userId);
       return user;
     },
-    loginUser: async (_, args) => {
+    loginUser: async (_, args, context) => {
       const loggedInUser = await userData.loginUser(args.email, args.password);
+      context.req.session.user = loggedInUser;
       return loggedInUser;
     },
   },
