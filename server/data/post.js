@@ -310,7 +310,7 @@ const likeAPost = async (postId, userId) => {
   if (updateInfo.modifiedCount == 0) {
     throw new MyError(errorCode.NOT_FOUND, `Could not like the post`);
   }
-  return { liked: true };
+  return `You liked the post!`;
 };
 
 const unlikeAPost = async (postId, userId) => {
@@ -329,7 +329,7 @@ const unlikeAPost = async (postId, userId) => {
   if (updateInfo.modifiedCount == 0) {
     throw new MyError(errorCode.NOT_FOUND, `Could not unlike the post`);
   }
-  return { unliked: true };
+  return `You unliked the post!`;
 };
 
 async function manipulatePost(post) {

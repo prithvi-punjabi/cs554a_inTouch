@@ -1,83 +1,32 @@
-const { ApolloServer, gql } = require("apollo-server");
-const userData = require("./data").userData;
+const express = require("express");
+const { ApolloServer } = require("apollo-server-express");
+const _ = require("lodash");
+const userDefs = require("./userDefs");
+const postDefs = require("./postDefs");
 
-const typeDefs = gql`
-  type course {
-    id: Int
-    name: String
-    code: String
-    end_date: String
-  }
-  type user {
-    _id: String
-    name: String
-    email: String
-    password: String
-    profilePicture: String
-    userName: String
-    bio: String
-    designation: Int
-    gender: String
-    contactNo: String
-    dob: String
-    courses: [course]
-    privacy: [String]
-    friends: [String]
-  }
-  type Query {
-    getUser(userId: ID!): user
-    loginUser(email: String!, password: String!): user
-  }
-  type Mutation {
-    createUser(
-      accessKey: String!
-      password: String!
-      userName: String!
-      gender: String!
-      contactNo: String!
-      dob: String!
-    ): user
-    addFriend(userId: ID!, friendId: ID!): String
-    deleteFriend(userId: ID!, friendId: ID!): String
-  }
-`;
+const session = require("express-session");
 
-const resolvers = {
-  Query: {
-    getUser: async (_, args) => {
-      const user = await userData.getUser(args.userId);
-      return user;
-    },
-    loginUser: async (_, args) => {
-      const loggedInUser = await userData.loginUser(args.email, args.password);
-      return loggedInUser;
-    },
-  },
-  Mutation: {
-    createUser: async (_, args) => {
-      const createdUser = await userData.create(
-        args.accessKey,
-        args.password,
-        args.userName,
-        args.gender,
-        args.contactNo,
-        args.dob
-      );
-      return createdUser;
-    },
-    addFriend: async (_, args) => {
-      const addFriend = await userData.addFriend(args.userId, args.friendId);
-      return addFriend;
-    },
-    deleteFriend: async (_, args) => {
-      const delFriend = await userData.delFriend(args.userId, args.friendId);
-      return delFriend;
-    },
-  },
-};
+const typeDefs = [userDefs.typeDefs, postDefs.typeDefs];
+const resolvers = _.merge(userDefs.userResolvers, postDefs.postResolvers);
 
-const server = new ApolloServer({ typeDefs, resolvers });
+async function startApolloServer(typeDefs, resolvers) {
+  const server = new ApolloServer({ typeDefs, resolvers });
+  const app = express();
+  await server.start();
+  server.applyMiddleware({ app, path: "/graphql" });
+  app.use(
+    session({
+      name: "AuthCookie",
+      secret: "some secret string!",
+      resave: false,
+      saveUninitialized: true,
+    })
+  );
+  app.listen(4000, () => {
+    console.log(
+      `🚀  Server ready at http://localhost:4000${server.graphqlPath}`
+    );
+  });
+}
 
-server.listen().then(({ url }) => {
-  console.log(`🚀  Server ready at ${url}`);
-});
+startApolloServer(typeDefs, resolvers);
