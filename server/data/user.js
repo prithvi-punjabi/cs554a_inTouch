@@ -34,7 +34,7 @@ const fetchCourses = async (accessKey) => {
 	validator.checkNonNull(accessKey);
 	validator.checkString(accessKey);
 	const { data } = await axios.get(
-		"https://sit.instructure.com/api/v1/courses?enrollment_type=student",
+		"https://sit.instructure.com/api/v1/courses?enrollment_type=student&enrollment_state=active",
 		{
 			headers: {
 				Authorization: `Bearer ${accessKey}`,
@@ -191,7 +191,7 @@ const addFriend = async (userId, friendId) => {
 		friends: [friendId],
 	});
 	if (!friendExists) {
-		const addedFriend = await userCol.findOne(
+		const addedFriend = await userCol.updateOne(
 			{ _id: userId },
 			{ $push: { friends: friendId } }
 		);

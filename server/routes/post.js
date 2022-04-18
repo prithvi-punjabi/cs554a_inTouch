@@ -7,22 +7,16 @@ const postData = require("../data").postData;
 const { ObjectId } = require("mongodb");
 const { errorCode } = require("../helper/common");
 
-let user = {
-  _id: ObjectId(),
-  userName: "Nevil",
-  profilePicture: "https://www.w3schools.com/howto/img_avatar.png",
-};
-
 router.get("/", async (req, res) => {
   try {
     let posts;
     if (utils.isEmptyObject(req.query)) {
-      posts = await postData.getAll(1);
+      posts = await postData.getPostsForUser(req.session.user, 1);
     } else {
       if (req.query.category != null) {
         req.query.category = JSON.parse(decodeURIComponent(req.query.category));
       }
-      posts = await postData.getByQuery(req.query);
+      posts = await postData.getByQuery(req.session.user, req.query);
     }
     return res.json(posts);
   } catch (e) {
@@ -57,7 +51,12 @@ router.post("/add", async (req, res) => {
       return res.status(400).json(ErrorMessage("Missing body parameters"));
     const { text, image, category } = req.body;
 
-    // user = req.session.user;
+    if (!utils.isUserLoggedIn(req)) {
+      return res
+        .status(errorCode.FORBIDDEN)
+        .json(ErrorMessage("Login to add post"));
+    }
+    let user = req.session.user;
 
     validator.checkUser(user);
     validator.checkString(text, "text");
@@ -83,7 +82,12 @@ router.put("/update/:postId", async (req, res) => {
     const { text, image, category } = req.body;
     const postId = req.params.postId;
 
-    // user = req.session.user;
+    if (!utils.isUserLoggedIn(req)) {
+      return res
+        .status(errorCode.FORBIDDEN)
+        .json(ErrorMessage("Login to update post"));
+    }
+    let user = req.session.user;
 
     validator.checkUser(user);
     validator.checkObjectID(postId, "postId");
@@ -107,6 +111,11 @@ router.delete("/delete/:postId", async (req, res) => {
   try {
     const postId = req.params.postId;
     validator.checkObjectID(postId, "postId");
+    if (!utils.isUserLoggedIn(req)) {
+      return res
+        .status(errorCode.FORBIDDEN)
+        .json(ErrorMessage("Login to delete post"));
+    }
     const deletedPost = await postData.remove(postId, user);
     res.json(deletedPost);
   } catch (e) {
@@ -127,7 +136,12 @@ router.post("/comments/add", async (req, res) => {
     validator.checkString(postId, "postId");
     validator.checkString(comment, "comment");
 
-    // user = req.session.user;
+    if (!utils.isUserLoggedIn(req)) {
+      return res
+        .status(errorCode.FORBIDDEN)
+        .json(ErrorMessage("Login to add comment"));
+    }
+    let user = req.session.user;
 
     const commentObj = await postData.addComment(postId, user, comment);
     return res.json(commentObj);
@@ -148,7 +162,12 @@ router.delete("/comments/delete/:commentId", async (req, res) => {
     const commentId = req.params.commentId;
     validator.checkString(commentId, "commentId");
 
-    // user = req.session.user;
+    if (!utils.isUserLoggedIn(req)) {
+      return res
+        .status(errorCode.FORBIDDEN)
+        .json(ErrorMessage("Login to delete comment"));
+    }
+    let user = req.session.user;
 
     const commentObj = await postData.deleteComment(
       commentId,
@@ -172,7 +191,12 @@ router.post("/like/:postId", async (req, res) => {
     const postId = req.params.postId;
     validator.checkObjectID(postId, "postId");
 
-    // user = req.session.user;
+    if (!utils.isUserLoggedIn(req)) {
+      return res
+        .status(errorCode.FORBIDDEN)
+        .json(ErrorMessage("Login to like post"));
+    }
+    let user = req.session.user;
 
     const response = await postData.likeAPost(postId, user._id.toString());
     return res.json(response);
@@ -193,7 +217,12 @@ router.post("/unlike/:postId", async (req, res) => {
     const postId = req.params.postId;
     validator.checkObjectID(postId, "postId");
 
-    // user = req.session.user;
+    if (!utils.isUserLoggedIn(req)) {
+      return res
+        .status(errorCode.FORBIDDEN)
+        .json(ErrorMessage("Login to unlike post"));
+    }
+    let user = req.session.user;
 
     const response = await postData.unlikeAPost(postId, user._id.toString());
     return res.json(response);
