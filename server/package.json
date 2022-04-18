@@ -19,10 +19,12 @@
     "express": "^4.17.3",
     "express-session": "^1.17.2",
     "googleapis": "^100.0.0",
+    "http": "0.0.1-security",
     "moment": "^2.29.1",
     "mongodb": "^4.4.1",
     "nodemailer": "^6.7.3",
     "nodemon": "^2.0.15",
+    "socket.io": "^4.4.1",
     "xss": "^1.0.11"
   }
 }

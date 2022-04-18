@@ -8,12 +8,12 @@ const { ObjectId } = require("mongodb");
 const { errorCode } = require("../helper/common");
 const common = require("../helper/common");
 
-let user = {
-  _id: ObjectId(),
-  userName: "Nevil",
-  profilePicture: "https://www.w3schools.com/howto/img_avatar.png",
-  designation: common.designation.ADMIN,
-};
+// let user = {
+//   _id: ObjectId(),
+//   userName: "Nevil",
+//   profilePicture: "https://www.w3schools.com/howto/img_avatar.png",
+//   designation: common.designation.ADMIN,
+// };
 
 router.get("/", async (req, res) => {
   try {
@@ -27,6 +27,24 @@ router.get("/", async (req, res) => {
       .status(validator.isValidResponseStatusCode(e.code) ? e.code : 500)
       .json(ErrorMessage(e.message));
   }
+});
+
+router.get("/byUser/:userId", async (req, res) => {
+  // try {
+    const userId = req.params.userId;
+    validator.checkObjectID(userId, "userId");
+    console.log(userId)
+    const channels = await channelData.getByUser(userId);
+    res.json(channels);
+  // } catch (e) {
+  //   if (typeof e == "string") {
+  //     e = new MyError(errorCode.BAD_REQUEST, e);
+  //   }
+  //   console.log(e)
+  //   return res
+  //     .status(validator.isValidResponseStatusCode(e.code) ? e.code : 500)
+  //     .json(ErrorMessage(e.message));
+  // }
 });
 
 router.get("/:channelId", async (req, res) => {
@@ -142,7 +160,7 @@ router.post("/messages/add", async (req, res) => {
     validator.checkString(channelId, "channelId");
     validator.checkString(message, "comment");
 
-    // user = req.session.user;
+    user = req.session.user;
 
     const msgObj = await channelData.addMessage(channelId, user, message);
     return res.json(msgObj);
