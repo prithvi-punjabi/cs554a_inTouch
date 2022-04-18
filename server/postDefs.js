@@ -14,6 +14,38 @@ const typeDefs = gql`
     profilePicture: String
   }
 
+  input queryInp {
+    search: String
+    user_id: String
+    category: String
+    page: String
+    sort_by: String
+  }
+
+  input courseInp {
+    id: Int
+    name: String
+    code: String
+    end_date: String
+  }
+
+  input fullUser {
+    _id: String
+    name: String
+    email: String
+    password: String
+    profilePicture: String
+    userName: String
+    bio: String
+    designation: Int
+    gender: String
+    contactNo: String
+    dob: String
+    courses: [courseInp]
+    privacy: [String]
+    friends: [String]
+  }
+
   type Comments {
     _id: String
     comment: String
@@ -35,6 +67,8 @@ const typeDefs = gql`
   type Query {
     getPost(postId: String): Post
     getAll(pageNumber: Int): [Post]
+    getByQuery(user: fullUser, queryFields: queryInp): [Post]
+    getPostsForUser(user: fullUser, pageNumber: Int): [Post]
   }
 
   type Mutation {
@@ -67,6 +101,17 @@ const postResolvers = {
     getAll: async (_, args) => {
       const allPosts = await postData.getAll(args.pageNumber);
       return allPosts;
+    },
+    getByQuery: async (_, args) => {
+      const queryAllPosts = await postData.getByQuery(args.user, args.query);
+      return queryAllPosts;
+    },
+    getPostsForUser: async (_, args) => {
+      const allUserPosts = await postData.getPostsForUser(
+        args.user,
+        args.pageNum
+      );
+      return allUserPosts;
     },
   },
   Mutation: {
