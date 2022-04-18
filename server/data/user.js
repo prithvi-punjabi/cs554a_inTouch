@@ -8,6 +8,26 @@ const { ObjectId } = require("mongodb");
 const common = require("../helper/common");
 const bcrypt = require("bcryptjs");
 const axios = require("axios");
+var jwt = require("jsonwebtoken");
+require("dotenv").config();
+if (typeof localStorage === "undefined" || localStorage === null) {
+  var LocalStorage = require("node-localstorage").LocalStorage;
+  localStorage = new LocalStorage("./scratch");
+}
+
+const checkLoggedInUser = async (token) => {
+  try {
+    let decoded = jwt.verify(token, process.env.SECRET);
+    loggedInUser = JSON.parse(localStorage.getItem("user"));
+    if (loggedInUser._id === decoded.user_id) {
+      return loggedInUser;
+    } else {
+      return null;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 const fetchUser = async (accessKey) => {
   validator.checkNonNull(accessKey);
@@ -210,6 +230,7 @@ const delFriend = async (userId, friendId) => {
 };
 
 module.exports = {
+  checkLoggedInUser,
   create,
   getUser,
   loginUser,

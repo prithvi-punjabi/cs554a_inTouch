@@ -1,6 +1,9 @@
 const { gql } = require("apollo-server-express");
-const session = require("express-session");
 const userData = require("./data").userData;
+var jwt = require("jsonwebtoken");
+require("dotenv").config();
+const LocalStorage = require("node-localstorage").LocalStorage;
+localStorage = new LocalStorage("./scratch");
 
 const typeDefs = gql`
   type course {
@@ -27,7 +30,7 @@ const typeDefs = gql`
   }
   type Query {
     getUser(userId: ID!): user
-    loginUser(email: String!, password: String!): user
+    loginUser(email: String!, password: String!): String
   }
   type Mutation {
     createUser(
@@ -45,14 +48,24 @@ const typeDefs = gql`
 
 const userResolvers = {
   Query: {
-    getUser: async (_, args) => {
+    getUser: async (_, args, context) => {
       const user = await userData.getUser(args.userId);
       return user;
     },
     loginUser: async (_, args, context) => {
       const loggedInUser = await userData.loginUser(args.email, args.password);
-      context.req.session.user = loggedInUser;
-      return loggedInUser;
+      const token = jwt.sign(
+        {
+          user_id: loggedInUser._id.toString(),
+          email: loggedInUser.email,
+        },
+        process.env.SECRET,
+        {
+          expiresIn: "2h",
+        }
+      );
+      localStorage.setItem("user", JSON.stringify(loggedInUser));
+      return token;
     },
   },
   Mutation: {
