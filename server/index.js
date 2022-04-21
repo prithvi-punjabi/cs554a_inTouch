@@ -2,13 +2,18 @@ const express = require("express");
 const { ApolloServer } = require("apollo-server-express");
 const _ = require("lodash");
 const checkUserLogin = require("./data").userData.checkLoggedInUser;
-const userDefs = require("./userDefs");
-const postDefs = require("./postDefs");
+const userDefs = require("./defs/userDefs");
+const postDefs = require("./defs/postDefs");
+const channelDefs = require("./defs/channelDefs");
 
 const session = require("express-session");
 
-const typeDefs = [userDefs.typeDefs, postDefs.typeDefs];
-const resolvers = _.merge(userDefs.userResolvers, postDefs.postResolvers);
+const typeDefs = [userDefs.typeDefs, postDefs.typeDefs, channelDefs.typeDefs];
+const resolvers = _.merge(
+  userDefs.userResolvers,
+  postDefs.postResolvers,
+  channelDefs.channelResolvers
+);
 
 const app = express();
 app.use(

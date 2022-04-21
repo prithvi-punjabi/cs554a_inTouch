@@ -1,5 +1,5 @@
 const { gql } = require("apollo-server-express");
-const postData = require("./data").postData;
+const postData = require("../data").postData;
 
 const typeDefs = gql`
   type postUser {
