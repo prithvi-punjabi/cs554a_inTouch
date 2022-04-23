@@ -158,3 +158,152 @@ button {
 .color-nav {
   background-color: #a32638;
 }
+
+
+.main {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #222;
+  font-weight: 400;
+  /* font-family: 'Montserrat'; */
+  background-image: url("../src/img/bg.jpg");
+ 
+  background-repeat: no-repeat;
+  background-size: cover;
+  -moz-background-size: cover;
+  -webkit-background-size: cover;
+  -o-background-size: cover;
+  -ms-background-size: cover;
+  background-position: center center;
+  padding: 100px 0;
+background-attachment: fixed;
+}
+
+.main1 {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #222;
+  font-weight: 400;
+  /* font-family: 'Montserrat'; */
+  background-image: url("../src/img/bg.jpg");
+ 
+  background-repeat: no-repeat;
+  background-size: cover;
+  -moz-background-size: cover;
+  -webkit-background-size: cover;
+  -o-background-size: cover;
+  -ms-background-size: cover;
+  background-position: center center;
+  padding: 220px 0;
+background-attachment: fixed;
+}
+
+.container1 {
+  width: 600px;
+  /* position: relative; */
+  margin: 0 auto; 
+}
+
+  .signup-content, .createTrainer-content {
+    background: #fff;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -o-border-radius: 10px;
+    -ms-border-radius: 10px;
+    padding: 50px 25px; 
+    
+  }
+  @media screen and (max-width: 480px) {
+    .signup-content {
+      padding: 50px 25px; } }
+
+  .form-group {
+        overflow: hidden;
+        margin-bottom: 10px; }
+      
+  .form-input {
+        width: 450px;
+        border: 1px solid gray;
+        border-radius: 5px;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        -o-border-radius: 5px;
+        -ms-border-radius: 5px;
+        padding: 10px 20px;
+        box-sizing: border-box;
+        font-size: 14px;
+        font-weight: 500;
+        color: #222; }
+        .form-input::-webkit-input-placeholder {
+          color: #999; }
+        .form-input::-moz-placeholder {
+          color: #999; }
+        .form-input:-ms-input-placeholder {
+          color: #999; }
+        .form-input:-moz-placeholder {
+          color: #999; }
+        .form-input::-webkit-input-placeholder {
+          font-weight: 500; }
+        .form-input::-moz-placeholder {
+          font-weight: 500; }
+        .form-input:-ms-input-placeholder {
+          font-weight: 500; }
+        .form-input:-moz-placeholder {
+          font-weight: 500; }
+        .form-input:focus {
+          border: 1px solid transparent;
+          -webkit-border-image-source: -webkit-linear-gradient(to right, #9face6, #74ebd5);
+          -moz-border-image-source: -moz-linear-gradient(to right, #9face6, #74ebd5);
+          -o-border-image-source: -o-linear-gradient(to right, #9face6, #74ebd5);
+          border-image-source: linear-gradient(to right, #9face6, #74ebd5);
+          -webkit-border-image-slice: 1;
+          border-image-slice: 1;
+          border-radius: 5px;
+          -moz-border-radius: 5px;
+          -webkit-border-radius: 5px;
+          -o-border-radius: 5px;
+          -ms-border-radius: 5px;
+          background-origin: border-box;
+          background-clip: content-box, border-box; }
+          .form-input:focus::-webkit-input-placeholder {
+            color: #222; }
+          .form-input:focus::-moz-placeholder {
+            color: #222; }
+          .form-input:focus:-ms-input-placeholder {
+            color: #222; }
+          .form-input:focus:-moz-placeholder {
+            color: #222; }
+
+.form-submit {
+        width: 100%;
+        border-radius: 5px;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        -o-border-radius: 5px;
+        -ms-border-radius: 5px;
+        padding: 17px 20px;
+        box-sizing: border-box;
+        font-size: 14px;
+        font-weight: 700;
+        color: #fff;
+        text-transform: uppercase;
+        border: none;
+        background-image: -moz-linear-gradient(to left, #74ebd5, #9face6);
+        background-image: -ms-linear-gradient(to left, #74ebd5, #9face6);
+        background-image: -o-linear-gradient(to left, #74ebd5, #9face6);
+        background-image: -webkit-linear-gradient(to left, #74ebd5, #9face6);
+        background-image: linear-gradient(to left, #74ebd5, #9face6); }
+            
+
+        .loginhere {
+          color: #555;
+          font-weight: 500px;
+          font-size: medium;
+          text-align: center;
+          margin-top: 20px;
+          margin-bottom: 5px; }
+        
+        .loginhere-link {
+          font-weight: 700;
+          color: #222; }

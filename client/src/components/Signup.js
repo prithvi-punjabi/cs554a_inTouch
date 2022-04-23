@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Signup = () => {
   let navigate = useNavigate();
@@ -11,8 +11,13 @@ const Signup = () => {
   let contactNo;
   let dob;
   return (
-    <div>
-      <form
+    <div class="main">
+
+        <section class="signup">
+            
+            <div class="container1">
+                <div class="signup-content">
+      <form class="signup-form" 
         onSubmit={(e) => {
           e.preventDefault();
           axios.post("http://localhost:4000/user/create", {
@@ -33,45 +38,64 @@ const Signup = () => {
           navigate("/login");
         }}
       >
+        <h2 class="form-title">Create account</h2>
+        <br />
+        <div class="form-group "> 
         <label>
           Enter your access token
           <br />
-          <input ref={(node) => (accessKey = node)}></input>
+          <input class="form-input" ref={(node) => (accessKey = node)}></input>
         </label>
-        <br />
+        </div>
+        
+        <div class="form-group ">
         <label>
           Enter your Username
           <br />
-          <input ref={(node) => (userName = node)}></input>
+          <input class="form-input" ref={(node) => (userName = node)}></input>
         </label>
-        <br />
+        </div>
+        
+        <div class="form-group ">
         <label>
           Enter your password
           <br />
-          <input type="password" ref={(node) => (password = node)}></input>
+          <input class="form-input" type="password" ref={(node) => (password = node)}></input>
         </label>
-        <br />
+        </div>
+
+        <div class="form-group ">
         <label>
           Enter your Gender
           <br />
-          <input ref={(node) => (gender = node)}></input>
+          <input class="form-input" ref={(node) => (gender = node)}></input>
         </label>
-        <br />
+        </div>
+
+        <div class="form-group ">
         <label>
           Enter your Contact number
           <br />
-          <input ref={(node) => (contactNo = node)}></input>
+          <input class="form-input" ref={(node) => (contactNo = node)}></input>
         </label>
-        <br />
+        </div>
+        <div class="form-group ">
         <label>
           Enter your date of Birth
           <br />
-          <input type="date" ref={(node) => (dob = node)}></input>
+          <input class="form-input " type="date" ref={(node) => (dob = node)}></input>
         </label>
+        </div>
         <br />
-        <br />
-        <button type="submit">Sign Up</button>
+       
+        <button class="btn-lg btn-danger" type="submit">Sign Up</button>
       </form>
+      <p class="loginhere">
+        Have already an account ? <Link to={`/login`} class="loginhere-link" variant="contained">Log in</Link>
+      </p>
+      </div>
+            </div>
+        </section>
     </div>
   );
 };
