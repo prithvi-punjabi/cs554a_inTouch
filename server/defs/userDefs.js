@@ -41,8 +41,8 @@ const typeDefs = gql`
       contactNo: String!
       dob: String!
     ): user
-    addFriend(userId: ID!, friendId: ID!): String
-    deleteFriend(userId: ID!, friendId: ID!): String
+    addFriend(friendId: ID!): String
+    deleteFriend(friendId: ID!): String
   }
 `;
 
@@ -80,12 +80,14 @@ const userResolvers = {
       );
       return createdUser;
     },
-    addFriend: async (_, args) => {
-      const addFriend = await userData.addFriend(args.userId, args.friendId);
+    addFriend: async (_, args, context) => {
+      const userId = context.user._id;
+      const addFriend = await userData.addFriend(userId, args.friendId);
       return addFriend;
     },
-    deleteFriend: async (_, args) => {
-      const delFriend = await userData.delFriend(args.userId, args.friendId);
+    deleteFriend: async (_, args, context) => {
+      const userId = context.user._id;
+      const delFriend = await userData.delFriend(userId, args.friendId);
       return delFriend;
     },
   },

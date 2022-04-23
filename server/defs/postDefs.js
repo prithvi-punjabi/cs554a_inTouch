@@ -67,28 +67,18 @@ const typeDefs = gql`
   type Query {
     getPost(postId: String): Post
     getAll(pageNumber: Int): [Post]
-    getByQuery(user: fullUser, queryFields: queryInp): [Post]
+    getByQuery(queryFields: queryInp): [Post]
     getPostsForUser(user: fullUser, pageNumber: Int): [Post]
   }
 
   type Mutation {
-    createPost(
-      user: postUserInp
-      text: String
-      image: String
-      category: String
-    ): Post
-    updatePost(
-      postId: ID
-      user: postUserInp
-      text: String
-      category: String
-    ): Post
-    removePost(postId: ID, user: postUserInp): Post
-    addComment(postId: ID, user: postUserInp, comment: String): Comments
-    deleteComment(commentId: ID, userId: ID): Comments
-    likePost(postId: ID, userId: ID): String
-    unlikePost(postId: ID, userId: ID): String
+    createPost(text: String, image: String, category: String): Post
+    updatePost(postId: ID, text: String, category: String): Post
+    removePost(postId: ID): Post
+    addComment(postId: ID, comment: String): Comments
+    deleteComment(commentId: ID): Comments
+    likePost(postId: ID): String
+    unlikePost(postId: ID): String
   }
 `;
 
@@ -102,8 +92,9 @@ const postResolvers = {
       const allPosts = await postData.getAll(args.pageNumber);
       return allPosts;
     },
-    getByQuery: async (_, args) => {
-      const queryAllPosts = await postData.getByQuery(args.user, args.query);
+    getByQuery: async (_, args, context) => {
+      const user = context.user;
+      const queryAllPosts = await postData.getByQuery(user, args.query);
       return queryAllPosts;
     },
     getPostsForUser: async (_, args) => {
@@ -115,46 +106,72 @@ const postResolvers = {
     },
   },
   Mutation: {
-    createPost: async (_, args) => {
+    createPost: async (_, args, context) => {
+      const user = {
+        _id: context.user._id,
+        userName: context.user._userName,
+        profilePicture: context.user.profilePicture,
+      };
       const createdPost = await postData.create(
-        args.user,
+        user,
         args.text,
         args.image,
         args.category
       );
       return createdPost;
     },
-    updatePost: async (_, args) => {
+    updatePost: async (_, args, context) => {
+      const user = {
+        _id: context.user._id,
+        userName: context.user._userName,
+        profilePicture: context.user.profilePicture,
+      };
       const updatedPost = await postData.update(
         args.postId,
-        args.user,
+        user,
         args.text,
         args.category
       );
       return updatedPost;
     },
-    removePost: async (_, args) => {
-      const removedPost = await postData.remove(args.postId, args.user);
+    removePost: async (_, args, context) => {
+      const user = {
+        _id: context.user._id,
+        userName: context.user._userName,
+        profilePicture: context.user.profilePicture,
+      };
+      const removedPost = await postData.remove(args.postId, user);
       return removedPost;
     },
-    addComment: async (_, args) => {
+    addComment: async (_, args, context) => {
+      const user = {
+        _id: context.user._id,
+        userName: context.user._userName,
+        profilePicture: context.user.profilePicture,
+      };
       const addedComment = await postData.addComment(
         args.postId,
-        args.user,
+        user,
         args.comment
       );
       return addedComment;
     },
-    deleteComment: async (_, args) => {
-      const delCom = await postData.deleteComment(args.commentId, args.userId);
+    deleteComment: async (_, args, context) => {
+      const delCom = await postData.deleteComment(
+        args.commentId,
+        context.user._id
+      );
       return delCom;
     },
-    likePost: async (_, args) => {
-      const likePost = await postData.likeAPost(args.postId, args.userId);
+    likePost: async (_, args, context) => {
+      const likePost = await postData.likeAPost(args.postId, context.user._id);
       return likePost;
     },
-    unlikePost: async (_, args) => {
-      const unlikePost = await postData.unlikeAPost(args.postId, args.userId);
+    unlikePost: async (_, args, context) => {
+      const unlikePost = await postData.unlikeAPost(
+        args.postId,
+        context.user._id
+      );
       return unlikePost;
     },
   },

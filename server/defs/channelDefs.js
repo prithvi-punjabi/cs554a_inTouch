@@ -54,7 +54,7 @@ const typeDefs = gql`
   type Query {
     getChannelById(id: ID): channel
     getAllChannels: [channel]
-    getChannelsForUser(user: fullUserInp): [channel]
+    getChannelsForUser: [channel]
   }
   type Mutation {
     createChannel(
@@ -84,8 +84,8 @@ const channelResolvers = {
       const allChannels = await channelData.getAll();
       return allChannels;
     },
-    getChannelsForUser: async (_, args) => {
-      const userChannels = await channelData.getChannelsForUser(args.user);
+    getChannelsForUser: async (_, args, context) => {
+      const userChannels = await channelData.getChannelsForUser(context.user);
       return userChannels;
     },
   },
@@ -110,18 +110,23 @@ const channelResolvers = {
       const removedChannel = await channelData.remove(args.channelId);
       return removedChannel;
     },
-    addMessage: async (_, args) => {
+    addMessage: async (_, args, context) => {
+      const user = {
+        _id: context.user._id,
+        userName: context.user._userName,
+        profilePicture: context.user.profilePicture,
+      };
       const addedMessage = await channelData.addMessage(
         args.channelId,
-        args.user,
+        user,
         args.message
       );
       return addedMessage;
     },
-    deleteMessage: async (_, args) => {
+    deleteMessage: async (_, args, context) => {
       const deletedMesssage = await channelData.deleteMessage(
         args.messageId,
-        args.userId
+        context.user._id
       );
       return deletedMesssage;
     },
