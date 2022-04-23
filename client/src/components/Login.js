@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import queries from "../queries";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import actions from "../actions";
-import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
-import store from "../store";
+import { useLazyQuery, useQuery } from "@apollo/client";
+// import store from "../store";
 
 const Login = () => {
   let navigate = useNavigate();
