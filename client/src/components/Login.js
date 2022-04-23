@@ -1,6 +1,6 @@
 import axios from "axios";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 
 const Login = () => {
   let navigate = useNavigate();
@@ -20,24 +20,45 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={postData}>
+    <div class="main1">
+   
+    <section class="signup">
+        
+        <div class="container1">
+            <div class="signup-content">
+      <form class="signup-form" onSubmit={postData}>
+      <h2 class="form-title">Login</h2>
+
+      <div class="form-group">
         <label>
           Enter your email
           <br />
-          <input ref={(node) => (email = node)}></input>
+          <input class="form-input" ref={(node) => (email = node)}></input>
         </label>
-        <br />
+        </div>
+      
+        <div class="form-group">
         <label>
           Enter your password
           <br />
-          <input type="password" ref={(node) => (password = node)}></input>
+          <input class="form-input" type="password" ref={(node) => (password = node)}></input>
         </label>
+        </div>
         <br />
-        <br />
-        <button type="submit">Log In</button>
+       
+        <button class="btn-lg btn-danger" type="submit">Log In</button>
       </form>
-    </div>
+      <p class="loginhere">
+      Don't have an account ?
+      <Link to={`/signup`} class="loginhere-link" variant="contained">Sign up</Link>
+                         
+                    </p>
+      </div>
+               </div>
+   
+           </section>
+   
+       </div>
   );
 };
 
