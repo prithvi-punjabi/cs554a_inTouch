@@ -37,17 +37,15 @@ const Login = () => {
         });
         setEmail("");
         setPassword("");
-      } else {
-        Swal.fire({
-          title: "Oops!",
-          text: "Username or Password is incorrect",
-          icon: "error",
-          confirmButtonText: "I'll fix it!",
-        });
       }
     } catch (error) {
       console.log(error);
-      alert(error.message);
+      Swal.fire({
+        title: "Oops!",
+        text: error.message,
+        icon: "error",
+        confirmButtonText: "I'll fix it!",
+      });
     }
   }
 

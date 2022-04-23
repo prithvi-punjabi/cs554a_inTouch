@@ -34,6 +34,7 @@ const server = new ApolloServer({
     // const token = req.headers.authorization || "";
     // // try to retrieve a user with the token
     // const user = checkUserLogin(token);
+    // console.log(user);
     // // optionally block the user
     // // we could also check user roles/permissions here
     // if (!user) throw new AuthenticationError("you must be logged in");

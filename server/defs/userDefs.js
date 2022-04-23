@@ -48,11 +48,11 @@ const typeDefs = gql`
 
 const userResolvers = {
   Query: {
-    getUser: async (_, args, context) => {
+    getUser: async (_, args) => {
       const user = await userData.getUser(args.userId);
       return user;
     },
-    loginUser: async (_, args, context) => {
+    loginUser: async (_, args) => {
       const loggedInUser = await userData.loginUser(args.email, args.password);
       const token = jwt.sign(
         {

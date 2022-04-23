@@ -16,7 +16,7 @@ if (typeof localStorage === "undefined" || localStorage === null) {
   localStorage = new LocalStorage("./scratch");
 }
 
-const checkLoggedInUser = async (token) => {
+const checkLoggedInUser = (token) => {
   try {
     let decoded = jwt.verify(token, process.env.SECRET);
     loggedInUser = JSON.parse(localStorage.getItem("user"));
