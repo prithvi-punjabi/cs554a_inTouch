@@ -52,7 +52,7 @@ const userResolvers = {
       const user = await userData.getUser(args.userId);
       return user;
     },
-    loginUser: async (_, args) => {
+    loginUser: async (_, args, context) => {
       const loggedInUser = await userData.loginUser(args.email, args.password);
       const token = jwt.sign(
         {

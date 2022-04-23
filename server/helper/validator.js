@@ -62,8 +62,13 @@ module.exports = {
         if (common.gender[key] == genderCode) isValid = true;
       }
     }
-    if (!isValid)
-      throw `Gender must be within [${Object.values(common.gender)}]`;
+    if (!isValid) {
+      const error = new Error(
+        `Gender must be within [${Object.values(common.gender)}]`
+      );
+      error.code = common.errorCode.BAD_REQUEST;
+      throw error;
+    }
   },
 
   checkChannalStatus(status) {
@@ -96,8 +101,13 @@ module.exports = {
     this.checkString(str, "Password");
     const regEx =
       /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/g;
-    if (!str.match(regEx))
-      throw `Password must contain at least one uppercase letter, one lowercase letter, one special character and one number`;
+    if (!str.match(regEx)) {
+      const error = new Error(
+        "Password must contain at least one uppercase letter, one lowercase letter, one special character and one number"
+      );
+      error.code = common.errorCode.BAD_REQUEST;
+      throw error;
+    }
   },
 
   checkEmail(email) {
@@ -130,10 +140,17 @@ module.exports = {
     let month = parseInt(input.split("-")[1]);
     let day = parseInt(input.split("-")[2]);
     let year = parseInt(input.split("-")[0]);
-    if (currmonth === month && currday === day && curryear === year)
-      throw "Your birthday cannot be today";
+    if (currmonth === month && currday === day && curryear === year) {
+      const error = new Error(`Your birthday cannot be today`);
+      error.code = common.errorCode.BAD_REQUEST;
+      throw error;
+    }
     if (curryear - year < 13) {
-      throw "You need to be older than 13 to access re$ale";
+      {
+        const error = new Error(`You must be older than 13 to access inTouch`);
+        error.code = common.errorCode.BAD_REQUEST;
+        throw error;
+      }
     }
     // Check if day in date supplied is out of range of month
     if (
@@ -145,13 +162,25 @@ module.exports = {
       month === 10 ||
       month === 12
     ) {
-      if (day < 0 || day > 31) throw `${day} does not exist in ${month}`;
+      if (day < 0 || day > 31) {
+        const error = new Error(`${day} does not exist in ${month}`);
+        error.code = common.errorCode.BAD_REQUEST;
+        throw error;
+      }
     }
     if (month === 4 || month === 6 || month === 9 || month === 11) {
-      if (day < 0 || day > 30) throw `${day} does not exist in ${month}`;
+      if (day < 0 || day > 30) {
+        const error = new Error(`${day} does not exist in ${month}`);
+        error.code = common.errorCode.BAD_REQUEST;
+        throw error;
+      }
     }
     if (month === 2) {
-      if (day < 0 || day > 28) throw `${day} does not exist in ${month}`;
+      if (day < 0 || day > 28) {
+        const error = new Error(`${day} does not exist in ${month}`);
+        error.code = common.errorCode.BAD_REQUEST;
+        throw error;
+      }
     }
     // Check if inputted date is in the future
     if (
@@ -161,7 +190,9 @@ module.exports = {
       (month > currmonth && year == curryear) ||
       year > curryear
     ) {
-      throw "Your birthday cannot be in the future";
+      const error = new Error(`Your birthday cannot be in the future`);
+      error.code = common.errorCode.BAD_REQUEST;
+      throw error;
     }
   },
 
@@ -183,10 +214,17 @@ module.exports = {
   },
 
   checkPhoneNumber(phone) {
-    if (phone == null) throw `Must pass phone number`;
+    if (phone == null) {
+      const error = new Error(`Phone number cannot be blank`);
+      error.code = common.errorCode.BAD_REQUEST;
+      throw error;
+    }
     const regEx = /^[0-9]{3}-[0-9]{3}-[0-9]{4}$/g;
     const regExSimple = /^[0-9]{10}$/g;
-    if (!phone.match(regEx) && !phone.match(regExSimple))
-      throw `Invalid phone number`;
+    if (!phone.match(regEx) && !phone.match(regExSimple)) {
+      const error = new Error("Invalid phone number");
+      error.code = common.errorCode.BAD_REQUEST;
+      throw error;
+    }
   },
 };

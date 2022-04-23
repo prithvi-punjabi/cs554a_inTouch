@@ -10,23 +10,25 @@ import Swal from "sweetalert2";
 const Login = () => {
   let navigate = useNavigate();
   let dispatch = useDispatch();
-  let [loginUser] = useLazyQuery(queries.user.LOGIN);
+  let [loginUser] = useLazyQuery(queries.user.LOGIN, {
+    fetchPolicy: "cache-and-network",
+  });
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { loading, error, data } = useQuery(queries.post.GET_ALL);
+  // const { loading, error, data } = useQuery(queries.post.GET_ALL);
 
-  useEffect(() => {
-    if (data) {
-      console.log(data.getAll);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (data) {
+  //     console.log(data.getAll);
+  //   }
+  // }, []);
 
   async function PostData(e) {
     e.preventDefault();
 
     try {
       const { data } = await loginUser({ variables: { email, password } });
-      console.log(data.loginUser);
+      console.log("LOGGED IN USER", data.loginUser);
 
       if (data.loginUser) {
         dispatch(actions.storeToken(data.loginUser));
@@ -50,31 +52,31 @@ const Login = () => {
   }
 
   return (
-    <div class="main1">
-      <section class="signup">
-        <div class="container1">
-          <div class="signup-content">
-            <form class="signup-form" onSubmit={PostData}>
-              <h2 class="form-title">Login</h2>
+    <div className="main1">
+      <section className="signup">
+        <div className="container1">
+          <div className="signup-content">
+            <form className="signup-form" onSubmit={PostData}>
+              <h2 className="form-title">Login</h2>
 
-              <div class="form-group">
+              <div className="form-group">
                 <label>
                   Enter your email
                   <br />
                   <input
-                    class="form-input"
+                    className="form-input"
                     onChange={(e) => setEmail(e.target.value)}
                     value={email}
                   ></input>
                 </label>
               </div>
 
-              <div class="form-group">
+              <div className="form-group">
                 <label>
                   Enter your password
                   <br />
                   <input
-                    class="form-input"
+                    className="form-input"
                     type="password"
                     onChange={(e) => setPassword(e.target.value)}
                     value={password}
@@ -83,13 +85,17 @@ const Login = () => {
               </div>
               <br />
 
-              <button class="btn-lg btn-danger" type="submit">
+              <button className="btn-lg btn-danger" type="submit">
                 Log In
               </button>
             </form>
-            <p class="loginhere">
+            <p className="loginhere">
               Don't have an account ?
-              <Link to={`/signup`} class="loginhere-link" variant="contained">
+              <Link
+                to={`/signup`}
+                className="loginhere-link"
+                variant="contained"
+              >
                 Sign up
               </Link>
             </p>

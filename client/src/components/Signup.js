@@ -50,7 +50,13 @@ const Signup = () => {
                     });
                   }
                 } catch (e) {
-                  alert(e);
+                  console.log(e);
+                  Swal.fire({
+                    title: "Oops!",
+                    text: `${e.message}`,
+                    icon: "error",
+                    confirmButtonText: "I'll fix it!",
+                  });
                 }
               }}
             >
