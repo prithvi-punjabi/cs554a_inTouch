@@ -1,7 +1,9 @@
 const { gql } = require("apollo-server-express");
 const postData = require("../data").postData;
+const { GraphQLDateTime } = require("graphql-scalars");
 
 const typeDefs = gql`
+  scalar DateTime
   type postUser {
     _id: ID
     userName: String
@@ -57,7 +59,7 @@ const typeDefs = gql`
     _id: ID
     text: String
     image: String
-    dateCreated: String
+    dateCreated: DateTime
     category: String
     comments: [Comments]
     likes: [String]

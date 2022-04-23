@@ -159,7 +159,6 @@ button {
   background-color: #a32638;
 }
 
-
 .main {
   font-size: 14px;
   line-height: 1.8;
@@ -167,7 +166,7 @@ button {
   font-weight: 400;
   /* font-family: 'Montserrat'; */
   background-image: url("../src/img/bg.jpg");
- 
+
   background-repeat: no-repeat;
   background-size: cover;
   -moz-background-size: cover;
@@ -176,7 +175,7 @@ button {
   -ms-background-size: cover;
   background-position: center center;
   padding: 100px 0;
-background-attachment: fixed;
+  background-attachment: fixed;
 }
 
 .main1 {
@@ -186,7 +185,7 @@ background-attachment: fixed;
   font-weight: 400;
   /* font-family: 'Montserrat'; */
   background-image: url("../src/img/bg.jpg");
- 
+
   background-repeat: no-repeat;
   background-size: cover;
   -moz-background-size: cover;
@@ -195,115 +194,220 @@ background-attachment: fixed;
   -ms-background-size: cover;
   background-position: center center;
   padding: 220px 0;
-background-attachment: fixed;
+  background-attachment: fixed;
 }
 
 .container1 {
   width: 600px;
   /* position: relative; */
-  margin: 0 auto; 
+  margin: 0 auto;
 }
 
-  .signup-content, .createTrainer-content {
-    background: #fff;
-    border-radius: 10px;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    -o-border-radius: 10px;
-    -ms-border-radius: 10px;
-    padding: 50px 25px; 
-    
+.signup-content,
+.createTrainer-content {
+  background: #fff;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -o-border-radius: 10px;
+  -ms-border-radius: 10px;
+  padding: 50px 25px;
+}
+@media screen and (max-width: 480px) {
+  .signup-content {
+    padding: 50px 25px;
   }
-  @media screen and (max-width: 480px) {
-    .signup-content {
-      padding: 50px 25px; } }
+}
 
-  .form-group {
-        overflow: hidden;
-        margin-bottom: 10px; }
-      
-  .form-input {
-        width: 450px;
-        border: 1px solid gray;
-        border-radius: 5px;
-        -moz-border-radius: 5px;
-        -webkit-border-radius: 5px;
-        -o-border-radius: 5px;
-        -ms-border-radius: 5px;
-        padding: 10px 20px;
-        box-sizing: border-box;
-        font-size: 14px;
-        font-weight: 500;
-        color: #222; }
-        .form-input::-webkit-input-placeholder {
-          color: #999; }
-        .form-input::-moz-placeholder {
-          color: #999; }
-        .form-input:-ms-input-placeholder {
-          color: #999; }
-        .form-input:-moz-placeholder {
-          color: #999; }
-        .form-input::-webkit-input-placeholder {
-          font-weight: 500; }
-        .form-input::-moz-placeholder {
-          font-weight: 500; }
-        .form-input:-ms-input-placeholder {
-          font-weight: 500; }
-        .form-input:-moz-placeholder {
-          font-weight: 500; }
-        .form-input:focus {
-          border: 1px solid transparent;
-          -webkit-border-image-source: -webkit-linear-gradient(to right, #9face6, #74ebd5);
-          -moz-border-image-source: -moz-linear-gradient(to right, #9face6, #74ebd5);
-          -o-border-image-source: -o-linear-gradient(to right, #9face6, #74ebd5);
-          border-image-source: linear-gradient(to right, #9face6, #74ebd5);
-          -webkit-border-image-slice: 1;
-          border-image-slice: 1;
-          border-radius: 5px;
-          -moz-border-radius: 5px;
-          -webkit-border-radius: 5px;
-          -o-border-radius: 5px;
-          -ms-border-radius: 5px;
-          background-origin: border-box;
-          background-clip: content-box, border-box; }
-          .form-input:focus::-webkit-input-placeholder {
-            color: #222; }
-          .form-input:focus::-moz-placeholder {
-            color: #222; }
-          .form-input:focus:-ms-input-placeholder {
-            color: #222; }
-          .form-input:focus:-moz-placeholder {
-            color: #222; }
+.form-group {
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.form-input {
+  width: 450px;
+  border: 1px solid gray;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -o-border-radius: 5px;
+  -ms-border-radius: 5px;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  font-size: 14px;
+  font-weight: 500;
+  color: #222;
+}
+.form-input::-webkit-input-placeholder {
+  color: #999;
+}
+.form-input::-moz-placeholder {
+  color: #999;
+}
+.form-input:-ms-input-placeholder {
+  color: #999;
+}
+.form-input:-moz-placeholder {
+  color: #999;
+}
+.form-input::-webkit-input-placeholder {
+  font-weight: 500;
+}
+.form-input::-moz-placeholder {
+  font-weight: 500;
+}
+.form-input:-ms-input-placeholder {
+  font-weight: 500;
+}
+.form-input:-moz-placeholder {
+  font-weight: 500;
+}
+.form-input:focus {
+  border: 1px solid transparent;
+  -webkit-border-image-source: -webkit-linear-gradient(
+    to right,
+    #9face6,
+    #74ebd5
+  );
+  -moz-border-image-source: -moz-linear-gradient(to right, #9face6, #74ebd5);
+  -o-border-image-source: -o-linear-gradient(to right, #9face6, #74ebd5);
+  border-image-source: linear-gradient(to right, #9face6, #74ebd5);
+  -webkit-border-image-slice: 1;
+  border-image-slice: 1;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -o-border-radius: 5px;
+  -ms-border-radius: 5px;
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+}
+.form-input:focus::-webkit-input-placeholder {
+  color: #222;
+}
+.form-input:focus::-moz-placeholder {
+  color: #222;
+}
+.form-input:focus:-ms-input-placeholder {
+  color: #222;
+}
+.form-input:focus:-moz-placeholder {
+  color: #222;
+}
 
 .form-submit {
-        width: 100%;
-        border-radius: 5px;
-        -moz-border-radius: 5px;
-        -webkit-border-radius: 5px;
-        -o-border-radius: 5px;
-        -ms-border-radius: 5px;
-        padding: 17px 20px;
-        box-sizing: border-box;
-        font-size: 14px;
-        font-weight: 700;
-        color: #fff;
-        text-transform: uppercase;
-        border: none;
-        background-image: -moz-linear-gradient(to left, #74ebd5, #9face6);
-        background-image: -ms-linear-gradient(to left, #74ebd5, #9face6);
-        background-image: -o-linear-gradient(to left, #74ebd5, #9face6);
-        background-image: -webkit-linear-gradient(to left, #74ebd5, #9face6);
-        background-image: linear-gradient(to left, #74ebd5, #9face6); }
-            
+  width: 100%;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -o-border-radius: 5px;
+  -ms-border-radius: 5px;
+  padding: 17px 20px;
+  box-sizing: border-box;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  border: none;
+  background-image: -moz-linear-gradient(to left, #74ebd5, #9face6);
+  background-image: -ms-linear-gradient(to left, #74ebd5, #9face6);
+  background-image: -o-linear-gradient(to left, #74ebd5, #9face6);
+  background-image: -webkit-linear-gradient(to left, #74ebd5, #9face6);
+  background-image: linear-gradient(to left, #74ebd5, #9face6);
+}
 
-        .loginhere {
-          color: #555;
-          font-weight: 500px;
-          font-size: medium;
-          text-align: center;
-          margin-top: 20px;
-          margin-bottom: 5px; }
-        
-        .loginhere-link {
-          font-weight: 700;
-          color: #222; }
+.loginhere {
+  color: #555;
+  font-weight: 500px;
+  font-size: medium;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+
+.loginhere-link {
+  font-weight: 700;
+  color: #222;
+}
+
+.card {
+  border: none;
+}
+
+.ellipsis {
+  color: #a09c9c;
+}
+
+hr {
+  color: #a09c9c;
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+.muted-color {
+  color: #a09c9c;
+  font-size: 13px;
+}
+
+.ellipsis i {
+  margin-top: 3px;
+  cursor: pointer;
+}
+
+.icons i {
+  font-size: 25px;
+}
+
+.icons .fa-heart {
+  color: red;
+}
+
+.icons .fa-smile-o {
+  color: yellow;
+  font-size: 29px;
+}
+
+.rounded-image {
+  border-radius: 50% !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  width: 50px;
+}
+
+.name {
+  font-weight: 600;
+}
+
+.comment-text {
+  font-size: 12px;
+}
+
+.status small {
+  margin-right: 10px;
+  color: blue;
+}
+
+.form-control {
+  border-radius: 26px;
+}
+
+.comment-input {
+  position: relative;
+}
+
+.fonts {
+  position: absolute;
+  right: 13px;
+  top: 8px;
+  color: #a09c9c;
+}
+
+.form-control:focus {
+  color: #495057;
+  background-color: #fff;
+  border-color: #8bbafe;
+  outline: 0;
+  box-shadow: none;
+}

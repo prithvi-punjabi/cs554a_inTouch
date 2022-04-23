@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import queries from "../queries";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import actions from "../actions";
-import { useLazyQuery, useQuery } from "@apollo/client";
-// import store from "../store";
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import store from "../store";
+import Swal from "sweetalert2";
 
 const Login = () => {
   let navigate = useNavigate();
@@ -27,13 +28,23 @@ const Login = () => {
       const { data } = await loginUser({ variables: { email, password } });
       console.log(data.loginUser);
 
-      if (data) {
+      if (data.loginUser) {
         dispatch(actions.storeToken(data.loginUser));
-        alert("Successful login!");
+        Swal.fire({
+          title: "Yay!",
+          text: "Successful Login",
+          icon: "success",
+        });
+        setEmail("");
+        setPassword("");
+      } else {
+        Swal.fire({
+          title: "Oops!",
+          text: "Username or Password is incorrect",
+          icon: "error",
+          confirmButtonText: "I'll fix it!",
+        });
       }
-
-      setEmail("");
-      setPassword("");
     } catch (error) {
       console.log(error);
       alert(error.message);
