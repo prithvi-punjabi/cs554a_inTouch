@@ -6,6 +6,7 @@ import Signup from "./components/Signup";
 import Feed from "./components/Feed";
 import Channel from "./components/Channel";
 import Posts from "./components/Posts";
+import Main from "./components/Main";
 import { AppContext, socket } from "./context/appContext";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import {
@@ -36,6 +37,7 @@ function App() {
                 <Route path="/feed" element={<Feed />} />
                 <Route path="/channels" element={<Channel />} />
                 <Route path="/posts" element={<Posts />} />
+                <Route path="/main" element={<Main />} />
               </Routes>
             </div>
           </div>
