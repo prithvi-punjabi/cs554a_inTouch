@@ -10,9 +10,15 @@ import Swal from "sweetalert2";
 const Login = () => {
   let navigate = useNavigate();
   let dispatch = useDispatch();
-  let [loginUser] = useLazyQuery(queries.user.LOGIN, {
-    fetchPolicy: "cache-and-network",
-  });
+  const [loginUser] = useLazyQuery(
+    queries.user.LOGIN,
+    {
+      enabled: false,
+    },
+    {
+      fetchPolicy: "cache-and-network",
+    }
+  );
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   // const { loading, error, data } = useQuery(queries.post.GET_ALL);
@@ -28,9 +34,10 @@ const Login = () => {
 
     try {
       const { data } = await loginUser({ variables: { email, password } });
-      console.log("LOGGED IN USER", data.loginUser);
-
-      if (data.loginUser) {
+      if (data.loginUser === null) {
+        throw new Error("Either username or password is invalid");
+      }
+      if (data.loginUser && data.loginUser !== null) {
         dispatch(actions.storeToken(data.loginUser));
         Swal.fire({
           title: "Yay!",
