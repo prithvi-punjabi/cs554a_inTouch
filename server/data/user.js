@@ -10,7 +10,6 @@ const bcrypt = require("bcryptjs");
 const axios = require("axios");
 const channelData = require("./channel");
 var jwt = require("jsonwebtoken");
-require("dotenv").config();
 if (typeof localStorage === "undefined" || localStorage === null) {
   var LocalStorage = require("node-localstorage").LocalStorage;
   localStorage = new LocalStorage("./scratch");

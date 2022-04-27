@@ -1,10 +1,12 @@
 const express = require("express");
-const { ApolloServer } = require("apollo-server-express");
+const { ApolloServer, AuthenticationError } = require("apollo-server-express");
 const _ = require("lodash");
 const checkUserLogin = require("./data").userData.checkLoggedInUser;
 const userDefs = require("./defs/userDefs");
 const postDefs = require("./defs/postDefs");
 const channelDefs = require("./defs/channelDefs");
+const path = require("path");
+require("dotenv").config({ path: path.resolve(__dirname + "/.env") });
 
 const session = require("express-session");
 
@@ -26,26 +28,54 @@ app.use(
   })
 );
 
+const loginRequiredOperations = [
+  "GetUser",
+  "AddFriend",
+  "DeleteFriend",
+  "CreateUser",
+  "GetPostById",
+  "GetAllPost",
+  "GetPostByQuery",
+  "GetPostsForUser",
+  "CreatePost",
+  "UpdatePost",
+  "LikePost",
+  "UnlikePost",
+  "AddComment",
+  "RemovePost",
+  "DeleteComment",
+  "GetChannelsForUser",
+  "GetChannelById",
+  "GetAllChannels",
+  "CreateChannel",
+  "UpdateChannel",
+  "RemovePost",
+  "AddMessage",
+  "DeleteMessage",
+];
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: ({ req }) => {
+    const token = req.headers.authorization || "";
+    let user;
+    const { variables } = req.body || { variables: {} };
+    if (loginRequiredOperations.includes(req.body.operationName)) {
+      user = checkUserLogin(token);
+      if (!user) {
+        throw new AuthenticationError("Invalid authorization token");
+      }
+    }
     switch (req.body.operationName) {
       case "GetPostsForUser":
+        break;
+      case "GetUser":
         break;
       default:
         break;
     }
-    // // get the user token from the headers
-    // const token = req.headers.authorization || "";
-    // // try to retrieve a user with the token
-    // const user = checkUserLogin(token);
-    // console.log(user);
-    // // optionally block the user
-    // // we could also check user roles/permissions here
-    // // if (!user) throw new AuthenticationError("you must be logged in");
-    // // add the user to the context
-    // return user;
+    return { user };
   },
 });
 

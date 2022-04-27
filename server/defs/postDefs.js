@@ -70,7 +70,7 @@ const typeDefs = gql`
     getPost(postId: String): Post
     getAll(pageNumber: Int): [Post]
     getByQuery(queryFields: queryInp): [Post]
-    getPostsForUser(user: fullUser, pageNumber: Int): [Post]
+    getPostsForUser(pageNumber: Int): [Post]
   }
 
   type Mutation {
@@ -99,9 +99,9 @@ const postResolvers = {
       const queryAllPosts = await postData.getByQuery(user, args.query);
       return queryAllPosts;
     },
-    getPostsForUser: async (_, args) => {
+    getPostsForUser: async (_, args, context) => {
       const allUserPosts = await postData.getPostsForUser(
-        args.user,
+        context.user,
         args.pageNum
       );
       return allUserPosts;

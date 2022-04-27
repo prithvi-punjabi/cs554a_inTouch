@@ -1,7 +1,6 @@
 const { gql } = require("apollo-server-express");
 const userData = require("../data").userData;
 var jwt = require("jsonwebtoken");
-require("dotenv").config();
 const LocalStorage = require("node-localstorage").LocalStorage;
 localStorage = new LocalStorage("./scratch");
 
