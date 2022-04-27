@@ -10,22 +10,15 @@ const bcrypt = require("bcryptjs");
 const axios = require("axios");
 const channelData = require("./channel");
 var jwt = require("jsonwebtoken");
-if (typeof localStorage === "undefined" || localStorage === null) {
-  var LocalStorage = require("node-localstorage").LocalStorage;
-  localStorage = new LocalStorage("./scratch");
-}
 
-const checkLoggedInUser = (token) => {
+const checkLoggedInUser = async (token) => {
   try {
     let decoded = jwt.verify(token, process.env.SECRET);
-    loggedInUser = JSON.parse(localStorage.getItem("user"));
-    if (loggedInUser._id === decoded.user_id) {
-      return loggedInUser;
-    } else {
-      return null;
-    }
+    const loggedInUser = await getUser(decoded.user_id);
+    return loggedInUser;
   } catch (err) {
     console.log(err);
+    return null;
   }
 };
 

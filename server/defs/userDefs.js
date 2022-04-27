@@ -1,8 +1,6 @@
 const { gql } = require("apollo-server-express");
 const userData = require("../data").userData;
 var jwt = require("jsonwebtoken");
-const LocalStorage = require("node-localstorage").LocalStorage;
-localStorage = new LocalStorage("./scratch");
 
 const typeDefs = gql`
   type course {
@@ -63,7 +61,6 @@ const userResolvers = {
           expiresIn: "2h",
         }
       );
-      localStorage.setItem("user", JSON.stringify(loggedInUser));
       return token;
     },
   },

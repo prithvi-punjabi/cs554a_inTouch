@@ -57,12 +57,12 @@ const loginRequiredOperations = [
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req }) => {
+  context: async ({ req }) => {
     const token = req.headers.authorization || "";
     let user;
     const { variables } = req.body || { variables: {} };
     if (loginRequiredOperations.includes(req.body.operationName)) {
-      user = checkUserLogin(token);
+      user = await checkUserLogin(token);
       if (!user) {
         throw new AuthenticationError("Invalid authorization token");
       }

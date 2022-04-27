@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 
 const user = {
   LOGIN: gql`
-    query Query($email: String!, $password: String!) {
+    query LoginUser($email: String!, $password: String!) {
       loginUser(email: $email, password: $password)
     }
   `,
@@ -84,7 +84,7 @@ const user = {
 
 const post = {
   GET_BY_ID: gql`
-    query GetPost($postId: String) {
+    query GetPostById($postId: String) {
       getPost(postId: $postId) {
         _id
         text
@@ -111,7 +111,7 @@ const post = {
     }
   `,
   GET_ALL: gql`
-    query GetAll($pageNumber: Int) {
+    query GetAllPost($pageNumber: Int) {
       getAll(pageNumber: $pageNumber) {
         _id
         text
@@ -165,8 +165,8 @@ const post = {
     }
   `,
   GET: gql`
-    query GetPostsForUser($user: fullUser, $pageNumber: Int) {
-      getPostsForUser(user: $user, pageNumber: $pageNumber) {
+    query GetPostsForUser($pageNumber: Int) {
+      getPostsForUser(pageNumber: $pageNumber) {
         _id
         text
         image
