@@ -30,6 +30,12 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: ({ req }) => {
+    switch (req.body.operationName) {
+      case "GetPostsForUser":
+        break;
+      default:
+        break;
+    }
     // // get the user token from the headers
     // const token = req.headers.authorization || "";
     // // try to retrieve a user with the token

@@ -25,6 +25,10 @@ const getById = async (id) => {
 };
 
 const getPostsForUser = async (user, pageNumber) => {
+  user._id = utils.parseObjectId(user._id, "user._id");
+  user.friends = user.friends.map(
+    (userId) => (userId = utils.parseObjectId(userId, "friends.userId"))
+  );
   validator.checkUser(user);
   const postCol = await postCollection();
   let posts;
