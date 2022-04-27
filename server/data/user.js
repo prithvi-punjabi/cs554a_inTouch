@@ -12,14 +12,9 @@ const channelData = require("./channel");
 var jwt = require("jsonwebtoken");
 
 const checkLoggedInUser = async (token) => {
-  try {
-    let decoded = jwt.verify(token, process.env.SECRET);
-    const loggedInUser = await getUser(decoded.user_id);
-    return loggedInUser;
-  } catch (err) {
-    console.log(err);
-    return null;
-  }
+  let decoded = jwt.verify(token, process.env.SECRET);
+  const loggedInUser = await getUser(decoded.user_id);
+  return loggedInUser;
 };
 
 const fetchUser = async (accessKey) => {

@@ -16,6 +16,7 @@ import {
   ApolloProvider,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
+import Profile from "./components/Profile";
 
 const httpLink = new HttpLink({
   uri: "http://localhost:4000/graphql",
@@ -51,6 +52,7 @@ function App() {
                 <Route path="/token-how-to" element={<HowTo />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/user/:userId" element={<Profile />} />
                 <Route path="/feed" element={<Feed />} />
                 <Route path="/channels" element={<Channel />} />
                 <Route path="/posts" element={<Posts />} />

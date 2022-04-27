@@ -62,6 +62,9 @@ const server = new ApolloServer({
     let user;
     const { variables } = req.body || { variables: {} };
     if (loginRequiredOperations.includes(req.body.operationName)) {
+      if (!token || token == "") {
+        throw new AuthenticationError("Must provide authorization token");
+      }
       user = await checkUserLogin(token);
       if (!user) {
         throw new AuthenticationError("Invalid authorization token");
