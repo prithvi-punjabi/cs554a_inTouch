@@ -39,6 +39,7 @@ const Login = () => {
       }
       if (data.loginUser && data.loginUser !== null) {
         dispatch(actions.storeToken(data.loginUser));
+        localStorage.setItem("token", data.loginUser);
         Swal.fire({
           title: "Yay!",
           text: "Successful Login",
