@@ -9,10 +9,9 @@ const Posts = () => {
     fetchPolicy: "cache-and-network",
   });
   const userId = localStorage.getItem("userId");
-  console.log(userId);
-
   if (data) {
     let posts = data.getAll;
+    console.log(posts);
 
     return (
       <div className="displayContainer">

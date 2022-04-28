@@ -114,7 +114,7 @@ const post = {
     }
   `,
   GET_ALL: gql`
-    query GetAllPost($pageNumber: Int) {
+    query GetAll($pageNumber: Int) {
       getAll(pageNumber: $pageNumber) {
         _id
         text
