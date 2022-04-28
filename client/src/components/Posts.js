@@ -8,6 +8,9 @@ const Posts = () => {
   const { loading, error, data } = useQuery(queries.post.GET_ALL, {
     fetchPolicy: "cache-and-network",
   });
+  const userId = localStorage.getItem("userId");
+  console.log(userId);
+
   if (data) {
     let posts = data.getAll;
 
@@ -77,6 +80,7 @@ const Posts = () => {
                       <div className="comments">
                         {post.comments.length > 0 &&
                           post.comments.map((comment) => {
+                            console.log(comment.user);
                             return (
                               <div className="d-flex flex-row mb-2">
                                 <img

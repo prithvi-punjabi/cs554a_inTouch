@@ -13,7 +13,7 @@ const AddComment = (props) => {
     <div className="comment-input">
       {" "}
       <form
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
           let isToxic = false;
           predictions.forEach((x) => {
@@ -29,7 +29,7 @@ const AddComment = (props) => {
             }
           });
           if (!isToxic) {
-            addComment({
+            const com = await addComment({
               variables: { postId: props.postId, comment: comment },
             });
             setComment("");

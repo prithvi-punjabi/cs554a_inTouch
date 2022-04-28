@@ -244,7 +244,7 @@ const addComment = async (postId, user, comment) => {
   const newCommentObj = {
     _id: commentId,
     user: {
-      userId: user._id,
+      _id: user._id,
       userName: user.userName,
       profilePicture: user.profilePicture,
     },
@@ -259,7 +259,7 @@ const addComment = async (postId, user, comment) => {
   if (updateInfo.modifiedCount == 0) {
     throw new MyError(errorCode.NOT_FOUND, `Could not add comment to post`);
   }
-  return newCommentObj;
+  return await getById(postId.toString());
 };
 
 const deleteComment = async (commentId, userId) => {

@@ -284,8 +284,16 @@ const post = {
     mutation AddComment($postId: ID, $comment: String) {
       addComment(postId: $postId, comment: $comment) {
         _id
-        comment
+        text
+        image
         dateCreated
+        category
+        comments {
+          _id
+          comment
+          dateCreated
+        }
+        likes
         user {
           _id
           userName
