@@ -16,7 +16,7 @@ export const uploadFile = async (file) => {
     Key: filename,
   };
 
-  const result = await myBucket
+  await myBucket
     .putObject(params)
     .on("httpUploadProgress", (evt) => {
       // setProgress(Math.round((evt.loaded / evt.total) * 100));
