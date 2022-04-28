@@ -26,6 +26,7 @@ const Posts = () => {
                           src={post.user.profilePicture}
                           width="50"
                           className="rounded-circle"
+                          alt={post.user.userName}
                         />
                         <div className="d-flex flex-column ml-2">
                           {" "}
@@ -44,13 +45,17 @@ const Posts = () => {
                             (new Date() - new Date(post.dateCreated)) /
                               (1000 * 3600 * 24)
                           )}{" "}
-                          days
+                          days ago
                         </small>{" "}
                         <i className="fa fa-ellipsis-h"></i>{" "}
                       </div>
                     </div>{" "}
                     {post.image && (
-                      <img src={post.image} className="img-fluid"></img>
+                      <img
+                        src={post.image}
+                        className="img-fluid"
+                        alt={post.text}
+                      ></img>
                     )}
                     <div className="p-2">
                       <p className="text-justify">{post.text}</p>
@@ -62,7 +67,10 @@ const Posts = () => {
                         </div>
                         <div className="d-flex flex-row muted-color">
                           {" "}
-                          <span>{`${post.comments.length}`} comments</span>{" "}
+                          {post.comments.length !== 1 && (
+                            <span>{`${post.comments.length}`} comments</span>
+                          )}
+                          {post.comments.length === 1 && <span>1 comment</span>}
                         </div>
                       </div>
                       <hr />
@@ -75,6 +83,7 @@ const Posts = () => {
                                   src={comment.user.profilePicture}
                                   width="40"
                                   className="rounded-image"
+                                  alt={comment.user.userName}
                                 />
                                 <div className="d-flex flex-column ml-2">
                                   {" "}
@@ -92,14 +101,6 @@ const Posts = () => {
                             );
                           })}
                         <AddComment postId={post._id} />
-                        {/* <div className="comment-input">
-                          {" "}
-                          <input type="text" className="form-control" />
-                          <div className="fonts">
-                            {" "}
-                            <i className="fa fa-paper-plane"></i>{" "}
-                          </div>
-                        </div> */}
                       </div>
                     </div>
                   </div>
