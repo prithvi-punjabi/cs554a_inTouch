@@ -8,8 +8,6 @@ const channelDefs = require("./defs/channelDefs");
 const path = require("path");
 require("dotenv").config({ path: path.resolve(__dirname + "/.env") });
 
-const session = require("express-session");
-
 const typeDefs = [userDefs.typeDefs, postDefs.typeDefs, channelDefs.typeDefs];
 const resolvers = _.merge(
   userDefs.userResolvers,
@@ -18,15 +16,6 @@ const resolvers = _.merge(
 );
 
 const app = express();
-app.use(
-  session({
-    name: "AuthCookie",
-    secret: "some secret string!",
-    resave: true,
-    saveUninitialized: true,
-    rolling: true,
-  })
-);
 
 const loginRequiredOperations = [
   "GetUser",

@@ -78,7 +78,7 @@ const Profile = () => {
     },
   });
 
-  if (data) {
+  if (data && data.getUser) {
     let user = data.getUser;
     return (
       <div className={classes.container}>
