@@ -21,7 +21,6 @@ const loginRequiredOperations = [
   "GetUser",
   "AddFriend",
   "DeleteFriend",
-  "CreateUser",
   "GetPostById",
   "GetAllPost",
   "GetPostByQuery",
