@@ -3,7 +3,10 @@ import { gql } from "@apollo/client";
 const user = {
   LOGIN: gql`
     query LoginUser($email: String!, $password: String!) {
-      loginUser(email: $email, password: $password)
+      loginUser(email: $email, password: $password) {
+        token
+        userId
+      }
     }
   `,
   GET_BY_ID: gql`
@@ -247,7 +250,29 @@ const post = {
   `,
   LIKE: gql`
     mutation LikePost($postId: ID) {
-      likePost(postId: $postId)
+      likePost(postId: $postId) {
+        _id
+        text
+        image
+        dateCreated
+        category
+        comments {
+          _id
+          comment
+          dateCreated
+          user {
+            _id
+            userName
+            profilePicture
+          }
+        }
+        likes
+        user {
+          _id
+          userName
+          profilePicture
+        }
+      }
     }
   `,
   UNLIKE: gql`

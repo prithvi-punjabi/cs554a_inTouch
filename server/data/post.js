@@ -303,10 +303,17 @@ const likeAPost = async (postId, userId) => {
   validator.checkObjectID(userId, "userId");
   validator.checkString(userId, "userId");
   const post = await getById(postId.toString());
-  if (post.likes.includes(userId)) {
-    throw new MyError(errorCode.CONFLICT, `You have already liked the post`);
-  }
   const postCol = await postCollection();
+  if (post.likes.includes(userId)) {
+    const updateInfo = await postCol.updateOne(
+      { _id: postId },
+      { $pull: { likes: userId } }
+    );
+    if (updateInfo.modifiedCount == 0) {
+      throw new MyError(errorCode.NOT_FOUND, `Could not unlike the post`);
+    }
+    return await getById(postId.toString());
+  }
   const updateInfo = await postCol.updateOne(
     { _id: postId },
     { $push: { likes: userId } }
@@ -314,7 +321,7 @@ const likeAPost = async (postId, userId) => {
   if (updateInfo.modifiedCount == 0) {
     throw new MyError(errorCode.NOT_FOUND, `Could not like the post`);
   }
-  return `You liked the post!`;
+  return await getById(postId.toString());
 };
 
 const unlikeAPost = async (postId, userId) => {

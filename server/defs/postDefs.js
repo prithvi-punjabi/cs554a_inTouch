@@ -79,7 +79,7 @@ const typeDefs = gql`
     removePost(postId: ID): Post
     addComment(postId: ID, comment: String): Comments
     deleteComment(commentId: ID): Comments
-    likePost(postId: ID): String
+    likePost(postId: ID): Post
     unlikePost(postId: ID): String
   }
 `;
