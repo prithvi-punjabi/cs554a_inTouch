@@ -9,6 +9,11 @@ const typeDefs = gql`
     code: String
     end_date: String
   }
+  type userLogin {
+    token: String
+    userId: String
+  }
+
   type user {
     _id: String
     name: String
@@ -27,7 +32,7 @@ const typeDefs = gql`
   }
   type Query {
     getUser(userId: ID!): user
-    loginUser(email: String!, password: String!): String
+    loginUser(email: String!, password: String!): userLogin
   }
   type Mutation {
     createUser(
@@ -61,7 +66,7 @@ const userResolvers = {
           expiresIn: "2h",
         }
       );
-      return token;
+      return { token: token, userId: loggedInUser._id };
     },
   },
   Mutation: {

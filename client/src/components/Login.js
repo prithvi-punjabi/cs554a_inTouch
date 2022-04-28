@@ -38,8 +38,9 @@ const Login = () => {
         throw new Error("Either username or password is invalid");
       }
       if (data.loginUser && data.loginUser !== null) {
-        dispatch(actions.storeToken(data.loginUser));
-        localStorage.setItem("token", data.loginUser);
+        dispatch(actions.storeToken(data.loginUser.token));
+        localStorage.setItem("token", data.loginUser.token);
+        localStorage.setItem("userId", data.loginUser.userId);
         Swal.fire({
           title: "Yay!",
           text: "Successful Login",

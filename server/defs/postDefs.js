@@ -79,7 +79,7 @@ const typeDefs = gql`
     removePost(postId: ID): Post
     addComment(postId: ID, comment: String): Comments
     deleteComment(commentId: ID): Comments
-    likePost(postId: ID): String
+    likePost(postId: ID): Post
     unlikePost(postId: ID): String
   }
 `;
@@ -148,7 +148,7 @@ const postResolvers = {
     addComment: async (_, args, context) => {
       const user = {
         _id: context.user._id,
-        userName: context.user._userName,
+        userName: context.user.userName,
         profilePicture: context.user.profilePicture,
       };
       const addedComment = await postData.addComment(
