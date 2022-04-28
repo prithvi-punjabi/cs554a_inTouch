@@ -53,7 +53,7 @@ async function addUser(
 async function addPost(user, text, image, likes, comments, category) {
   const newPost = {
     user: {
-      userId: user._id,
+      _id: user._id,
       userName: user.userName,
       profilePicture: user.profilePicture,
     },
