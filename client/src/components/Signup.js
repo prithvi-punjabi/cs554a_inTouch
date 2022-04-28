@@ -1,12 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import queries from "../queries";
 import { useMutation } from "@apollo/client";
 import Swal from "sweetalert2";
+import { isLoggedIn } from "../helper";
 
 const Signup = () => {
   let [signUp] = useMutation(queries.user.CREATE);
   let navigate = useNavigate();
+  useEffect(() => {
+    if (isLoggedIn()) {
+      navigate("/main", { replace: true });
+    }
+  }, []);
   let accessKey;
   let userName;
   let password;

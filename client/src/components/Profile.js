@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import queries from "../queries";
 import Swal from "sweetalert2";
@@ -17,6 +17,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import MailIcon from "@mui/icons-material/Mail";
 import PhoneIcon from "@mui/icons-material/Phone";
 import CakeIcon from "@mui/icons-material/Cake";
+import { isLoggedIn } from "../helper";
 
 const useStyles = makeStyles({
   container: {
@@ -65,9 +66,14 @@ const useStyles = makeStyles({
 });
 
 const Profile = () => {
+  let navigate = useNavigate();
+  useEffect(() => {
+    if (!isLoggedIn()) {
+      navigate("/login", { replace: true });
+    }
+  }, []);
   const classes = useStyles();
   const { userId } = useParams();
-  const navigate = useNavigate();
   const { loading, error, data } = useQuery(queries.user.GET_BY_ID, {
     variables: {
       userId: userId,
