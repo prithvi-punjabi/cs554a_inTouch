@@ -6,9 +6,15 @@ import actions from "../actions";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import store from "../store";
 import Swal from "sweetalert2";
+import { isLoggedIn } from "../helper";
 
 const Login = () => {
   let navigate = useNavigate();
+  useEffect(() => {
+    if (isLoggedIn()) {
+      navigate("/main", { replace: true });
+    }
+  }, []);
   let dispatch = useDispatch();
   const [loginUser] = useLazyQuery(
     queries.user.LOGIN,
@@ -48,6 +54,7 @@ const Login = () => {
         });
         setEmail("");
         setPassword("");
+        navigate("/main");
       }
     } catch (error) {
       console.log(error);

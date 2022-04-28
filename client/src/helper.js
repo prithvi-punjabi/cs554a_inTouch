@@ -1,4 +1,5 @@
 import AWS from "aws-sdk";
+import { useNavigate } from "react-router";
 const S3_BUCKET = "cs-546-in-touch";
 AWS.config.update({
   accessKeyId: process.env.AWS_ID,
@@ -25,4 +26,11 @@ export const uploadFile = async (file) => {
 
   const url = myBucket.getSignedUrl("getObject", { Key: params.Key });
   return url.split("?")[0];
+};
+
+export const isLoggedIn = () => {
+  return (
+    localStorage.getItem("token") != null &&
+    localStorage.getItem("userId") != null
+  );
 };
