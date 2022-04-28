@@ -2,6 +2,7 @@ import React from "react";
 import queries from "../queries";
 import { useQuery } from "@apollo/client";
 import LikePost from "./LikePost";
+import AddComment from "./AddComment";
 import "../App.css";
 const Posts = () => {
   const { loading, error, data } = useQuery(queries.post.GET_ALL, {
@@ -38,7 +39,13 @@ const Posts = () => {
                       </div>
                       <div className="d-flex flex-row mt-1 ellipsis">
                         {" "}
-                        <small className="mr-2">20 mins</small>{" "}
+                        <small className="mr-2">
+                          {Math.floor(
+                            (new Date() - new Date(post.dateCreated)) /
+                              (1000 * 3600 * 24)
+                          )}{" "}
+                          days
+                        </small>{" "}
                         <i className="fa fa-ellipsis-h"></i>{" "}
                       </div>
                     </div>{" "}
@@ -60,33 +67,39 @@ const Posts = () => {
                       </div>
                       <hr />
                       <div className="comments">
-                        {post.comments && (
-                          <div className="d-flex flex-row mb-2">
-                            <img
-                              src="https://i.imgur.com/9AZ2QX1.jpg"
-                              width="40"
-                              className="rounded-image"
-                            />
-                            <div className="d-flex flex-column ml-2">
-                              {" "}
-                              <span className="name">Daniel Frozer</span>{" "}
-                              <small className="comment-text">
-                                I like this alot! thanks alot
-                              </small>
-                              <div className="d-flex flex-row align-items-center status">
-                                {" "}
+                        {post.comments.length > 0 &&
+                          post.comments.map((comment) => {
+                            return (
+                              <div className="d-flex flex-row mb-2">
+                                <img
+                                  src={comment.user.profilePicture}
+                                  width="40"
+                                  className="rounded-image"
+                                />
+                                <div className="d-flex flex-column ml-2">
+                                  {" "}
+                                  <span className="name">
+                                    {comment.user.userName}
+                                  </span>{" "}
+                                  <small className="comment-text">
+                                    {comment.comment}
+                                  </small>
+                                  <div className="d-flex flex-row align-items-center status">
+                                    {" "}
+                                  </div>
+                                </div>
                               </div>
-                            </div>
-                          </div>
-                        )}
-                        <div className="comment-input">
+                            );
+                          })}
+                        <AddComment postId={post._id} />
+                        {/* <div className="comment-input">
                           {" "}
                           <input type="text" className="form-control" />
                           <div className="fonts">
                             {" "}
-                            <i className="fa fa-camera"></i>{" "}
+                            <i className="fa fa-paper-plane"></i>{" "}
                           </div>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   </div>

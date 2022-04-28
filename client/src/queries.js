@@ -281,8 +281,8 @@ const post = {
     }
   `,
   ADD_COMMENT: gql`
-    mutation AddComment {
-      addComment {
+    mutation AddComment($postId: ID, $comment: String) {
+      addComment(postId: $postId, comment: $comment) {
         _id
         comment
         dateCreated
