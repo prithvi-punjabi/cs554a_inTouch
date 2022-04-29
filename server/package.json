@@ -4,7 +4,7 @@
   "description": "CS554 course project",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "node index.js",
     "test": "node tasks/test.js",
     "seed": "node tasks/seed.js",
     "dev": "nodemon app.js"

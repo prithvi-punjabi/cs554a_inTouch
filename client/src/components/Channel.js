@@ -74,7 +74,7 @@ const Channel = ({ userChannels, user }) => {
 	};
 
 	const mapper = (chat) => {
-		console.log(chat);
+		// console.log(chat);
 		return chat.map((message) => {
 			return (
 				<div key={message._id}>

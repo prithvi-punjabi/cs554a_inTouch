@@ -247,4 +247,5 @@ module.exports = {
   addMessage,
   deleteMessage,
   getChannelsForUser,
+  getByUser,
 };

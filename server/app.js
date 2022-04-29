@@ -79,7 +79,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/public", express.static(__dirname + "/public"));
 
-configMiddlewares(app);
+// configMiddlewares(app);
 configRoutes(app);
 http.listen(PORT, (error) => {
 	if (!error) console.log("Server is up on port " + PORT);

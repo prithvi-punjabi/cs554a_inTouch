@@ -50,7 +50,7 @@ router.get("/byUser/:userId", async (req, res) => {
 	// try {
 	const userId = req.params.userId;
 	validator.checkObjectID(userId, "userId");
-	console.log(userId);
+	// console.log(userId);
 	const channels = await channelData.getByUser(userId);
 	res.json(channels);
 	// } catch (e) {
