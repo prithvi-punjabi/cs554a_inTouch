@@ -215,7 +215,7 @@ const remove = async (postId, user) => {
     );
   }
   if (
-    oldPost.user.userId.toString() != user._id.toString() &&
+    oldPost.user._id.toString() != user._id.toString() &&
     user.designation != common.designation.ADMIN &&
     user.designation != common.designation.SUPER_ADMIN
   ) {

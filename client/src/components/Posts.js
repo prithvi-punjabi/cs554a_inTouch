@@ -5,7 +5,10 @@ import LikePost from "./LikePost";
 import AddComment from "./AddComment";
 import DeleteComment from "./DeleteComment";
 import { useNavigate } from "react-router-dom";
+import DropdownButton from "react-bootstrap/DropdownButton";
+import Dropdown from "react-bootstrap/Dropdown";
 import AddPost from "./AddPost";
+import DeletePost from "./DeletePost";
 import "../App.css";
 const Posts = () => {
   const navigate = useNavigate();
@@ -60,7 +63,13 @@ const Posts = () => {
                           days ago
                         </small>{" "}
                         {userId === post.user._id && (
-                          <i className="fa fa-ellipsis-h"></i>
+                          <div>
+                            <i className="fa fa-ellipsis-h"></i>
+                            <DropdownButton id="dropdown-basic-button">
+                              <Dropdown.Item>Update</Dropdown.Item>
+                              <DeletePost postId={post._id} />
+                            </DropdownButton>
+                          </div>
                         )}
                       </div>
                     </div>{" "}
