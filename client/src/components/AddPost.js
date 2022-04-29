@@ -10,14 +10,15 @@ const AddPost = (props) => {
   const [category, setCategory] = useState("");
   const [image, setImage] = useState(null);
   const [addPost] = useMutation(queries.post.ADD, {
-    update(cache, { data: { addPost } }) {
-      const { posts } = cache.readQuery({
+    update(cache, { data: addPost }) {
+      let post = cache.readQuery({
         query: queries.post.GET_ALL,
       });
-      console.log(posts);
+      console.log(post);
+      console.log(addPost);
       cache.writeQuery({
         query: queries.post.GET_ALL,
-        data: { posts: posts.concat([addPost]) },
+        data: { getAll: [...[addPost.createPost], ...post.getAll] },
       });
     },
   });
