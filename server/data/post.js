@@ -130,6 +130,7 @@ const getAll = async (pageNumber) => {
     .find({})
     .skip(pageNumber > 0 ? (pageNumber - 1) * common.PER_PAGE_POST : 0)
     .limit(common.PER_PAGE_POST)
+    .sort({ _id: -1 })
     .toArray();
   if (!Array.isArray(posts) || posts.length == 0) {
     throw new MyError(errorCode.NOT_FOUND, `No posts found`);
@@ -141,7 +142,7 @@ const getAll = async (pageNumber) => {
 const create = async (user, text, image, category) => {
   validator.checkUser(user);
   validator.checkString(text, "text");
-  validator.checkString(image, "image");
+  // validator.checkString(image, "image");
   validator.checkCategory(category, "category");
 
   const newPost = {
@@ -214,7 +215,7 @@ const remove = async (postId, user) => {
     );
   }
   if (
-    oldPost.user.userId.toString() != user._id.toString() &&
+    oldPost.user._id.toString() != user._id.toString() &&
     user.designation != common.designation.ADMIN &&
     user.designation != common.designation.SUPER_ADMIN
   ) {
@@ -297,7 +298,6 @@ const deleteComment = async (commentId, userId) => {
       `Could not delete comment from post`
     );
   }
-  console.log(oldPost);
   return await getById(oldPost._id.toString());
 };
 
