@@ -3,8 +3,10 @@ import queries from "../queries";
 import { useQuery } from "@apollo/client";
 import LikePost from "./LikePost";
 import AddComment from "./AddComment";
+import { useNavigate } from "react-router-dom";
 import "../App.css";
 const Posts = () => {
+  const navigate = useNavigate();
   const { loading, error, data } = useQuery(queries.post.GET_ALL, {
     fetchPolicy: "cache-and-network",
   });
@@ -29,10 +31,16 @@ const Posts = () => {
                           width="50"
                           className="rounded-circle"
                           alt={post.user.userName}
+                          onClick={() => navigate(`/user/${post.user._id}`)}
+                          style={{ cursor: "pointer" }}
                         />
                         <div className="d-flex flex-column ml-2">
                           {" "}
-                          <span className="font-weight-bold">
+                          <span
+                            className="font-weight-bold"
+                            onClick={() => navigate(`/user/${post.user._id}`)}
+                            style={{ cursor: "pointer" }}
+                          >
                             {post.user.name}
                           </span>{" "}
                           <small className="text-primary">
@@ -87,10 +95,20 @@ const Posts = () => {
                                   width="40"
                                   className="rounded-image"
                                   alt={comment.user.userName}
+                                  onClick={() =>
+                                    navigate(`/user/${post.user._id}`)
+                                  }
+                                  style={{ cursor: "pointer" }}
                                 />
                                 <div className="d-flex flex-column ml-2">
                                   {" "}
-                                  <span className="name">
+                                  <span
+                                    className="name"
+                                    onClick={() =>
+                                      navigate(`/user/${comment.user._id}`)
+                                    }
+                                    style={{ cursor: "pointer" }}
+                                  >
                                     {comment.user.name}
                                   </span>{" "}
                                   <small className="comment-text">
