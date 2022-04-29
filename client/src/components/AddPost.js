@@ -3,6 +3,8 @@ import { useMutation, useQuery } from "@apollo/client";
 import queries from "../queries";
 import { useNavigate } from "react-router";
 import { uploadFile } from "../helper";
+import useTextToxicity from "react-text-toxicity";
+import Swal from "sweetalert2";
 
 const AddPost = (props) => {
   const navigate = useNavigate();
@@ -14,8 +16,6 @@ const AddPost = (props) => {
       let post = cache.readQuery({
         query: queries.post.GET_ALL,
       });
-      console.log(post);
-      console.log(addPost);
       cache.writeQuery({
         query: queries.post.GET_ALL,
         data: { getAll: [...[addPost.createPost], ...post.getAll] },
@@ -25,22 +25,38 @@ const AddPost = (props) => {
   const { loading, data, error } = useQuery(queries.user.GET_BY_ID, {
     variables: { userId: props.userId },
   });
+  const predictions = useTextToxicity(text);
 
   async function createPost(e) {
     e.preventDefault();
-    if (image) {
-      const imagePath = await uploadFile(image);
-      await addPost({
-        variables: { text: text, image: imagePath, category: category },
-      });
-    } else {
-      await addPost({
-        variables: { text: text, image: "", category: category },
-      });
+    let isToxic = false;
+    predictions.forEach((x) => {
+      if (x.match === true) {
+        isToxic = true;
+        if ((x.label = "toxicity")) x.label = "toxic";
+        Swal.fire({
+          title: "Toxic Text Detected!",
+          text: `Your post has been labelled ${x.label} with a probability of ${x.probability}. You cannot post it.`,
+          icon: "error",
+          confirmButtonText: "I'm sorry!",
+        });
+      }
+    });
+    if (!isToxic) {
+      if (image) {
+        const imagePath = await uploadFile(image);
+        await addPost({
+          variables: { text: text, image: imagePath, category: category },
+        });
+      } else {
+        await addPost({
+          variables: { text: text, image: "", category: category },
+        });
+      }
+      setText("");
+      setCategory("");
+      setImage("");
     }
-    setText("");
-    setCategory("");
-    setImage("");
   }
 
   if (data) {

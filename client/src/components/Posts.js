@@ -59,7 +59,9 @@ const Posts = () => {
                           )}{" "}
                           days ago
                         </small>{" "}
-                        <i className="fa fa-ellipsis-h"></i>{" "}
+                        {userId === post.user._id && (
+                          <i className="fa fa-ellipsis-h"></i>
+                        )}
                       </div>
                     </div>{" "}
                     {post.image && (

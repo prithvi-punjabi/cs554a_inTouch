@@ -130,6 +130,7 @@ const getAll = async (pageNumber) => {
     .find({})
     .skip(pageNumber > 0 ? (pageNumber - 1) * common.PER_PAGE_POST : 0)
     .limit(common.PER_PAGE_POST)
+    .sort({ _id: -1 })
     .toArray();
   if (!Array.isArray(posts) || posts.length == 0) {
     throw new MyError(errorCode.NOT_FOUND, `No posts found`);
