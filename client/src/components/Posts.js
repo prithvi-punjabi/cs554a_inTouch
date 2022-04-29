@@ -33,7 +33,7 @@ const Posts = () => {
                         <div className="d-flex flex-column ml-2">
                           {" "}
                           <span className="font-weight-bold">
-                            {post.user.userName}
+                            {post.user.name}
                           </span>{" "}
                           <small className="text-primary">
                             {post.category}
@@ -91,7 +91,7 @@ const Posts = () => {
                                 <div className="d-flex flex-column ml-2">
                                   {" "}
                                   <span className="name">
-                                    {comment.user.userName}
+                                    {comment.user.name}
                                   </span>{" "}
                                   <small className="comment-text">
                                     {comment.comment}

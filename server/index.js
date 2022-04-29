@@ -66,6 +66,7 @@ const server = new ApolloServer({
       default:
         break;
     }
+    console.log(user);
     return { user };
   },
 });

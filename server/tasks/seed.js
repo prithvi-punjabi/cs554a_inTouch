@@ -357,6 +357,7 @@ async function main() {
     const post1 = await seedFuncs.addPost(
       {
         _id: JaneDoe._id,
+        name: JaneDoe.name,
         userName: JaneDoe.userName,
         profilePicture: JaneDoe.profilePicture,
       },
@@ -368,6 +369,7 @@ async function main() {
           _id: new ObjectId(),
           user: {
             _id: PatrickMountain._id,
+            name: PatrickMountain.name,
             userName: PatrickMountain.userName,
             profilePicture: PatrickMountain.profilePicture,
           },
@@ -380,6 +382,7 @@ async function main() {
     const post2 = await seedFuncs.addPost(
       {
         _id: AnchalShah._id,
+        name: AnchalShah.name,
         userName: AnchalShah.userName,
         profilePicture: AnchalShah.profilePicture,
       },
@@ -391,6 +394,7 @@ async function main() {
           _id: new ObjectId(),
           user: {
             _id: JaneDoe._id,
+            name: JaneDoe.name,
             userName: JaneDoe.userName,
             profilePicture: JaneDoe.profilePicture,
           },
@@ -401,6 +405,7 @@ async function main() {
           _id: new ObjectId(),
           user: {
             _id: MonicaPrice._id,
+            name: MonicaPrice.name,
             userName: MonicaPrice.userName,
             profilePicture: MonicaPrice.profilePicture,
           },
@@ -413,6 +418,7 @@ async function main() {
     const post3 = await seedFuncs.addPost(
       {
         _id: PatrickMountain._id,
+        name: PatrickMountain.name,
         userName: PatrickMountain.userName,
         profilePicture: PatrickMountain.profilePicture,
       },
@@ -425,6 +431,7 @@ async function main() {
     const post4 = await seedFuncs.addPost(
       {
         _id: TristanPrice._id,
+        name: TristanPrice.name,
         userName: TristanPrice.userName,
         profilePicture: TristanPrice.profilePicture,
       },
@@ -440,6 +447,7 @@ async function main() {
           _id: new ObjectId(),
           user: {
             _id: DwightSchrute._id,
+            name: DwightSchrute.name,
             userName: DwightSchrute.userName,
             profilePicture: DwightSchrute.profilePicture,
           },
@@ -452,6 +460,7 @@ async function main() {
     const post5 = await seedFuncs.addPost(
       {
         _id: JohnDoe._id,
+        name: JohnDoe.name,
         userName: JohnDoe.userName,
         profilePicture: JohnDoe.profilePicture,
       },

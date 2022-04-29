@@ -54,6 +54,7 @@ async function addPost(user, text, image, likes, comments, category) {
   const newPost = {
     user: {
       _id: user._id,
+      name: user.name,
       userName: user.userName,
       profilePicture: user.profilePicture,
     },

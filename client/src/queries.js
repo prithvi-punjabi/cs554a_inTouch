@@ -96,6 +96,7 @@ const post = {
         category
         comments {
           _id
+          name
           comment
           dateCreated
           user {
@@ -107,6 +108,7 @@ const post = {
         likes
         user {
           _id
+          name
           userName
           profilePicture
         }
@@ -127,6 +129,7 @@ const post = {
           dateCreated
           user {
             _id
+            name
             userName
             profilePicture
           }
@@ -134,6 +137,7 @@ const post = {
         likes
         user {
           _id
+          name
           userName
           profilePicture
         }
@@ -154,6 +158,7 @@ const post = {
           dateCreated
           user {
             _id
+            name
             userName
             profilePicture
           }
@@ -161,6 +166,7 @@ const post = {
         likes
         user {
           _id
+          name
           userName
           profilePicture
         }
@@ -181,6 +187,7 @@ const post = {
           dateCreated
           user {
             _id
+            name
             userName
             profilePicture
           }
@@ -188,6 +195,7 @@ const post = {
         likes
         user {
           _id
+          name
           userName
           profilePicture
         }
@@ -210,11 +218,13 @@ const post = {
             userName
             profilePicture
             _id
+            name
           }
         }
         likes
         user {
           _id
+          name
           userName
           profilePicture
         }
@@ -234,6 +244,7 @@ const post = {
           comment
           user {
             _id
+            name
             userName
             profilePicture
           }
@@ -242,6 +253,7 @@ const post = {
         _id
         user {
           _id
+          name
           userName
           profilePicture
         }
@@ -262,6 +274,7 @@ const post = {
           dateCreated
           user {
             _id
+            name
             userName
             profilePicture
           }
@@ -269,6 +282,7 @@ const post = {
         likes
         user {
           _id
+          name
           userName
           profilePicture
         }
@@ -296,6 +310,7 @@ const post = {
         likes
         user {
           _id
+          name
           userName
           profilePicture
         }
@@ -316,6 +331,7 @@ const post = {
           dateCreated
           user {
             _id
+            name
             userName
             profilePicture
           }
@@ -323,6 +339,7 @@ const post = {
         likes
         user {
           _id
+          name
           userName
           profilePicture
         }
@@ -337,6 +354,7 @@ const post = {
         dateCreated
         user {
           _id
+          name
           userName
           profilePicture
         }

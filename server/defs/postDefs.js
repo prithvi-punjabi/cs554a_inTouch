@@ -6,12 +6,14 @@ const typeDefs = gql`
   scalar DateTime
   type postUser {
     _id: ID
+    name: String
     userName: String
     profilePicture: String
   }
 
   input postUserInp {
     _id: ID
+    name: String
     userName: String
     profilePicture: String
   }
@@ -111,6 +113,7 @@ const postResolvers = {
     createPost: async (_, args, context) => {
       const user = {
         _id: context.user._id,
+        name: context.user.name,
         userName: context.user._userName,
         profilePicture: context.user.profilePicture,
       };
@@ -125,6 +128,7 @@ const postResolvers = {
     updatePost: async (_, args, context) => {
       const user = {
         _id: context.user._id,
+        name: context.user.name,
         userName: context.user._userName,
         profilePicture: context.user.profilePicture,
       };
@@ -139,6 +143,7 @@ const postResolvers = {
     removePost: async (_, args, context) => {
       const user = {
         _id: context.user._id,
+        name: context.user.name,
         userName: context.user._userName,
         profilePicture: context.user.profilePicture,
       };
@@ -148,6 +153,7 @@ const postResolvers = {
     addComment: async (_, args, context) => {
       const user = {
         _id: context.user._id,
+        name: context.user.name,
         userName: context.user.userName,
         profilePicture: context.user.profilePicture,
       };

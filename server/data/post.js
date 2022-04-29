@@ -146,7 +146,8 @@ const create = async (user, text, image, category) => {
 
   const newPost = {
     user: {
-      userId: user._id,
+      _id: user._id,
+      name: user.name,
       userName: user.userName,
       profilePicture: user.profilePicture,
     },
@@ -245,6 +246,7 @@ const addComment = async (postId, user, comment) => {
     _id: commentId,
     user: {
       _id: user._id,
+      name: user.name,
       userName: user.userName,
       profilePicture: user.profilePicture,
     },
