@@ -415,3 +415,7 @@ hr {
 .displayContainer {
   margin-top: 5%;
 }
+
+.rightTrash {
+  align-self: flex-end;
+}

@@ -3,6 +3,7 @@ import queries from "../queries";
 import { useQuery } from "@apollo/client";
 import LikePost from "./LikePost";
 import AddComment from "./AddComment";
+import DeleteComment from "./DeleteComment";
 import { useNavigate } from "react-router-dom";
 import "../App.css";
 const Posts = () => {
@@ -118,6 +119,9 @@ const Posts = () => {
                                     {" "}
                                   </div>
                                 </div>
+                                {userId === comment.user._id && (
+                                  <DeleteComment commId={comment._id} />
+                                )}
                               </div>
                             );
                           })}

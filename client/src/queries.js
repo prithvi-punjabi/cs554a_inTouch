@@ -350,8 +350,16 @@ const post = {
     mutation DeleteComment($commentId: ID) {
       deleteComment(commentId: $commentId) {
         _id
-        comment
+        text
+        image
         dateCreated
+        category
+        comments {
+          _id
+          comment
+          dateCreated
+        }
+        likes
         user {
           _id
           name

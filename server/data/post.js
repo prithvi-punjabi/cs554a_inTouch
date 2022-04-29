@@ -280,7 +280,7 @@ const deleteComment = async (commentId, userId) => {
     );
   }
 
-  if (oldPost.comments[0].user.userId.toString() != userId.toString()) {
+  if (oldPost.comments[0].user._id.toString() != userId.toString()) {
     throw new MyError(
       errorCode.UNAUTHORIZED,
       `Cannot delete someone else's comment`
@@ -297,7 +297,8 @@ const deleteComment = async (commentId, userId) => {
       `Could not delete comment from post`
     );
   }
-  return oldPost.comments[0];
+  console.log(oldPost);
+  return await getById(oldPost._id.toString());
 };
 
 const likeAPost = async (postId, userId) => {

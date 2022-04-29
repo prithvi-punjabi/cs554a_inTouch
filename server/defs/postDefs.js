@@ -80,7 +80,7 @@ const typeDefs = gql`
     updatePost(postId: ID, text: String, category: String): Post
     removePost(postId: ID): Post
     addComment(postId: ID, comment: String): Post
-    deleteComment(commentId: ID): Comments
+    deleteComment(commentId: ID): Post
     likePost(postId: ID): Post
     unlikePost(postId: ID): String
   }
