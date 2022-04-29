@@ -1,9 +1,10 @@
 import AWS from "aws-sdk";
 import { useNavigate } from "react-router";
+
 const S3_BUCKET = "cs-546-in-touch";
 AWS.config.update({
-  accessKeyId: process.env.AWS_ID,
-  secretAccessKey: process.env.AWS_SECRET,
+  accessKeyId: "AKIAS73GZ6LAYNMVYMM3",
+  secretAccessKey: "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",
 });
 const myBucket = new AWS.S3({
   params: { Bucket: S3_BUCKET },

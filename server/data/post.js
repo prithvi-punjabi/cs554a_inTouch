@@ -141,7 +141,7 @@ const getAll = async (pageNumber) => {
 const create = async (user, text, image, category) => {
   validator.checkUser(user);
   validator.checkString(text, "text");
-  validator.checkString(image, "image");
+  // validator.checkString(image, "image");
   validator.checkCategory(category, "category");
 
   const newPost = {
@@ -297,7 +297,6 @@ const deleteComment = async (commentId, userId) => {
       `Could not delete comment from post`
     );
   }
-  console.log(oldPost);
   return await getById(oldPost._id.toString());
 };
 

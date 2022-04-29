@@ -5,6 +5,7 @@ import LikePost from "./LikePost";
 import AddComment from "./AddComment";
 import DeleteComment from "./DeleteComment";
 import { useNavigate } from "react-router-dom";
+import AddPost from "./AddPost";
 import "../App.css";
 const Posts = () => {
   const navigate = useNavigate();
@@ -14,10 +15,10 @@ const Posts = () => {
   const userId = localStorage.getItem("userId");
   if (data) {
     let posts = data.getAll;
-    console.log(posts);
 
     return (
       <div className="displayContainer">
+        <AddPost userId={userId} />
         {posts.map((post) => {
           return (
             <div className="container mt-5 mb-5" key={post._id}>
@@ -88,9 +89,11 @@ const Posts = () => {
                       <div className="comments">
                         {post.comments.length > 0 &&
                           post.comments.map((comment) => {
-                            console.log(comment.user);
                             return (
-                              <div className="d-flex flex-row mb-2">
+                              <div
+                                className="d-flex flex-row mb-2"
+                                key={comment._id}
+                              >
                                 <img
                                   src={comment.user.profilePicture}
                                   width="40"

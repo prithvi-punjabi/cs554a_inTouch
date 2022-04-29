@@ -419,3 +419,32 @@ hr {
 .rightTrash {
   align-self: flex-end;
 }
+
+textarea {
+  border: none;
+  background-color: transparent;
+  resize: none;
+  outline: none;
+  width: 100%;
+}
+
+.postForm {
+  width: 100%;
+}
+
+#leftAl {
+  margin-right: auto;
+}
+
+.image-upload > input {
+  display: none;
+}
+
+.cat {
+  padding-right: 10%;
+}
+
+.postBut {
+  padding-top: 3%;
+  padding-bottom: 3%;
+}
