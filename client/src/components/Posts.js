@@ -10,6 +10,11 @@ import Dropdown from "react-bootstrap/Dropdown";
 import AddPost from "./AddPost";
 import DeletePost from "./DeletePost";
 
+<<<<<<< HEAD
+=======
+import styled from "styled-components";
+
+>>>>>>> 79a616037867ebaadba275c3cd826dbf30349f7d
 import "../App.css";
 const Posts = () => {
   const navigate = useNavigate();
@@ -22,6 +27,7 @@ const Posts = () => {
     let posts = data.getAll;
 
     return (
+      <PostDiv>
       <div className="displayContainer">
         <AddPost userId={userId} />
         {posts.map((post) => {
@@ -163,12 +169,24 @@ const Posts = () => {
           );
         })}
       </div>
+      </PostDiv>
     );
   } else if (loading) {
-    return <div className="displayContainer">Loading...</div>;
+    return  <PostDiv><div className="displayContainer">Loading...</div> </PostDiv>;
   } else if (error) {
-    return <div className="displayContainer">{error.message}</div>;
+    return  <PostDiv><div className="displayContainer">{error.message}</div> </PostDiv>;
   }
 };
 
 export default Posts;
+
+
+const PostDiv = styled.div`
+
+flex:0.7;
+flex-grow:1;
+overflow-y: scroll;
+margin-top: 4%;
+float: left;
+
+`
