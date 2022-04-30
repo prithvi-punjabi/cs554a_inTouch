@@ -52,7 +52,10 @@ function App() {
                 <Route path="/token-how-to" element={<HowTo />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/user/:userId" element={<Profile />} />
+                <Route
+                  path="/user/:userId"
+                  element={<Main component="user" />}
+                />
                 <Route path="/feed" element={<Feed />} />
                 <Route path="/channels" element={<Channel />} />
                 <Route path="/posts" element={<Posts />} />

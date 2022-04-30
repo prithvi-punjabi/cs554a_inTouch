@@ -21,29 +21,29 @@ import { isLoggedIn } from "../helper";
 
 const useStyles = makeStyles({
   container: {
-    height: "100vh",
+    height: "70%",
   },
   outerContainer: {
     position: "absolute",
     height: "100%",
-    width: "100%",
+    width: "80%",
   },
   outerContainerUpparLayer: {
-    height: "70%",
+    height: "80%",
     background:
-      "linear-gradient(90deg, rgba(104,46,177,1) 0%, rgba(39,139,196,1) 64%, rgba(100,198,255,1) 100%)",
+      "linear-gradient(90deg, rgba(163,38,56,1) 0%, rgba(122,29,43,1) 100%);",
   },
   outerContainerInnerLayer: {
-    height: "30%",
+    height: "20%",
     background: "#f0f0f0",
   },
   profileCard: {
     position: "absolute",
     borderRadius: "10px",
     background: "white",
-    height: "90vh",
-    width: "90vw",
-    margin: "5vh 5vw",
+    height: "80%",
+    width: "70%",
+    margin: "6% 5%",
     boxShadow: "2px 10px 30px grey",
   },
   profilePicture: {
@@ -61,7 +61,7 @@ const useStyles = makeStyles({
     padding: "10px 20px",
     textAlign: "left",
     overflowY: "auto",
-    height: "90vh",
+    height: "90%",
   },
 });
 

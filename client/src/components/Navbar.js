@@ -83,6 +83,7 @@ const NavbarContainer = styled.div`
   padding: 10px 0;
   background-color: var(--intouch-color);
   color: white;
+  z-index: 999;
 `;
 
 const NavbarAvatar = styled(Avatar)`
