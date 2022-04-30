@@ -11,7 +11,6 @@ const DeletePost = (props) => {
       const post = cache.readQuery({
         query: queries.post.GET_ALL,
       });
-      console.log(post.getAll);
       cache.writeQuery({
         query: queries.post.GET_ALL,
         data: {

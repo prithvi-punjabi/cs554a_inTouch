@@ -452,3 +452,17 @@ textarea {
 .likeCount {
   padding-left: 12%;
 }
+
+#dropdown-basic-button::after {
+  content: none;
+}
+
+#dropdown-basic-button {
+  width: 1%;
+  height: 1%;
+}
+
+#dropdown-basic-button:focus {
+  outline: none;
+  box-shadow: none;
+}

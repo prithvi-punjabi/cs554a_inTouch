@@ -9,12 +9,14 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
 import AddPost from "./AddPost";
 import DeletePost from "./DeletePost";
+
 import "../App.css";
 const Posts = () => {
   const navigate = useNavigate();
   const { loading, error, data } = useQuery(queries.post.GET_ALL, {
     fetchPolicy: "cache-and-network",
   });
+
   const userId = localStorage.getItem("userId");
   if (data) {
     let posts = data.getAll;
@@ -64,8 +66,17 @@ const Posts = () => {
                         </small>{" "}
                         {userId === post.user._id && (
                           <div>
-                            <i className="fa fa-ellipsis-h"></i>
-                            <DropdownButton id="dropdown-basic-button">
+                            {/* <i className="fa fa-ellipsis-h"></i> */}
+                            <DropdownButton
+                              id="dropdown-basic-button"
+                              variant="default"
+                              size="sm"
+                              title={
+                                <span>
+                                  <i className="fa fa-ellipsis-h"></i>
+                                </span>
+                              }
+                            >
                               <Dropdown.Item>Update</Dropdown.Item>
                               <DeletePost postId={post._id} />
                             </DropdownButton>
