@@ -87,6 +87,9 @@ const Posts = () => {
                         <div className="d-flex flex-row icons d-flex align-items-center">
                           {" "}
                           <LikePost likes={post.likes} postId={post._id} />
+                          <small className="likeCount muted-color">
+                            {post.likes.length}
+                          </small>
                         </div>
                         <div className="d-flex flex-row muted-color">
                           {" "}
