@@ -4,26 +4,36 @@ import queries from "../queries";
 import { useQuery } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 
+const styles = {
+
+	largeIcon: {
+	  width: 70,
+	  height: 50,
+	  padding:10 
+	},
+  
+  };
+
 function SideOptions({Icon,title}) {
   
-    const userId = localStorage.getItem("userId");
-    const userName = localStorage.getItem("userName");
+	const userId = localStorage.getItem("userId");
+	const userName = localStorage.getItem("userName");
   
   
-    return (
-      
-    <>
-    <OptionContainer>
-        {Icon && <Icon fontSize='large' style={{padding:10}}/>}
-        {Icon ? (
-            <h3>{title}</h3>
-        ):(
-            <OptionChannel>
-                <span>#</span>{title}
-            </OptionChannel>
-        )}
-    </OptionContainer>
-    </>
+	return (
+	  
+	<>
+	<OptionContainer>
+		{Icon && <Icon style={styles.largeIcon} />}
+		{Icon ? (
+			<h3>{title}</h3>
+		):(
+			<OptionChannel>
+				<span>#</span>{title}
+			</OptionChannel>
+		)}
+	</OptionContainer>
+	</>
   )
 }
 
@@ -32,21 +42,22 @@ export default SideOptions;
 
 const OptionContainer = styled.div`
 display: flex;
-font-size: 12px;
+
 align-items: center;
 padding-left:2px;
 cursor: pointer;
 
 :hover {
-    opacity:0.9;
-    background-color: var(--intouch-color);
+	opacity:0.9;
+	background-color: var(--intouch-color);
 }
 
 > h3 {
-    font-weight: 100;
+	font-size:x-large;
+	font-weight: 400;
 }
 >h3 > span {
-    padding: 15px;
+	padding: 15px;
 }
 `
 

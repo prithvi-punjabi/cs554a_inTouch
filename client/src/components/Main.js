@@ -7,72 +7,79 @@ import Posts from "./Posts";
 import { useNavigate } from "react-router";
 import { isLoggedIn } from "../helper";
 import Profile from "./Profile";
+import Chat from "./Chat";
+
 //currentBody fun
 function Main({ component }) {
-  let navigate = useNavigate();
-  useEffect(() => {
-    if (!isLoggedIn()) {
-      navigate("/login", { replace: true });
-    }
-  }, []);
-  const [currentBody, setCurrentBody] = useState(component);
-  if (currentBody === "feed") {
-    console.log("shown Feed");
-    return (
-      <>
-        <Navbar></Navbar>
-        <Appbody>
-        
-       
-          <Sidebar currentBody={setCurrentBody}></Sidebar>
-         
-          <Posts></Posts>
-          {/* <div className="temp1" >1</div>
-          
-          <div className="temp2">2</div>
-          <br/>
-          <div className="temp1">3</div>
-          <br/>
-          <div className="temp1">4</div>
-          <br/> */}
-        </Appbody>
-        {/* <Displaybody></Displaybody> */}
-      </>
-    );
-  } else if (currentBody === "user") {
-    return (
-      <>
-        <Navbar></Navbar>
-        <Appbody>
-          <Sidebar currentBody={setCurrentBody}></Sidebar>
-          <Profile />
-        </Appbody>
-        {/* <Displaybody></Displaybody> */}
-      </>
-    );
-  } else {
-    return (
-      <>
-       <Navbar></Navbar>
-        <Appbody>
-       
-          <Sidebar currentBody={setCurrentBody}></Sidebar>
-        </Appbody>
-      </>
-    );
-  }
+	let navigate = useNavigate();
+	useEffect(() => {
+		if (!isLoggedIn()) {
+			navigate("/login", { replace: true });
+		}
+	}, []);
+	const [currentBody, setCurrentBody] = useState('feed');
+	if (currentBody === "feed") {
+		console.log("shown Feed");
+		return (
+			<>
+				<Navbar></Navbar>
+				<Appbody>
+				
+			 
+					<Sidebar currentBody={setCurrentBody}></Sidebar>
+				 
+					<Posts></Posts>
+					
+				</Appbody>
+				{/* <Displaybody></Displaybody> */}
+			</>
+		);
+	} else if (currentBody === "user") {
+		return (
+			<>
+				<Navbar></Navbar>
+				<Appbody>
+					<Sidebar currentBody={setCurrentBody}></Sidebar>
+					<Profile />
+				</Appbody>
+				{/* <Displaybody></Displaybody> */}
+			</>
+		);
+	}
+	else if (currentBody === "channel") {
+		return (
+			<>
+				<Navbar></Navbar>
+				<Appbody>
+					<Sidebar currentBody={setCurrentBody}></Sidebar>
+					<Chat />
+				</Appbody>
+				{/* <Displaybody></Displaybody> */}
+			</>
+		);
+	} else {
+		return (
+			<>
+			 <Navbar></Navbar>
+				<Appbody>
+			 
+					<Sidebar currentBody={setCurrentBody}></Sidebar>
+				</Appbody>
+			</>
+		);
+	}
 }
 
 export default Main;
 
 const Appbody = styled.div`
-  display: flex;
-  height: 100vh;
+	display: flex;
+	height: 100vh;
 `;
 const Displaybody = styled.div`
-  display: flex;
-  flex: 0.4;
-  height: 100vh;
+	display: flex;
+	flex: 0.4;
+	height: 100vh;
 `;
 const Sidebar1 = styled.div`
  position: fixed;
