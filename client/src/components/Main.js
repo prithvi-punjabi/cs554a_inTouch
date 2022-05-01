@@ -19,6 +19,9 @@ function Main({ component }) {
 	}, []);
 	const [currentBody, setCurrentBody] = useState(component);
 	const [currentChannel, setCurrentChannel] = useState(component);
+
+
+	
 	if (currentBody === "feed") {
 		console.log("shown Feed");
 		return (

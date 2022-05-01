@@ -204,7 +204,8 @@ const Profile = () => {
                   );
                 })}
               </List>
-              <Button
+              <button
+               className="btn-lg btn-danger"
                 color="primary"
                 variant="contained"
                 align="center"
@@ -215,7 +216,7 @@ const Profile = () => {
                 }}
               >
                 Logout
-              </Button>
+              </button>
             </Grid>
           </Grid>
         </div>

@@ -59,7 +59,7 @@ function Chat(props) {
         <ChannelInput>
         
         <form>
-            <input placeholder='Send text in # '/>
+            <input placeholder={`Send text in ${props.currentChannel}` }/>
             <Button type='submit' hidden onClick={sendMessage}>
                 Send
             </Button>
