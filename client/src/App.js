@@ -14,12 +14,37 @@ import {
   HttpLink,
   InMemoryCache,
   ApolloProvider,
+  from,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
-import Profile from "./components/Profile";
+import { onError } from "@apollo/client/link/error";
+import Swal from "sweetalert2";
 
 const httpLink = new HttpLink({
   uri: "http://localhost:4000/graphql",
+});
+
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors)
+    graphQLErrors.forEach((error) => {
+      console.log(`${error.extensions.exception.stacktrace[0].split(":")[0]}`);
+      if (
+        error.extensions.exception.stacktrace[0].split(":")[0] ==
+        "TokenExpiredError"
+      ) {
+        Swal.fire({
+          icon: "error",
+          title: "Token expired",
+          text: "Please login again",
+        }).then(() => {
+          //we can't use useNavigate here
+          window.localStorage.clear();
+          window.location.href = "/login";
+        });
+      }
+    });
+
+  if (networkError) console.log(`[Network error]: ${networkError}`);
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -34,7 +59,7 @@ const authLink = setContext((_, { headers }) => {
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  link: authLink.concat(httpLink),
+  link: from([authLink, errorLink, httpLink]),
   request: (operation) => {
     console.log(operation);
   },
