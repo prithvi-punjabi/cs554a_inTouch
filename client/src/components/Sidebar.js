@@ -136,7 +136,7 @@ function Sidebar(props) {
 				
 					
 				))}
-		
+			<hr/>
 			</SidebarContainer>
 
 

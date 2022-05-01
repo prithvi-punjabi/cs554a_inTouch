@@ -11,12 +11,12 @@ const DeleteComment = (props) => {
     });
   }
   return (
-    <div>
+    <div  style={{  alignSelf:"right", padding:"15px 25px"}}>
       <i
         className="fa fa-trash fa-lg rightTrash"
         aria-hidden="true"
         aria-label="delete comment"
-        style={{ cursor: "pointer", paddingLeft: "100%" }}
+        style={{ cursor: "pointer", paddingLeft: "100%" , textAlign:"right"}}
         onClick={delComm}
       ></i>
     </div>

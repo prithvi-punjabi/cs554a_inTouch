@@ -121,6 +121,7 @@ const Posts = () => {
 							  <div
 								className="d-flex flex-row mb-2"
 								key={comment._id}
+								style={{ width:"100%" }}
 							  >
 								<img
 								  src={comment.user.profilePicture}
@@ -139,7 +140,8 @@ const Posts = () => {
 									onClick={() =>
 									  navigate(`/user/${comment.user._id}`)
 									}
-									style={{ cursor: "pointer" }}
+									style={{ cursor: "pointer",
+											textAlign:"left" }}
 								  >
 									{comment.user.name}
 								  </span>{" "}
@@ -150,9 +152,11 @@ const Posts = () => {
 									{" "}
 								  </div>
 								</div>
+								<div style={{ flex:"1" }}>
 								{userId === comment.user._id && (
 								  <DeleteComment commId={comment._id} />
 								)}
+								</div>
 							  </div>
 							);
 						  })}
