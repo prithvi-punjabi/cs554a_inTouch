@@ -10,11 +10,8 @@ import Dropdown from "react-bootstrap/Dropdown";
 import AddPost from "./AddPost";
 import DeletePost from "./DeletePost";
 
-<<<<<<< HEAD
-=======
 import styled from "styled-components";
 
->>>>>>> 79a616037867ebaadba275c3cd826dbf30349f7d
 import "../App.css";
 const Posts = () => {
   const navigate = useNavigate();
