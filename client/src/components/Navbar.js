@@ -23,9 +23,7 @@ function Navbar() {
       <NavbarRight>
         <NavbarAvatar
           onClick={() => {
-            localStorage.removeItem("token");
-            localStorage.removeItem("userId");
-            navigate("/login");
+            navigate("/profile");
           }}
         />
       </NavbarRight>
