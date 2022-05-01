@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import React, { useEffect } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import queries from "../queries";
 import Swal from "sweetalert2";
 import {
@@ -12,7 +12,7 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import { makeStyles } from "@material-ui/core";
+import { Button, makeStyles } from "@material-ui/core";
 import PersonIcon from "@mui/icons-material/Person";
 import MailIcon from "@mui/icons-material/Mail";
 import PhoneIcon from "@mui/icons-material/Phone";
@@ -67,13 +67,18 @@ const useStyles = makeStyles({
 
 const Profile = () => {
   let navigate = useNavigate();
+  const location = useLocation();
+  const params = useParams();
   useEffect(() => {
     if (!isLoggedIn()) {
       navigate("/login", { replace: true });
     }
   }, []);
   const classes = useStyles();
-  const { userId } = useParams();
+  let userId =
+    location.pathname == "/profile"
+      ? localStorage.getItem("userId")
+      : params.userId;
   const { loading, error, data } = useQuery(queries.user.GET_BY_ID, {
     variables: {
       userId: userId,
@@ -199,6 +204,18 @@ const Profile = () => {
                   );
                 })}
               </List>
+              <Button
+                color="primary"
+                variant="contained"
+                align="center"
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  localStorage.removeItem("userId");
+                  navigate("/login");
+                }}
+              >
+                Logout
+              </Button>
             </Grid>
           </Grid>
         </div>

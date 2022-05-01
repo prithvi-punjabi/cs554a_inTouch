@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 import Posts from "./Posts";
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { isLoggedIn } from "../helper";
 import Profile from "./Profile";
 //currentBody fun
@@ -29,7 +29,6 @@ function Main({ component }) {
       </>
     );
   } else if (currentBody === "user") {
-    console.log("shown Feed");
     return (
       <>
         <Navbar></Navbar>

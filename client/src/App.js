@@ -56,6 +56,7 @@ function App() {
                   path="/user/:userId"
                   element={<Main component="user" />}
                 />
+                <Route path="/profile" element={<Main component="user" />} />
                 <Route path="/feed" element={<Feed />} />
                 <Route path="/channels" element={<Channel />} />
                 <Route path="/posts" element={<Posts />} />
