@@ -16,10 +16,7 @@ const styles = {
 
 function SideOptions({Icon,title}) {
   
-	const userId = localStorage.getItem("userId");
-	const userName = localStorage.getItem("userName");
-  
-  
+
 	return (
 	  
 	<>

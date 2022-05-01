@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
 import styled from "styled-components";
 import SideOptions from "./SideOptions";
 // import InboxIcon from "@material-ui/icons"
@@ -18,75 +18,56 @@ import { Button } from "@material-ui/core";
 function Sidebar(props) {
 	
 
-	// const userId = localStorage.getItem("userId");
-	// // const userName = localStorage.getItem("userName");
-	// console.log(userId)
+	  let userId = localStorage.getItem("userId")
+	  console.log(userId)
+      
+  const { loading, error, data } = useQuery(queries.user.GET_BY_ID, {
+    variables: {
+      userId: userId,
+    },
+    errorPolicy: "all",
+    onError: (error) => {
+      console.log(error);
+    },
+  });
 
-	// const { loading, error, data } = useQuery(queries.channel.GET, {
-		
-	// 	variables:{userId:userId}
-	//   });
 
-	// if (data){
-	// 	console.log("channels ")
-	// 	console.log(data)
-	// }
-	// if (error){
-	// 	console.log("error  ")
-	// 	console.log(error)
-	// }
 
 
 	const [showChannels, setshowChannels] = useState(false);
-	console.log(showChannels)
+	
+	console.log("current : ")
+	// console.log(currentChannel)
 
 	const setBody = (type) => {
 		props.currentBody(type);
 	};
 
-	// temp data for channels
+	const setChannel = (channel) => {
+		props.setChannel(channel);
+	};
 
-	  const userArray = 
-		
-		{
-		  _id: { $oid: "625a77cbf1a9ebce0e4d044b" },
-		  name: "Nirav Patel",
-		  email: "npate94@stevens.edu",
-		  password: "$2a$08$NAq58pqYJdm.P5J9sDINrOTk32g.I4KU2OOENzNakdAceW94HL2rG",
-		  profilePicture:
-			"https://sit.instructure.com/images/thumbnails/9193066/2FCn5p4nwEO1WQwV7eKpyuErWRoCqUpBEISSMVXs",
-		  userName: "12313",
-		  bio: "No bio set in canvas",
-		  courses: [
-			{
-			  id: 56734,
-			  name: "Web Programming II",
-			  code: "2022S CS 554-A",
-			  end_date: "2022-05-18T00:00:00Z",
-			},
-			{
-			  id: 56806,
-			  name: "Database Management Systems I",
-			  code: "2022S CS 561-B",
-			  end_date: null,
-			},
-			{
-			  id: 58512,
-			  name: "Agile Methods for Software Development",
-			  code: "2022S SSW 555-WS",
-			  end_date: "2022-05-18T00:00:00Z",
-			},
-		  ],
-		  designation: 1,
-		  gender: "1",
-		  contactNo: "1111111111",
-		  dob: "06/16/2000",
-		  friends: [],
-		  privacy: [],
-		}
-	  ;
+	
 
+	const channelMap = () =>{
+		return (
+			data.getUser.courses?.map((ch)=>(
+					
+				<div
+				onClick={() => {
+					setBody("channel");
+				}}>
+					<SideOptions  title = {ch.code}/>
+				</div>
+			
+				
+			))
+		)
+	}
 
+		// let channels = channelMap()
+	
+	
 		return (
 			<SidebarContainer>
 				<Sidebarheader>
@@ -114,6 +95,9 @@ function Sidebar(props) {
 				<div onClick={()=>{setshowChannels(!showChannels)}}>
 				
 				<SideOptions Icon = {ArrowDropDownIcon} title = "Channels"/>
+				<div>
+					{/* {channelMap()} */}
+				</div>
 				</div>
 				
 				
@@ -125,11 +109,12 @@ function Sidebar(props) {
 				<SideOptions Icon = {ArrowRightOutlinedIcon} title = "Channels"/>
 				</div>}
 
-				{showChannels && userArray.courses?.map((ch)=>(
+				{showChannels && data.getUser.courses?.map((ch)=>(
 					
 					<div
 					onClick={() => {
 						setBody("channel");
+						setChannel(ch.code)
 					}}>
 						<SideOptions  title = {ch.code}/>
 					</div>
@@ -142,7 +127,7 @@ function Sidebar(props) {
 
 		);
 
-	
+		
 }
 
 export default Sidebar;

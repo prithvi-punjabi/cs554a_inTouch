@@ -17,7 +17,7 @@ const styles = {
   };
 
 
-function Chat() {
+function Chat(props) {
 
     const sendMessage = (e)=>{
 
@@ -25,6 +25,9 @@ function Chat() {
 
     }
 
+    const setChannel = (channel) => {
+		props.setCurrentChannel(channel);
+	};
 
   return (
     
@@ -33,7 +36,7 @@ function Chat() {
         <Header>
         <HeaderLeft>
         <StarBorderIcon style={styles.largeIcon}/>
-        <h4><strong># Room-name</strong></h4>
+        <h4><strong>{props.currentChannel}</strong></h4>
         
       
 

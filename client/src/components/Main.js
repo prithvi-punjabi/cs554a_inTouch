@@ -18,6 +18,7 @@ function Main({ component }) {
 		}
 	}, []);
 	const [currentBody, setCurrentBody] = useState(component);
+	const [currentChannel, setCurrentChannel] = useState(component);
 	if (currentBody === "feed") {
 		console.log("shown Feed");
 		return (
@@ -51,8 +52,8 @@ function Main({ component }) {
 			<>
 				<Navbar></Navbar>
 				<Appbody>
-					<Sidebar currentBody={setCurrentBody}></Sidebar>
-					<Chat />
+					<Sidebar currentBody={setCurrentBody} setChannel={setCurrentChannel}></Sidebar>
+					<Chat currentChannel={currentChannel}  />
 				</Appbody>
 				{/* <Displaybody></Displaybody> */}
 			</>
