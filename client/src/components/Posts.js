@@ -9,17 +9,25 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
 import AddPost from "./AddPost";
 import DeletePost from "./DeletePost";
+
+<<<<<<< HEAD
+=======
+import styled from "styled-components";
+
+>>>>>>> 79a616037867ebaadba275c3cd826dbf30349f7d
 import "../App.css";
 const Posts = () => {
   const navigate = useNavigate();
   const { loading, error, data } = useQuery(queries.post.GET_ALL, {
     fetchPolicy: "cache-and-network",
   });
+
   const userId = localStorage.getItem("userId");
   if (data) {
     let posts = data.getAll;
 
     return (
+      <PostDiv>
       <div className="displayContainer">
         <AddPost userId={userId} />
         {posts.map((post) => {
@@ -64,8 +72,17 @@ const Posts = () => {
                         </small>{" "}
                         {userId === post.user._id && (
                           <div>
-                            <i className="fa fa-ellipsis-h"></i>
-                            <DropdownButton id="dropdown-basic-button">
+                            {/* <i className="fa fa-ellipsis-h"></i> */}
+                            <DropdownButton
+                              id="dropdown-basic-button"
+                              variant="default"
+                              size="sm"
+                              title={
+                                <span>
+                                  <i className="fa fa-ellipsis-h"></i>
+                                </span>
+                              }
+                            >
                               <Dropdown.Item>Update</Dropdown.Item>
                               <DeletePost postId={post._id} />
                             </DropdownButton>
@@ -152,12 +169,24 @@ const Posts = () => {
           );
         })}
       </div>
+      </PostDiv>
     );
   } else if (loading) {
-    return <div className="displayContainer">Loading...</div>;
+    return  <PostDiv><div className="displayContainer">Loading...</div> </PostDiv>;
   } else if (error) {
-    return <div className="displayContainer">{error.message}</div>;
+    return  <PostDiv><div className="displayContainer">{error.message}</div> </PostDiv>;
   }
 };
 
 export default Posts;
+
+
+const PostDiv = styled.div`
+
+flex:0.7;
+flex-grow:1;
+overflow-y: scroll;
+margin-top: 4%;
+float: left;
+
+`

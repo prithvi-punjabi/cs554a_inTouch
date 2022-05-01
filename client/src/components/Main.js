@@ -22,8 +22,19 @@ function Main({ component }) {
       <>
         <Navbar></Navbar>
         <Appbody>
+        
+       
           <Sidebar currentBody={setCurrentBody}></Sidebar>
+         
           <Posts></Posts>
+          {/* <div className="temp1" >1</div>
+          
+          <div className="temp2">2</div>
+          <br/>
+          <div className="temp1">3</div>
+          <br/>
+          <div className="temp1">4</div>
+          <br/> */}
         </Appbody>
         {/* <Displaybody></Displaybody> */}
       </>
@@ -42,8 +53,9 @@ function Main({ component }) {
   } else {
     return (
       <>
-        <Navbar></Navbar>
+       <Navbar></Navbar>
         <Appbody>
+       
           <Sidebar currentBody={setCurrentBody}></Sidebar>
         </Appbody>
       </>
@@ -61,4 +73,7 @@ const Displaybody = styled.div`
   display: flex;
   flex: 0.4;
   height: 100vh;
+`;
+const Sidebar1 = styled.div`
+ position: fixed;
 `;
