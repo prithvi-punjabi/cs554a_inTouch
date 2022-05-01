@@ -8,7 +8,7 @@ const styles = {
 
 	largeIcon: {
 	  width: 70,
-	  height: 50,
+	  height: 55,
 	  padding:10 
 	},
   

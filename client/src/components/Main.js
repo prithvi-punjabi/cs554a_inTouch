@@ -17,7 +17,7 @@ function Main({ component }) {
 			navigate("/login", { replace: true });
 		}
 	}, []);
-	const [currentBody, setCurrentBody] = useState('feed');
+	const [currentBody, setCurrentBody] = useState(component);
 	if (currentBody === "feed") {
 		console.log("shown Feed");
 		return (

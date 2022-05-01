@@ -6,6 +6,8 @@ import SideOptions from "./SideOptions";
 import InboxIcon from '@mui/icons-material/Inbox';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ArrowRightOutlinedIcon from '@mui/icons-material/ArrowRightOutlined';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import AddIcon from '@mui/icons-material/Add';
 
 import queries from "../queries";
@@ -106,14 +108,12 @@ function Sidebar(props) {
 				<hr />
 				
 				
-				<hr/>
-				
 				{/* <SideOptions Icon = {AddIcon} title = "Add Channels"/> */}
 				
 				{showChannels && 
 				<div onClick={()=>{setshowChannels(!showChannels)}}>
 				
-				<SideOptions Icon = {ExpandMoreIcon} title = "Channels"/>
+				<SideOptions Icon = {ArrowDropDownIcon} title = "Channels"/>
 				</div>
 				
 				
@@ -122,7 +122,7 @@ function Sidebar(props) {
 				{!showChannels && 
 				<div onClick={()=>{setshowChannels(!showChannels)}}>
 				
-				<SideOptions Icon = {ExpandLessIcon} title = "Channels"/>
+				<SideOptions Icon = {ArrowRightOutlinedIcon} title = "Channels"/>
 				</div>}
 
 				{showChannels && userArray.courses?.map((ch)=>(
@@ -136,12 +136,6 @@ function Sidebar(props) {
 				
 					
 				))}
-				
-				
-				
-				
-			
-			
 		
 			</SidebarContainer>
 
