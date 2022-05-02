@@ -17,18 +17,17 @@ import { Button } from "@material-ui/core";
 
 function Sidebar(props) {
   const navigate = useNavigate();
-
   let userId = localStorage.getItem("userId");
 
-  const { loading, error, data } = useQuery(queries.user.GET_BY_ID, {
-    variables: {
-      userId: userId,
-    },
-    errorPolicy: "all",
-    onError: (error) => {
-      console.log(error);
-    },
-  });
+  // const { loading, error, data } = useQuery(queries.user.GET_BY_ID, {
+  //   variables: {
+  //     userId: userId,
+  //   },
+  //   errorPolicy: "all",
+  //   onError: (error) => {
+  //     console.log(error);
+  //   },
+  // });
 
   const [showChannels, setshowChannels] = useState(false);
 
@@ -41,7 +40,7 @@ function Sidebar(props) {
   };
 
   const channelMap = () => {
-    return data.getUser.courses?.map((ch) => (
+    return props.user.courses?.map((ch) => (
       <div
         onClick={() => {
           setBody("channel");
@@ -53,73 +52,67 @@ function Sidebar(props) {
   };
 
   // let channels = channelMap()
-  if (data) {
-    return (
-      <SidebarContainer>
-        <Sidebarheader>
-          <Sidebarinfo>
-            <h2>{data.getUser.name}</h2>
-          </Sidebarinfo>
-        </Sidebarheader>
-        <hr />
+  return (
+    <SidebarContainer>
+      <Sidebarheader>
+        <Sidebarinfo>
+          <h2>{props.user.name}</h2>
+        </Sidebarinfo>
+      </Sidebarheader>
+      <hr />
 
+      <div
+        onClick={() => {
+          setBody("feed");
+          navigate("/main");
+        }}
+      >
+        <SideOptions Icon={InboxIcon} title="Feed" />
+      </div>
+
+      {/* <SideOptions Icon = {ExpandLessIcon} title = "Show less"/> */}
+      <hr />
+
+      {/* <SideOptions Icon = {AddIcon} title = "Add Channels"/> */}
+
+      {showChannels && (
         <div
           onClick={() => {
-            setBody("feed");
+            setshowChannels(!showChannels);
             navigate("/main");
           }}
         >
-          <SideOptions Icon={InboxIcon} title="Feed" />
+          <SideOptions Icon={ArrowDropDownIcon} title="Channels" />
+          <div>{/* {channelMap()} */}</div>
         </div>
+      )}
 
-        {/* <SideOptions Icon = {ExpandLessIcon} title = "Show less"/> */}
-        <hr />
+      {!showChannels && (
+        <div
+          onClick={() => {
+            setshowChannels(!showChannels);
+          }}
+        >
+          <SideOptions Icon={ArrowRightOutlinedIcon} title="Channels" />
+        </div>
+      )}
 
-        {/* <SideOptions Icon = {AddIcon} title = "Add Channels"/> */}
-
-        {showChannels && (
+      {showChannels &&
+        props.user.courses?.map((ch) => (
           <div
             onClick={() => {
-              setshowChannels(!showChannels);
+              setBody("channel");
+              setChannel(ch.code);
               navigate("/main");
             }}
+            key={ch.code}
           >
-            <SideOptions Icon={ArrowDropDownIcon} title="Channels" />
-            <div>{/* {channelMap()} */}</div>
+            <SideOptions title={ch.code} />
           </div>
-        )}
-
-        {!showChannels && (
-          <div
-            onClick={() => {
-              setshowChannels(!showChannels);
-            }}
-          >
-            <SideOptions Icon={ArrowRightOutlinedIcon} title="Channels" />
-          </div>
-        )}
-
-        {showChannels &&
-          data.getUser.courses?.map((ch) => (
-            <div
-              onClick={() => {
-                setBody("channel");
-                setChannel(ch.code);
-                navigate("/main");
-              }}
-              key={ch.code}
-            >
-              <SideOptions title={ch.code} />
-            </div>
-          ))}
-        <hr />
-      </SidebarContainer>
-    );
-  } else if (error) {
-    return <div>{error.message}</div>;
-  } else if (loading) {
-    return <div>Loading...</div>;
-  }
+        ))}
+      <hr />
+    </SidebarContainer>
+  );
 }
 
 export default Sidebar;

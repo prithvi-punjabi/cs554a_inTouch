@@ -22,9 +22,7 @@ const AddPost = (props) => {
       });
     },
   });
-  const { loading, data, error } = useQuery(queries.user.GET_BY_ID, {
-    variables: { userId: props.userId },
-  });
+
   const predictions = useTextToxicity(text);
 
   const setBody = (type) => {
@@ -63,114 +61,108 @@ const AddPost = (props) => {
     }
   }
 
-  if (data) {
-    return (
-      <div className="container mt-5 mb-5">
-        <div className="row d-flex align-items-center justify-content-center">
-          <div className="col-md-6">
-            <div className="card">
-              <div className="d-flex justify-content-between p-2 px-3">
-                <div className="d-flex flex-row align-items-center">
+  return (
+    <div className="container mt-5 mb-5">
+      <div className="row d-flex align-items-center justify-content-center">
+        <div className="col-md-6">
+          <div className="card">
+            <div className="d-flex justify-content-between p-2 px-3">
+              <div className="d-flex flex-row align-items-center">
+                {" "}
+                <img
+                  src={props.user.profilePicture}
+                  width="50"
+                  className="rounded-circle"
+                  alt={props.user.userName}
+                  onClick={() => {
+                    setBody("user");
+                    navigate("/profile");
+                  }}
+                  style={{ cursor: "pointer" }}
+                />
+                <div className="d-flex flex-column ml-2">
                   {" "}
-                  <img
-                    src={data.getUser.profilePicture}
-                    width="50"
-                    className="rounded-circle"
-                    alt={data.getUser.userName}
+                  <span
+                    className="font-weight-bold"
                     onClick={() => {
                       setBody("user");
                       navigate("/profile");
                     }}
                     style={{ cursor: "pointer" }}
-                  />
-                  <div className="d-flex flex-column ml-2">
-                    {" "}
-                    <span
-                      className="font-weight-bold"
-                      onClick={() => {
-                        setBody("user");
-                        navigate("/profile");
-                      }}
-                      style={{ cursor: "pointer" }}
-                    >
-                      {data.getUser.name}
-                    </span>{" "}
-                  </div>
+                  >
+                    {props.user.name}
+                  </span>{" "}
                 </div>
               </div>
-              <form className="postForm" onSubmit={createPost}>
-                <textarea
-                  placeholder="Tell us what you're thinking..."
-                  value={text}
-                  onChange={(e) => setText(e.target.value)}
-                />
-                <div className="image-upload">
-                  <label htmlFor="file-input">
-                    <i
-                      className="fa fa-upload fa-lg"
-                      aria-hidden="true"
-                      style={{ cursor: "pointer" }}
-                    ></i>
-                  </label>
-                  <input
-                    id="file-input"
-                    type="file"
-                    onChange={(e) => setImage(e.target.files[0])}
-                  />
-                </div>
-                <div>
-                  <fieldset>
-                    <input
-                      type="radio"
-                      value="academic"
-                      name="category"
-                      checked={category === "academic"}
-                      onClick={(e) => setCategory(e.target.value)}
-                    />
-                    Academic
-                    <span className="cat"> </span>
-                    <input
-                      type="radio"
-                      value="housing"
-                      name="category"
-                      checked={category === "housing"}
-                      onClick={(e) => setCategory(e.target.value)}
-                    />
-                    Housing
-                    <span className="cat"> </span>
-                    <input
-                      type="radio"
-                      value="social"
-                      name="category"
-                      checked={category === "social"}
-                      onClick={(e) => setCategory(e.target.value)}
-                    />
-                    Social
-                    <span className="cat"> </span>
-                    <input
-                      type="radio"
-                      value="career"
-                      name="category"
-                      checked={category === "career"}
-                      onClick={(e) => setCategory(e.target.value)}
-                    />
-                    Career
-                  </fieldset>
-                </div>
-                <div className="postBut">
-                  <button type="submit">Post</button>
-                </div>
-              </form>
             </div>
+            <form className="postForm" onSubmit={createPost}>
+              <textarea
+                placeholder="Tell us what you're thinking..."
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+              />
+              <div className="image-upload">
+                <label htmlFor="file-input">
+                  <i
+                    className="fa fa-upload fa-lg"
+                    aria-hidden="true"
+                    style={{ cursor: "pointer" }}
+                  ></i>
+                </label>
+                <input
+                  id="file-input"
+                  type="file"
+                  onChange={(e) => setImage(e.target.files[0])}
+                />
+              </div>
+              <div>
+                <fieldset>
+                  <input
+                    type="radio"
+                    value="academic"
+                    name="category"
+                    checked={category === "academic"}
+                    onClick={(e) => setCategory(e.target.value)}
+                  />
+                  Academic
+                  <span className="cat"> </span>
+                  <input
+                    type="radio"
+                    value="housing"
+                    name="category"
+                    checked={category === "housing"}
+                    onClick={(e) => setCategory(e.target.value)}
+                  />
+                  Housing
+                  <span className="cat"> </span>
+                  <input
+                    type="radio"
+                    value="social"
+                    name="category"
+                    checked={category === "social"}
+                    onClick={(e) => setCategory(e.target.value)}
+                  />
+                  Social
+                  <span className="cat"> </span>
+                  <input
+                    type="radio"
+                    value="career"
+                    name="category"
+                    checked={category === "career"}
+                    onClick={(e) => setCategory(e.target.value)}
+                  />
+                  Career
+                </fieldset>
+              </div>
+              <div className="postBut">
+                <button type="submit">Post</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
-    );
-  } else if (loading) {
-    return <div>Loading</div>;
-  } else if (error) {
-    return <div>{error.message}</div>;
-  }
+    </div>
+  );
 };
 
 export default AddPost;

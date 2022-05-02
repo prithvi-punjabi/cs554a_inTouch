@@ -30,7 +30,7 @@ const Posts = (props) => {
     return (
       <PostDiv>
         <div className="displayContainer">
-          <AddPost userId={userId} currentBody={props.currentBody} />
+          <AddPost user={props.user} currentBody={props.currentBody} />
           {posts.map((post) => {
             let days = Math.floor(
               (new Date() - new Date(post.dateCreated)) / (1000 * 3600 * 24)

@@ -8,6 +8,8 @@ import { useNavigate } from "react-router";
 import { isLoggedIn } from "../helper";
 import Profile from "./Profile";
 import Chat from "./Chat";
+import { useQuery } from "@apollo/client";
+import queries from "../queries";
 
 //currentBody fun
 function Main({ component }) {
@@ -17,29 +19,46 @@ function Main({ component }) {
       navigate("/login", { replace: true });
     }
   }, []);
+  const userId = localStorage.getItem("userId");
+  const { loading, error, data } = useQuery(queries.user.GET_BY_ID, {
+    variables: {
+      userId: userId,
+    },
+    errorPolicy: "all",
+    onError: (error) => {
+      console.log(error);
+    },
+  });
   const [currentBody, setCurrentBody] = useState(component);
   const [currentChannel, setCurrentChannel] = useState(component);
 
-  return (
-    <>
-      <Navbar currentBody={setCurrentBody}></Navbar>
-      <Appbody>
-        <Sidebar
-          currentBody={setCurrentBody}
-          setChannel={setCurrentChannel}
-        ></Sidebar>
-        {currentBody && currentBody === "feed" && (
-          <Posts currentBody={setCurrentBody}></Posts>
-        )}
+  if (data) {
+    return (
+      <>
+        <Navbar currentBody={setCurrentBody} user={data.getUser}></Navbar>
+        <Appbody>
+          <Sidebar
+            currentBody={setCurrentBody}
+            setChannel={setCurrentChannel}
+            user={data.getUser}
+          ></Sidebar>
+          {currentBody && currentBody === "feed" && (
+            <Posts currentBody={setCurrentBody} user={data.getUser}></Posts>
+          )}
 
-        {currentBody && currentBody === "user" && <Profile></Profile>}
+          {currentBody && currentBody === "user" && <Profile></Profile>}
 
-        {currentBody && currentBody === "channel" && (
-          <Chat currentChannel={currentChannel} />
-        )}
-      </Appbody>
-    </>
-  );
+          {currentBody && currentBody === "channel" && (
+            <Chat currentChannel={currentChannel} />
+          )}
+        </Appbody>
+      </>
+    );
+  } else if (loading) {
+    return <div>Loading...</div>;
+  } else if (error) {
+    return <div>{error.message}</div>;
+  }
 }
 
 export default Main;
