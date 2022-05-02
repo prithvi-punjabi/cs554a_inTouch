@@ -98,7 +98,7 @@ const EditPost = (props) => {
                           type="radio"
                           value="academic"
                           name="category"
-                          checked={category === "academic"}
+                          defaultChecked={category === "academic"}
                           onClick={(e) => setCategory(e.target.value)}
                         />
                         Academic
@@ -107,7 +107,7 @@ const EditPost = (props) => {
                           type="radio"
                           value="housing"
                           name="category"
-                          checked={category === "housing"}
+                          defaultChecked={category === "housing"}
                           onClick={(e) => setCategory(e.target.value)}
                         />
                         Housing
@@ -116,7 +116,7 @@ const EditPost = (props) => {
                           type="radio"
                           value="social"
                           name="category"
-                          checked={category === "social"}
+                          defaultChecked={category === "social"}
                           onClick={(e) => setCategory(e.target.value)}
                         />
                         Social
@@ -125,7 +125,7 @@ const EditPost = (props) => {
                           type="radio"
                           value="career"
                           name="category"
-                          checked={category === "career"}
+                          defaultChecked={category === "career"}
                           onClick={(e) => setCategory(e.target.value)}
                         />
                         Career
