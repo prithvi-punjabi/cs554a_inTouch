@@ -28,6 +28,9 @@ const Posts = () => {
         <div className="displayContainer">
           <AddPost userId={userId} />
           {posts.map((post) => {
+            let days = Math.floor(
+              (new Date() - new Date(post.dateCreated)) / (1000 * 3600 * 24)
+            );
             return (
               <div className="container mt-5 mb-5" key={post._id}>
                 <div className="row d-flex align-items-center justify-content-center">
@@ -60,13 +63,13 @@ const Posts = () => {
                         </div>
                         <div className="d-flex flex-row mt-1 ellipsis">
                           {" "}
-                          <small className="mr-2">
-                            {Math.floor(
-                              (new Date() - new Date(post.dateCreated)) /
-                                (1000 * 3600 * 24)
-                            )}{" "}
-                            days ago
-                          </small>{" "}
+                          {days === 0 && <small className="mr-2">Today</small>}
+                          {days === 1 && (
+                            <small className="mr-2">1 day ago</small>
+                          )}
+                          {days > 1 && (
+                            <small className="mr-2">{days} days ago</small>
+                          )}
                           {userId === post.user._id && (
                             <div>
                               {/* <i className="fa fa-ellipsis-h"></i> */}
