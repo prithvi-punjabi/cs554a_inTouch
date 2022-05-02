@@ -7,20 +7,37 @@ import Feed from "./components/Feed";
 import Channel from "./components/Channel";
 import Posts from "./components/Posts";
 import Main from "./components/Main";
-import { AppContext, socket } from "./context/appContext";
+import { AppContext } from "./context/appContext";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import {
   ApolloClient,
   HttpLink,
   InMemoryCache,
   ApolloProvider,
+  split,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
-import Profile from "./components/Profile";
+import { getMainDefinition } from "@apollo/client/utilities";
+import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
+import { createClient } from "graphql-ws";
 
+import Profile from "./components/Profile";
+//Temp//
+import Channel2 from "./components/Channel2";
+//EF Temp//
 const httpLink = new HttpLink({
   uri: "http://localhost:4000/graphql",
 });
+
+const token = localStorage.getItem("token");
+const wsLink = new GraphQLWsLink(
+  createClient({
+    url: "ws://localhost:4000/subscriptions",
+    // connectionParams: {
+    //   authToken: token ? `${token}` : "",
+    // },
+  })
+);
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem("token");
@@ -31,10 +48,20 @@ const authLink = setContext((_, { headers }) => {
     },
   };
 });
-
+const splitLink = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    return (
+      definition.kind === "OperationDefinition" &&
+      definition.operation === "subscription"
+    );
+  },
+  wsLink,
+  authLink.concat(httpLink)
+);
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  link: authLink.concat(httpLink),
+  link: splitLink,
   request: (operation) => {
     console.log(operation);
   },
@@ -42,7 +69,7 @@ const client = new ApolloClient({
 
 function App() {
   return (
-    <AppContext.Provider value={{ socket: socket }}>
+    <AppContext.Provider value={{}}>
       <ApolloProvider client={client}>
         <Router>
           <div className="App">
@@ -57,6 +84,7 @@ function App() {
                 <Route path="/channels" element={<Channel />} />
                 <Route path="/posts" element={<Posts />} />
                 <Route path="/main" element={<Main />} />
+                <Route path="/channels2" element={<Channel2 />} />
               </Routes>
             </div>
           </div>

@@ -1,5 +1,5 @@
-import { io } from "socket.io-client";
+// import { io } from "socket.io-client";
 import React from "react";
-const SOCKET_URL = "/";
-export const socket = io(SOCKET_URL);
+// const SOCKET_URL = "/graphql";
+// export const socket = io(SOCKET_URL);
 export const AppContext = React.createContext();
