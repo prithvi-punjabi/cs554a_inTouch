@@ -4,6 +4,7 @@ import StarBorderIcon from '@mui/icons-material/StarBorder';
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { Button } from '@material-ui/core';
+import SendIcon from '@mui/icons-material/Send';
 
 
 const styles = {
@@ -13,6 +14,11 @@ const styles = {
 	  height: 32,
     
 	},
+    largerIcon: {
+        width: 40,
+        height: 40,
+      
+      },
   
   };
 
@@ -60,10 +66,12 @@ function Chat(props) {
         
         <form>
             <input placeholder={`Send text in ${props.currentChannel}` }/>
-            <Button type='submit' hidden onClick={sendMessage}>
-                Send
-            </Button>
-
+            <div>
+                <SendIcon style={styles.largerIcon}/>
+            {/* <button className="fa fa-paper-plane" type='submit'  onClick={sendMessage}> */}
+                
+            {/* </button> */}
+            </div>
         </form>
 
         </ChannelInput>
@@ -97,8 +105,32 @@ border-radius: 20px;
     border-radius: 3px;
     padding: 20px;
     outline: none;
+
+
+}
+>form>div  {
+    position: fixed;
+    bottom: 30px;
+    
+    
+    
+    margin-left: 56%;
+    /* border-radius: 2px; */
+    padding: 0.9%;
+    outline: none;
     
 }
+/* >form>div >button {
+    position: fixed;
+    bottom: 30px;
+
+    
+    border: 1px solid black;
+    border-radius: 3px;
+    padding: 1.25%;
+    outline: none;
+    
+} */
     
 `
 

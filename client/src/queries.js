@@ -521,12 +521,8 @@ const channel = {
     }
   `,
   ADD_MESSAGE: gql`
-    mutation AddMessage(
-      $channelId: ID
-      $user: channelUserInp
-      $message: String
-    ) {
-      addMessage(channelId: $channelId, user: $user, message: $message) {
+    mutation AddMessage($channelId: ID, $message: String) {
+      addMessage(channelId: $channelId, message: $message) {
         _id
         user {
           userId
@@ -549,6 +545,35 @@ const channel = {
         }
         message
         dateCreated
+      }
+    }
+  `,
+  SUBSCRIBE_MESSAGE: gql`
+    subscription SubscribeChannel($channelId: ID) {
+      channel(channelId: $channelId) {
+        _id
+        name
+        displayName
+        description
+        dateCreated
+        status
+        messages {
+          _id
+          user {
+            userId
+            userName
+            profilePicture
+          }
+          message
+          dateCreated
+        }
+      }
+    }
+  `,
+  ADD_TEST_MESSAGE: gql`
+    mutation TestMessage($msg: String) {
+      testMessage(msg: $msg) {
+        msg
       }
     }
   `,

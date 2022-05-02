@@ -32,6 +32,47 @@ app.use(
   })
 );
 
+//------------------------SOCKET--------------------------------
+const http = require("http").createServer(app)
+var io = require("socket.io")(http);
+//temp
+const { ObjectId } = require("mongodb");
+// const common = require("./helper/common");
+// let user = {
+// 	_id: ObjectId(),
+// 	userName: "Nevil",
+// 	profilePicture: "https://www.w3schools.com/howto/img_avatar.png",
+// 	designation: common.designation.ADMIN,
+// };
+//
+
+io.on("connection", (socket) => {
+	console.log("new client connected", socket.id);
+
+	// socket.on('user_join'+channelId, (name) => {
+	//   socket.broadcast.emit('user_join', name);
+	// });
+
+
+	socket.on("message", async ({ channelId, user, message }) => {
+		user._id = ObjectId(user._id);
+		// console.log(channelId, message);
+		const createdMessage = await channelDB.addMessage(channelId, user, message);
+		// console.log(createdMessage);
+		// console.log(roomId, name, message, socket.id);
+		// console.log(message);
+		// console.log(channelId);
+		// console.log(user);
+		createdMessage["channelId"] = channelId;
+		io.emit("message", createdMessage);
+	});
+
+	socket.on("disconnect", () => {
+		console.log("Disconnect Fired");
+	});
+});
+//____________________END OF SOCKET______________________________
+
 const loginRequiredOperations = [
   "GetUser",
   "AddFriend",
@@ -66,6 +107,9 @@ const server = new ApolloServer({
     let user;
     const { variables } = req.body || { variables: {} };
     if (loginRequiredOperations.includes(req.body.operationName)) {
+      if (!token || token == "") {
+        throw new AuthenticationError("Must provide authorization token");
+      }
       user = await checkUserLogin(token);
       if (!user) {
         throw new AuthenticationError("Invalid authorization token");
@@ -83,6 +127,11 @@ const server = new ApolloServer({
   },
 });
 
+  // http.listen({ port: 4000 }, () =>
+  // console.log(
+  //   `🚀  Server ready at http://localhost:4000${server.graphqlPath}`
+  // )
+  // );
 server.start().then((res) => {
   server.applyMiddleware({ app, path: "/graphql" });
   app.listen({ port: 4000 }, () =>

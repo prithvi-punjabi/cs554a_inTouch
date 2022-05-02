@@ -17,9 +17,10 @@ import { Button } from "@material-ui/core";
 
 function Sidebar(props) {
 	
+	const navigate = useNavigate();
 
 	  let userId = localStorage.getItem("userId")
-	  console.log(userId)
+
       
   const { loading, error, data } = useQuery(queries.user.GET_BY_ID, {
     variables: {
@@ -36,8 +37,6 @@ function Sidebar(props) {
 
 	const [showChannels, setshowChannels] = useState(false);
 	
-	console.log("current : ")
-	// console.log(currentChannel)
 
 	const setBody = (type) => {
 		props.currentBody(type);
@@ -80,6 +79,7 @@ function Sidebar(props) {
 				<div  
 					onClick={() => {
 						setBody("feed");
+						navigate("/main")
 					}}
 				>
 					<SideOptions Icon = {InboxIcon} title = "Feed" />
@@ -92,7 +92,8 @@ function Sidebar(props) {
 				{/* <SideOptions Icon = {AddIcon} title = "Add Channels"/> */}
 				
 				{showChannels && 
-				<div onClick={()=>{setshowChannels(!showChannels)}}>
+				<div onClick={()=>{setshowChannels(!showChannels);
+					navigate('/main')}}>
 				
 				<SideOptions Icon = {ArrowDropDownIcon} title = "Channels"/>
 				<div>
@@ -115,8 +116,9 @@ function Sidebar(props) {
 					onClick={() => {
 						setBody("channel");
 						setChannel(ch.code)
-					}}>
-						<SideOptions  title = {ch.code}/>
+						navigate('/main')
+					}} key={ch.code}>
+						<SideOptions  title = {ch.code} />
 					</div>
 				
 					

@@ -8,8 +8,13 @@ import logo from "../img/inTouch.png";
 import { useNavigate } from "react-router";
 // import ArrowDropDownCircleTwoToneIcon from '@mui/icons-material/ArrowDropDownCircleTwoTone';
 
-function Navbar() {
+function Navbar(props) {
 	const navigate = useNavigate();
+
+	const setBody = (type) => {
+		props.currentBody(type);
+	};
+
 	return (
 		<NavbarContainer>
 			<NavbarLeft>
@@ -23,7 +28,8 @@ function Navbar() {
 			<NavbarRight>
 				<NavbarAvatar
 					onClick={() => {
-						navigate("/profile");
+						setBody("user");
+						navigate('/profile')
 					}}
 				/>
 			</NavbarRight>

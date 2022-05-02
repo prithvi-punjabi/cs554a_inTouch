@@ -20,58 +20,31 @@ function Main({ component }) {
 	const [currentBody, setCurrentBody] = useState(component);
 	const [currentChannel, setCurrentChannel] = useState(component);
 
-
-	
-	if (currentBody === "feed") {
-		console.log("shown Feed");
-		return (
-			<>
-				<Navbar></Navbar>
+	return(
+		<>
+		<Navbar  currentBody={setCurrentBody}></Navbar>
 				<Appbody>
 				
 			 
-					<Sidebar currentBody={setCurrentBody}></Sidebar>
-				 
-					<Posts></Posts>
+					<Sidebar currentBody={setCurrentBody} setChannel={setCurrentChannel}></Sidebar>
+				 {currentBody && currentBody=== "feed" &&
+				( <Posts currentBody={setCurrentBody}></Posts>)
+				 }
+
+				 {currentBody && currentBody=== "user" &&
+				( <Profile></Profile>)
+				 }
+
+				 {currentBody && currentBody=== "channel" &&
+				( <Chat currentChannel={currentChannel}  />)
+				 }
+					
 					
 				</Appbody>
-				{/* <Displaybody></Displaybody> */}
-			</>
-		);
-	} else if (currentBody === "user") {
-		return (
-			<>
-				<Navbar></Navbar>
-				<Appbody>
-					<Sidebar currentBody={setCurrentBody}></Sidebar>
-					<Profile />
-				</Appbody>
-				{/* <Displaybody></Displaybody> */}
-			</>
-		);
-	}
-	else if (currentBody === "channel") {
-		return (
-			<>
-				<Navbar></Navbar>
-				<Appbody>
-					<Sidebar currentBody={setCurrentBody} setChannel={setCurrentChannel}></Sidebar>
-					<Chat currentChannel={currentChannel}  />
-				</Appbody>
-				{/* <Displaybody></Displaybody> */}
-			</>
-		);
-	} else {
-		return (
-			<>
-			 <Navbar></Navbar>
-				<Appbody>
-			 
-					<Sidebar currentBody={setCurrentBody}></Sidebar>
-				</Appbody>
-			</>
-		);
-	}
+				</>
+	)
+	
+	
 }
 
 export default Main;

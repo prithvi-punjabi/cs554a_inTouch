@@ -1,17 +1,18 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useLocation, Link } from "react-router-dom";
-import Channel from "./Channel.js";
+import { useLocation } from "react-router-dom";
+import Channel2 from "./Channel2.js";
 import { getUserChannels } from "./Calls.js";
 // import io from "socket.io-client";
 import queries from "../queries";
 //Temp for GQL
 import { ApolloClient, useQuery } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
+
 const Feed = () => {
   const [userChannels, setUserChannels] = useState([]);
   const location = useLocation();
   const socketRef = useRef();
-
+  const userId = localStorage.getItem("userId");
   //Temp
   const [curUser, setCurUser] = useState(0);
   const userArray = [
@@ -94,13 +95,17 @@ const Feed = () => {
   const withToken = setContext(() => {
     return { token: localStorage.getItem("token") };
   });
-  const { loading, error, data, fetchMore } = useQuery(queries.channel.GET, {
+  const { loading, error, data } = useQuery(queries.channel.GET, {
     variables: {
-      userID: userArray[curUser]._id,
+      userId: userId,
     },
     fetchPolicy: "network-only",
   });
 
+  useEffect(() => {
+    // console.log(typeof userArray[curUser]._id.$oid);
+    console.log(typeof userId);
+  }, []);
   //
   //   useEffect(() => {
   //     // console.log(props.user);
@@ -121,32 +126,36 @@ const Feed = () => {
   //     // };
   //   }, [curUser]);
 
-  const selectUser = (e) => {
-    // console.log(e.target.value);
-    setCurUser(e.target.value);
-  };
+  /////////////////////////FOR SELECTING USER MANUALLY TEST///////////
+  // const selectUser = (e) => {
+  //   console.log(e.target.value);
+  //   setCurUser(e.target.value);
+  // };
 
-  if (data) {
-    console.log(data);
+  if (error) {
+    console.log(error);
   }
-  if (data)
+  if (data) {
     return (
       <div>
-        <select onChange={selectUser}>
-          <option value="0">User 1</option>
-          <option value="1">User 2</option>
-        </select>
+        {/* <select onChange={selectUser}>
+        <option value="0">User 1</option>
+        <option value="1">User 2</option>
+      </select> */}
         <p>Welcome</p>
         {/* <p>{location.state.name}</p> */}
-        <Channel
+        <Channel2
           user={location.state}
-          userChannels={userChannels}
+          userChannels={data.getChannelsForUser}
           socketRef={socketRef}
         >
           Channel
-        </Channel>
+        </Channel2>
       </div>
     );
+  } else {
+    return <div></div>;
+  }
 };
 
 export default Feed;

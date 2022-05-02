@@ -99,7 +99,7 @@ const Profile = () => {
         </div>
         <div className={classes.profileCard}>
           <Grid container spacing={0} direction="row">
-            <Grid item xs={12} sm={12} md={6}>
+            <Grid item xs={12} sm={8} md={6}>
               <img
                 className={classes.profilePicture}
                 src={user.profilePicture}
