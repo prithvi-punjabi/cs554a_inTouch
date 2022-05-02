@@ -38,7 +38,11 @@ const DeletePost = (props) => {
       }
     });
   }
-  return <Dropdown.Item onClick={delPost}>Delete</Dropdown.Item>;
+  return (
+    <Dropdown.Item onClick={delPost} style={{ textAlign: "center" }}>
+      Delete
+    </Dropdown.Item>
+  );
 };
 
 export default DeletePost;
