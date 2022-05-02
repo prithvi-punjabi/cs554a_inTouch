@@ -14,9 +14,12 @@ import {
   HttpLink,
   InMemoryCache,
   ApolloProvider,
+  from,
   split,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
+import { onError } from "@apollo/client/link/error";
+import Swal from "sweetalert2";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { createClient } from "graphql-ws";
@@ -38,6 +41,28 @@ const wsLink = new GraphQLWsLink(
     // },
   })
 );
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors)
+    graphQLErrors.forEach((error) => {
+      console.log(`${error.extensions.exception.stacktrace[0].split(":")[0]}`);
+      if (
+        error.extensions.exception.stacktrace[0].split(":")[0] ==
+        "TokenExpiredError"
+      ) {
+        Swal.fire({
+          icon: "error",
+          title: "Token expired",
+          text: "Please login again",
+        }).then(() => {
+          //we can't use useNavigate here
+          window.localStorage.clear();
+          window.location.href = "/login";
+        });
+      }
+    });
+
+  if (networkError) console.log(`[Network error]: ${networkError}`);
+});
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem("token");
@@ -61,7 +86,8 @@ const splitLink = split(
 );
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  link: splitLink,
+  //SPlit link required
+  link: from([authLink, errorLink, httpLink]),
   request: (operation) => {
     console.log(operation);
   },
@@ -79,7 +105,11 @@ function App() {
                 <Route path="/token-how-to" element={<HowTo />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/user/:userId" element={<Profile />} />
+                <Route
+                  path="/user/:userId"
+                  element={<Main component="user" />}
+                />
+                <Route path="/profile" element={<Main component="user" />} />
                 <Route path="/feed" element={<Feed />} />
                 <Route path="/channels" element={<Channel />} />
                 <Route path="/posts" element={<Posts />} />

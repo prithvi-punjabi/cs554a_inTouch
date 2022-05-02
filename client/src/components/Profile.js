@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import React, { useEffect } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import queries from "../queries";
 import Swal from "sweetalert2";
 import {
@@ -12,7 +12,7 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import { makeStyles } from "@material-ui/core";
+import { Button, makeStyles } from "@material-ui/core";
 import PersonIcon from "@mui/icons-material/Person";
 import MailIcon from "@mui/icons-material/Mail";
 import PhoneIcon from "@mui/icons-material/Phone";
@@ -21,29 +21,29 @@ import { isLoggedIn } from "../helper";
 
 const useStyles = makeStyles({
   container: {
-    height: "100vh",
+    height: "70%",
   },
   outerContainer: {
     position: "absolute",
     height: "100%",
-    width: "100%",
+    width: "80%",
   },
   outerContainerUpparLayer: {
-    height: "70%",
+    height: "80%",
     background:
-      "linear-gradient(90deg, rgba(104,46,177,1) 0%, rgba(39,139,196,1) 64%, rgba(100,198,255,1) 100%)",
+      "linear-gradient(90deg, rgba(163,38,56,1) 0%, rgba(122,29,43,1) 100%);",
   },
   outerContainerInnerLayer: {
-    height: "30%",
+    height: "20%",
     background: "#f0f0f0",
   },
   profileCard: {
     position: "absolute",
     borderRadius: "10px",
     background: "white",
-    height: "90vh",
-    width: "90vw",
-    margin: "5vh 5vw",
+    height: "80%",
+    width: "70%",
+    margin: "6% 5%",
     boxShadow: "2px 10px 30px grey",
   },
   profilePicture: {
@@ -61,19 +61,24 @@ const useStyles = makeStyles({
     padding: "10px 20px",
     textAlign: "left",
     overflowY: "auto",
-    height: "90vh",
+    height: "90%",
   },
 });
 
 const Profile = () => {
   let navigate = useNavigate();
+  const location = useLocation();
+  const params = useParams();
   useEffect(() => {
     if (!isLoggedIn()) {
       navigate("/login", { replace: true });
     }
   }, []);
   const classes = useStyles();
-  const { userId } = useParams();
+  let userId =
+    location.pathname == "/profile"
+      ? localStorage.getItem("userId")
+      : params.userId;
   const { loading, error, data } = useQuery(queries.user.GET_BY_ID, {
     variables: {
       userId: userId,
@@ -199,6 +204,19 @@ const Profile = () => {
                   );
                 })}
               </List>
+              <button
+               className="btn-lg btn-danger"
+                color="primary"
+                variant="contained"
+                align="center"
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  localStorage.removeItem("userId");
+                  navigate("/login");
+                }}
+              >
+                Logout
+              </button>
             </Grid>
           </Grid>
         </div>
