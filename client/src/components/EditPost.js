@@ -36,22 +36,23 @@ const EditPost = (props) => {
     if (isToxic === false) {
       let data = await updatePost({
         variables: { postId: props.post._id, text: text, category: category },
+      }).catch((e) => {
+        console.log(e.message);
+        Swal.fire({
+          title: "Error!",
+          text: `${props.post.user.name}, ` + e.message,
+          icon: "error",
+          confirmButtonText: "I'll fix it!",
+        });
       });
 
-      handleClose();
       if (data) {
+        handleClose();
         Swal.fire({
           title: "Post Updated!",
           text: `${props.post.user.name}, your post has been updated!`,
           icon: "success",
           confirmButtonText: "Yay!",
-        });
-      } else {
-        Swal.fire({
-          title: "Error!",
-          text: `${props.post.user.name}, your post could not be updated!`,
-          icon: "error",
-          confirmButtonText: "Oops!",
         });
       }
     }

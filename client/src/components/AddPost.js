@@ -53,6 +53,13 @@ const AddPost = (props) => {
       } else {
         await addPost({
           variables: { text: text, image: "", category: category },
+        }).catch((e) => {
+          Swal.fire({
+            title: "Error!",
+            text: e.message,
+            icon: "error",
+            confirmButtonText: "I'll fix it!",
+          });
         });
       }
       setText("");

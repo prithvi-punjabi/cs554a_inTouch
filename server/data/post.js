@@ -142,7 +142,6 @@ const getAll = async (pageNumber) => {
 const create = async (user, text, image, category) => {
   validator.checkUser(user);
   validator.checkString(text, "text");
-  // validator.checkString(image, "image");
   validator.checkCategory(category, "category");
 
   const newPost = {
@@ -198,7 +197,7 @@ const update = async (postId, user, text, category) => {
   if (updateInfo.matchedCount == 0 || updateInfo.modifiedCount == 0)
     throw new MyError(
       errorCode.INTERNAL_SERVER_ERROR,
-      "Could not update the post info"
+      "your post could not be updated. This may be because you have not updated any fields. Edit a field, and try again."
     );
   const post = await getById(postId.toString());
   return post;

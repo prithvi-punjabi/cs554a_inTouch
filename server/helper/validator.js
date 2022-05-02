@@ -12,17 +12,36 @@ module.exports = {
 
   checkNumber(num, varName) {
     if (varName == null) varName = "Parameter";
-    if (num == null) throw `Must pass ${varName}`;
+    if (num == null) {
+      const error = new Error(`Must pass ${varName}`);
+      error.code = common.errorCode.BAD_REQUEST;
+      throw error;
+    }
     num = parseFloat(num);
-    if (isNaN(num)) throw `${varName} must be a number`;
+    if (isNaN(num)) {
+      const error = new Error(`${varName} must be a number`);
+      error.code = common.errorCode.BAD_REQUEST;
+      throw error;
+    }
   },
 
   checkString(str, varName) {
     if (!varName) varName = "Parameter";
-    if (str == null) throw `Must pass ${varName}`;
-    if (typeof str !== "string") throw `${varName} must be a string`;
-    if (str.trim().length == 0)
-      throw `${varName} must not be just empty spaces`;
+    if (str == null) {
+      const error = new Error(`Must pass ${varName}`);
+      error.code = common.errorCode.BAD_REQUEST;
+      throw error;
+    }
+    if (typeof str !== "string") {
+      const error = new Error(`${varName} must be a string`);
+      error.code = common.errorCode.BAD_REQUEST;
+      throw error;
+    }
+    if (str.trim().length == 0) {
+      const error = new Error(`${varName} cannot be empty`);
+      error.code = common.errorCode.BAD_REQUEST;
+      throw error;
+    }
   },
 
   checkStringArray(arr, varName) {
@@ -87,14 +106,18 @@ module.exports = {
   },
 
   checkCategory(category) {
-    this.checkString(category);
+    this.checkString(category, "Category");
     for (let i = 0; i < common.category.length; i++) {
       const c = common.category[i];
       if (c.toLowerCase() == category.toLowerCase()) {
         return;
       }
     }
-    throw `Category must be within [${common.category}]`;
+    {
+      const error = new Error(`Category must be within [${common.category}]`);
+      error.code = common.errorCode.BAD_REQUEST;
+      throw error;
+    }
   },
 
   checkPassword(str) {
