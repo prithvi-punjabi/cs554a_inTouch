@@ -28,7 +28,7 @@ function Main({ component }) {
 			 
 					<Sidebar currentBody={setCurrentBody} setChannel={setCurrentChannel}></Sidebar>
 				 {currentBody && currentBody=== "feed" &&
-				( <Posts></Posts>)
+				( <Posts currentBody={setCurrentBody}></Posts>)
 				 }
 
 				 {currentBody && currentBody=== "user" &&
