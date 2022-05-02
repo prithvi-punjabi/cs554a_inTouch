@@ -80,7 +80,7 @@ const Posts = (props) => {
                             >
                               {post.user.name}
                             </span>{" "}
-                            <small className="text-primary">
+                            <small className="text-primary catText">
                               {post.category}
                             </small>{" "}
                           </div>
@@ -96,7 +96,6 @@ const Posts = (props) => {
                           )}
                           {userId === post.user._id && (
                             <div>
-                              {/* <i className="fa fa-ellipsis-h"></i> */}
                               <DropdownButton
                                 id="dropdown-basic-button"
                                 variant="default"

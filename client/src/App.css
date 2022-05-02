@@ -481,3 +481,7 @@ textarea {
   width: 60%;
   height: 60%;
 }
+
+.catText {
+  text-align: left;
+}
