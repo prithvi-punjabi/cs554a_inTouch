@@ -32,18 +32,20 @@ const AddPost = (props) => {
   async function createPost(e) {
     e.preventDefault();
     let isToxic = false;
-    predictions.forEach((x) => {
-      if (x.match === true) {
-        isToxic = true;
-        if ((x.label = "toxicity")) x.label = "toxic";
-        Swal.fire({
-          title: "Toxic Text Detected!",
-          text: `Your post has been labelled ${x.label} with a probability of ${x.probability}. You cannot post it.`,
-          icon: "error",
-          confirmButtonText: "I'm sorry!",
-        });
-      }
-    });
+    if (predictions) {
+      predictions.forEach((x) => {
+        if (x.match === true) {
+          isToxic = true;
+          if ((x.label = "toxicity")) x.label = "toxic";
+          Swal.fire({
+            title: "Toxic Text Detected!",
+            text: `Your post has been labelled ${x.label} with a probability of ${x.probability}. You cannot post it.`,
+            icon: "error",
+            confirmButtonText: "I'm sorry!",
+          });
+        }
+      });
+    }
     if (!isToxic) {
       if (image) {
         const imagePath = await uploadFile(image);

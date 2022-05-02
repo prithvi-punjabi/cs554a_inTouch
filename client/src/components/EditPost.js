@@ -21,23 +21,24 @@ const EditPost = (props) => {
     if (text === "") setText(props.post.text);
     if (category === "") setCategory(props.post.category);
     let isToxic = false;
-    predictions.forEach((x) => {
-      if (x.match === true) {
-        isToxic = true;
-        if (x.label === "toxicity") x.label = "toxic";
-        Swal.fire({
-          title: "Toxic Text Detected!",
-          text: `Your post has been labelled ${x.label} with a probability of ${x.probability}. You cannot post it.`,
-          icon: "error",
-          confirmButtonText: "I'm sorry!",
-        });
-      }
-    });
+    if (predictions) {
+      predictions.forEach((x) => {
+        if (x.match === true) {
+          isToxic = true;
+          if (x.label === "toxicity") x.label = "toxic";
+          Swal.fire({
+            title: "Toxic Text Detected!",
+            text: `Your post has been labelled ${x.label} with a probability of ${x.probability}. You cannot post it.`,
+            icon: "error",
+            confirmButtonText: "I'm sorry!",
+          });
+        }
+      });
+    }
     if (isToxic === false) {
       let data = await updatePost({
         variables: { postId: props.post._id, text: text, category: category },
       }).catch((e) => {
-        console.log(e.message);
         Swal.fire({
           title: "Error!",
           text: `${props.post.user.name}, ` + e.message,
