@@ -81,7 +81,10 @@ const EditPost = (props) => {
                       />
                       <div className="d-flex flex-column ml-2">
                         {" "}
-                        <span style={{ cursor: "pointer" }}>
+                        <span
+                          style={{ cursor: "pointer" }}
+                          className="font-weight-bold"
+                        >
                           {props.post.user.name}
                         </span>{" "}
                       </div>
@@ -90,6 +93,7 @@ const EditPost = (props) => {
                   <form className="postForm" id="upForm" onSubmit={editPost}>
                     <textarea
                       value={text}
+                      placeholder="Tell us what you're thinking..."
                       onChange={(e) => setText(e.target.value)}
                     />
                     <div>

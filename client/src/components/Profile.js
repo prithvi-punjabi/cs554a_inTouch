@@ -75,6 +75,7 @@ const Profile = () => {
     }
   }, []);
   const classes = useStyles();
+  let thisUserId = localStorage.getItem("userId");
   let userId =
     location.pathname == "/profile"
       ? localStorage.getItem("userId")
@@ -204,19 +205,21 @@ const Profile = () => {
                   );
                 })}
               </List>
-              <button
-               className="btn-lg btn-danger"
-                color="primary"
-                variant="contained"
-                align="center"
-                onClick={() => {
-                  localStorage.removeItem("token");
-                  localStorage.removeItem("userId");
-                  navigate("/login");
-                }}
-              >
-                Logout
-              </button>
+              {thisUserId === data.getUser._id && (
+                <button
+                  className="btn-lg btn-danger"
+                  color="primary"
+                  variant="contained"
+                  align="center"
+                  onClick={() => {
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("userId");
+                    navigate("/login");
+                  }}
+                >
+                  Logout
+                </button>
+              )}
             </Grid>
           </Grid>
         </div>

@@ -433,6 +433,9 @@ textarea {
   resize: none;
   outline: none;
   width: 100%;
+  padding-top: 2%;
+  padding-left: 1%;
+  padding-right: 1%;
 }
 
 .postForm {

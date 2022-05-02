@@ -27,6 +27,10 @@ const AddPost = (props) => {
   });
   const predictions = useTextToxicity(text);
 
+  const setBody = (type) => {
+    props.currentBody(type);
+  };
+
   async function createPost(e) {
     e.preventDefault();
     let isToxic = false;
@@ -73,14 +77,20 @@ const AddPost = (props) => {
                     width="50"
                     className="rounded-circle"
                     alt={data.getUser.userName}
-                    onClick={() => navigate(`/user/${data.getUser._id}`)}
+                    onClick={() => {
+                      setBody("user");
+                      navigate("/profile");
+                    }}
                     style={{ cursor: "pointer" }}
                   />
                   <div className="d-flex flex-column ml-2">
                     {" "}
                     <span
                       className="font-weight-bold"
-                      onClick={() => navigate(`/user/${data.getUser._id}`)}
+                      onClick={() => {
+                        setBody("user");
+                        navigate("/profile");
+                      }}
                       style={{ cursor: "pointer" }}
                     >
                       {data.getUser.name}

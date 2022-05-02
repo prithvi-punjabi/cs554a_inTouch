@@ -13,11 +13,15 @@ import EditPost from "./EditPost";
 import styled from "styled-components";
 
 import "../App.css";
-const Posts = () => {
+const Posts = (props) => {
   const navigate = useNavigate();
   const { loading, error, data } = useQuery(queries.post.GET_ALL, {
     fetchPolicy: "cache-and-network",
   });
+
+  const setBody = (type) => {
+    props.currentBody(type);
+  };
 
   const userId = localStorage.getItem("userId");
   if (data) {
@@ -26,7 +30,7 @@ const Posts = () => {
     return (
       <PostDiv>
         <div className="displayContainer">
-          <AddPost userId={userId} />
+          <AddPost userId={userId} currentBody={props.currentBody} />
           {posts.map((post) => {
             let days = Math.floor(
               (new Date() - new Date(post.dateCreated)) / (1000 * 3600 * 24)
@@ -44,14 +48,34 @@ const Posts = () => {
                             width="50"
                             className="rounded-circle"
                             alt={post.user.userName}
-                            onClick={() => navigate(`/user/${post.user._id}`)}
+                            onClick={() => {
+                              setBody("user");
+                              {
+                                userId === post.user._id &&
+                                  navigate("/profile");
+                              }
+                              {
+                                userId !== post.user._id &&
+                                  navigate(`/user/${post.user._id}`);
+                              }
+                            }}
                             style={{ cursor: "pointer" }}
                           />
                           <div className="d-flex flex-column ml-2">
                             {" "}
                             <span
                               className="font-weight-bold"
-                              onClick={() => navigate(`/user/${post.user._id}`)}
+                              onClick={() => {
+                                setBody("user");
+                                {
+                                  userId === post.user._id &&
+                                    navigate("/profile");
+                                }
+                                {
+                                  userId !== post.user._id &&
+                                    navigate(`/user/${post.user._id}`);
+                                }
+                              }}
                               style={{ cursor: "pointer" }}
                             >
                               {post.user.name}
@@ -133,18 +157,20 @@ const Posts = () => {
                                     width="40"
                                     className="rounded-image"
                                     alt={comment.user.userName}
-                                    onClick={() =>
-                                      navigate(`/user/${post.user._id}`)
-                                    }
+                                    onClick={() => {
+                                      setBody("user");
+                                      navigate(`/user/${post.user._id}`);
+                                    }}
                                     style={{ cursor: "pointer" }}
                                   />
                                   <div className="d-flex flex-column ml-2">
                                     {" "}
                                     <span
                                       className="name"
-                                      onClick={() =>
-                                        navigate(`/user/${comment.user._id}`)
-                                      }
+                                      onClick={() => {
+                                        setBody("user");
+                                        navigate(`/user/${comment.user._id}`);
+                                      }}
                                       style={{
                                         cursor: "pointer",
                                         textAlign: "left",
