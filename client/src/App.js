@@ -110,7 +110,7 @@ function App() {
                   element={<Main component="user" />}
                 />
                 <Route path="/profile" element={<Main component="user" />} />
-                <Route path="/feed" element={<Feed />} />
+                <Route path="/feed" element={<Main component="feed" />} />
                 <Route path="/channels" element={<Channel />} />
                 <Route path="/posts" element={<Posts />} />
                 <Route path="/main" element={<Main />} />
