@@ -182,7 +182,7 @@ const update = async (postId, user, text, category) => {
   };
 
   const originalPost = await getById(postId.toString());
-  if (originalPost.user.userId.toString() != user._id.toString()) {
+  if (originalPost.user._id.toString() != user._id.toString()) {
     throw new MyError(
       errorCode.UNAUTHORIZED,
       "You cannot update someone else's post"
@@ -191,8 +191,8 @@ const update = async (postId, user, text, category) => {
 
   const postCol = await postCollection();
   const updateInfo = await postCol.updateOne(
-    { _id: postId, "user.userId": user._id },
-    { $set: updatedPost }
+    { _id: postId },
+    { $set: { text: text, category: category } }
   );
 
   if (updateInfo.matchedCount == 0 || updateInfo.modifiedCount == 0)

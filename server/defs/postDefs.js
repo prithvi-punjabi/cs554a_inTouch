@@ -129,7 +129,7 @@ const postResolvers = {
       const user = {
         _id: context.user._id,
         name: context.user.name,
-        userName: context.user._userName,
+        userName: context.user.userName,
         profilePicture: context.user.profilePicture,
       };
       const updatedPost = await postData.update(

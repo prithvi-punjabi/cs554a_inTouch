@@ -1,10 +1,8 @@
-.temp1{
-
+.temp1 {
   margin-top: auto;
   height: 5000px;
   background-color: #ed1a23;
   color: #222;
-
 }
 .App {
   text-align: center;
@@ -474,4 +472,9 @@ textarea {
 #dropdown-basic-button:focus {
   outline: none;
   box-shadow: none;
+}
+
+.upldImg {
+  width: 60%;
+  height: 60%;
 }
