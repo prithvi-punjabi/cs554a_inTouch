@@ -187,9 +187,9 @@ const addFriend = async (userId, friendId) => {
   userId = utils.parseObjectId(userId);
   const userCol = await userCollection();
 
-  const friendExists = await userCol.findOne({
+  let friendExists = await userCol.findOne({
     _id: userId,
-    friends: [friendId],
+    friends: friendId,
   });
   if (!friendExists) {
     const addedFriend = await userCol.updateOne(
@@ -202,10 +202,26 @@ const addFriend = async (userId, friendId) => {
       error.code = common.errorCode.INTERNAL_SERVER_ERROR;
       throw error;
     }
-    let thisFriend = await getUser(friendId);
+  }
 
-    return `${thisFriend.name} was added to your friend list.`;
-  } else throw "Friend already exists";
+  friendExists = await userCol.findOne({
+    _id: ObjectId(friendId),
+    friends: userId,
+  });
+  if (!friendExists) {
+    const addedFriend = await userCol.updateOne(
+      { _id: ObjectId(friendId) },
+      { $push: { friends: userId } }
+    );
+    console.log(addedFriend.modifiedCount);
+    if (addedFriend.modifiedCount == 0) {
+      const error = new Error("Could not add friend");
+      error.code = common.errorCode.INTERNAL_SERVER_ERROR;
+      throw error;
+    }
+  }
+  let thisFriend = await getUser(friendId);
+  return `${thisFriend.name} was added to your friend list.`;
 };
 
 const delFriend = async (userId, friendId) => {
@@ -217,9 +233,9 @@ const delFriend = async (userId, friendId) => {
   const userCol = await userCollection();
 
   let thisFriend = await getUser(friendId);
-  const friendExists = await userCol.findOne({
+  let friendExists = await userCol.findOne({
     _id: userId,
-    friends: [friendId],
+    friends: friendId,
   });
   if (friendExists) {
     const deletedFriend = await userCol.updateOne(
@@ -231,9 +247,24 @@ const delFriend = async (userId, friendId) => {
       error.code = common.errorCode.INTERNAL_SERVER_ERROR;
       throw error;
     }
+  }
 
-    return `${thisFriend.name} was removed from your friend list`;
-  } else throw "Friend does not exist";
+  friendExists = await userCol.findOne({
+    _id: ObjectId(friendId),
+    friends: userId.toString(),
+  });
+  if (friendExists) {
+    const deletedFriend = await userCol.updateOne(
+      { _id: ObjectId(friendId) },
+      { $pull: { friends: userId.toString() } }
+    );
+    if (deletedFriend.modifiedCount == 0) {
+      const error = new Error("Could not remove friend");
+      error.code = common.errorCode.INTERNAL_SERVER_ERROR;
+      throw error;
+    }
+  }
+  return `${thisFriend.name} was removed from your friend list`;
 };
 
 module.exports = {
