@@ -9,6 +9,7 @@ import Posts from "./components/Posts";
 import Main from "./components/Main";
 import { AppContext } from "./context/appContext";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
 import {
   ApolloClient,
   HttpLink,

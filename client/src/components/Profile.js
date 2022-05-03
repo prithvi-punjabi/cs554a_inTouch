@@ -1,5 +1,5 @@
-import { useQuery } from "@apollo/client";
-import React, { useEffect } from "react";
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router";
 import queries from "../queries";
 import Swal from "sweetalert2";
@@ -80,7 +80,9 @@ const Profile = () => {
     location.pathname == "/profile"
       ? localStorage.getItem("userId")
       : params.userId;
-  const { loading, error, data } = useQuery(queries.user.GET_BY_ID, {
+  const [user, setUser] = useState();
+  const [error, setError] = useState();
+  const [fetchUser] = useLazyQuery(queries.user.GET_BY_ID, {
     variables: {
       userId: userId,
     },
@@ -89,9 +91,49 @@ const Profile = () => {
       console.log(error);
     },
   });
+  const [addFriend] = useMutation(queries.user.ADD_FRIEND);
+  const [removeFriend] = useMutation(queries.user.REMOVE_FRIEND);
 
-  if (data && data.getUser) {
-    let user = data.getUser;
+  function refetchUser() {
+    fetchUser({ variables: { userId: userId } }).then(({ data }) => {
+      setUser(data.getUser);
+    });
+  }
+
+  useEffect(() => {
+    refetchUser();
+  }, []);
+
+  async function handleAddFriend() {
+    try {
+      const { data } = await addFriend({
+        variables: {
+          friendId: userId,
+        },
+      });
+      console.log(data);
+      refetchUser();
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async function handleRemoveFriend() {
+    try {
+      const { data } = await removeFriend({
+        variables: {
+          friendId: userId,
+        },
+      });
+      refetchUser();
+      console.log(data);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  if (user) {
+    let currUserId = localStorage.getItem("userId");
     return (
       <div className={classes.container}>
         <div className={classes.outerContainer}>
@@ -113,13 +155,41 @@ const Profile = () => {
               md={6}
               className={classes.detailsContainer}
             >
-              <Typography
-                variant="h3"
-                component="h3"
-                style={{ fontWeight: "bold", padding: "10px 0px" }}
-              >
-                {user.name}
-              </Typography>
+              <Grid container>
+                <Grid item xs={6}>
+                  <Typography
+                    variant="h3"
+                    component="h3"
+                    style={{ fontWeight: "bold", padding: "10px 0px" }}
+                  >
+                    {user.name}
+                  </Typography>
+                </Grid>
+                {currUserId != user._id && !user.friends.includes(currUserId) && (
+                  <Grid item alignSelf={"center"} marginLeft={2}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      align="center"
+                      onClick={handleAddFriend}
+                    >
+                      + Add friend
+                    </Button>
+                  </Grid>
+                )}
+                {currUserId != user._id && user.friends.includes(currUserId) && (
+                  <Grid item alignSelf={"center"} marginLeft={2}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      align="center"
+                      onClick={handleRemoveFriend}
+                    >
+                      - Unfriend
+                    </Button>
+                  </Grid>
+                )}
+              </Grid>
               <Typography
                 variant="body1"
                 component="span"
@@ -205,7 +275,7 @@ const Profile = () => {
                   );
                 })}
               </List>
-              {thisUserId === data.getUser._id && (
+              {thisUserId === user._id && (
                 <button
                   className="btn-lg btn-danger"
                   color="primary"
