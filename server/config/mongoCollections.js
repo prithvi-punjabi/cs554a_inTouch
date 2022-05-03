@@ -20,4 +20,5 @@ module.exports = {
   users: getCollectionFn("User"),
   channels: getCollectionFn("Channels"),
   posts: getCollectionFn("Post"),
+  channelMap: getCollectionFn("channelMap"),
 };

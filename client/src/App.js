@@ -82,12 +82,12 @@ const splitLink = split(
     );
   },
   wsLink,
-  authLink.concat(httpLink)
+  from([authLink, errorLink, httpLink])
 );
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   //SPlit link required
-  link: from([authLink, errorLink, httpLink]),
+  link: splitLink,
   request: (operation) => {
     console.log(operation);
   },
@@ -110,7 +110,7 @@ function App() {
                   element={<Main component="user" />}
                 />
                 <Route path="/profile" element={<Main component="user" />} />
-                <Route path="/feed" element={<Main component="feed" />} />
+                <Route path="/feed" element={<Feed />} />
                 <Route path="/channels" element={<Channel />} />
                 <Route path="/posts" element={<Posts />} />
                 <Route path="/main" element={<Main />} />
