@@ -1,103 +1,137 @@
-import React from 'react'
-import styled from 'styled-components'
-import StarBorderIcon from '@mui/icons-material/StarBorder';
-
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import { Button } from '@material-ui/core';
-import SendIcon from '@mui/icons-material/Send';
-
-
+import React, { useEffect, useRef, useState } from "react";
+import styled from "styled-components";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
+import { useMutation, useQuery, useSubscription } from "@apollo/client";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { Button } from "@material-ui/core";
+import SendIcon from "@mui/icons-material/Send";
+import queries from "../queries";
 const styles = {
-
-	largeIcon: {
-	  width: 40,
-	  height: 32,
-    
-	},
-    largerIcon: {
-        width: 40,
-        height: 40,
-      
-      },
-  
-  };
-
+  largeIcon: {
+    width: 40,
+    height: 32,
+  },
+  largerIcon: {
+    width: 40,
+    height: 40,
+  },
+};
 
 function Chat(props) {
+  const textBox = useRef(null);
+  console.log(props);
+  const [currentChannel, setCurrentChannel] = useState(props.currentChannel);
 
-    const sendMessage = (e)=>{
+  //   const { data, loading, error } = useSubscription(
+  //     queries.channel.SUBSCRIBE_MESSAGE,
+  //     {
+  //       variables: {
+  //         channelId: props.currentChannel._id,
+  //       },
+  //     }
+  //   );
 
-        e.preventDefault();
+  useEffect(() => {
+    setCurrentChannel(props.currentChannel);
+  }, [props]);
 
-    }
+  //   if (data) {
+  //     console.log(data);
+  //   }
+  //   if (error) {
+  //     console.log(error);
+  //   }
 
-    const setChannel = (channel) => {
-		props.setCurrentChannel(channel);
-	};
+  //REFRESHING CHANNEL ON NEW MESSAGE
+  //   useEffect(() => {
+  //     if (data) setCurrentChannel(data.channel);
+  //   }, [data]);
 
+  //SENDING MESSAGE
+  const [addMessage] = useMutation(queries.channel.ADD_MESSAGE);
+
+  //POPULATOR FUNCTIONS
+  const mapper = (chat) => {
+    // console.log(chat);
+    return chat.map((message) => {
+      return (
+        <div key={message._id}>
+          <div>
+            <p>{message.message}</p>
+          </div>
+          <div>
+            <p> by {message.user.userName}</p>
+          </div>
+        </div>
+      );
+    });
+  };
+
+  let chat =
+    currentChannel &&
+    currentChannel.messages &&
+    mapper(currentChannel.messages);
   return (
-    
     <ChannelContainer>
-        
-        <Header>
+      <Header>
         <HeaderLeft>
-        <StarBorderIcon style={styles.largeIcon}/>
-        <h4><strong>{props.currentChannel}</strong></h4>
-        
-      
-
+          <StarBorderIcon style={styles.largeIcon} />
+          <h4>
+            <strong>{currentChannel.name}</strong>
+          </h4>
         </HeaderLeft>
         <HeaderRight>
-        
-        <p>
-        <InfoOutlinedIcon style={styles.largeIcon}/>
+          <p>
+            <InfoOutlinedIcon style={styles.largeIcon} />
             Details
-        </p>
+          </p>
         </HeaderRight>
-        </Header>
+      </Header>
 
-        <ChannelMessages>
-        
-        </ChannelMessages>
+      <ChannelMessages>{chat}</ChannelMessages>
 
-
-
-        <ChannelInput>
-        
-        <form>
-            <input placeholder={`Send text in ${props.currentChannel}` }/>
-            <div>
-                <SendIcon style={styles.largerIcon}/>
-            {/* <button className="fa fa-paper-plane" type='submit'  onClick={sendMessage}> */}
-                
-            {/* </button> */}
-            </div>
+      <ChannelInput>
+        <form
+          method="POST"
+          onSubmit={(e) => {
+            e.preventDefault();
+            addMessage({
+              variables: {
+                channelId: currentChannel._id,
+                user: props.user,
+                message: textBox.current.value,
+              },
+            });
+            textBox.current.value = "";
+          }}
+        >
+          <input
+            placeholder={`Send text in ${currentChannel.name}`}
+            ref={textBox}
+          />
+          <div>
+            {/* <SendIcon style={styles.largerIcon} /> */}
+            <button className="fa fa-paper-plane" type="submit"></button>
+          </div>
         </form>
-
-        </ChannelInput>
-
-
-        </ChannelContainer>
-   
-  )
+      </ChannelInput>
+    </ChannelContainer>
+  );
 }
 
-export default Chat
+export default Chat;
 
-const  ChannelMessages  = styled.div`
+const ChannelMessages = styled.div`
+margin-bottom: 17%;:`;
+const ChannelInput = styled.div`
+  border-radius: 20px;
 
-    
-` 
-const  ChannelInput  = styled.div`
-
-border-radius: 20px;
-
->form {
+  > form {
     position: relative;
     display: flex;
     justify-content: center;
-}
->form >input {
+  }
+  > form > input {
     position: fixed;
     bottom: 30px;
     width: 60%;
@@ -105,22 +139,17 @@ border-radius: 20px;
     border-radius: 3px;
     padding: 20px;
     outline: none;
-
-
-}
->form>div  {
+  }
+  > form > div {
     position: fixed;
     bottom: 30px;
-    
-    
-    
+
     margin-left: 56%;
     /* border-radius: 2px; */
     padding: 0.9%;
     outline: none;
-    
-}
-/* >form>div >button {
+  }
+  /* >form>div >button {
     position: fixed;
     bottom: 30px;
 
@@ -131,47 +160,40 @@ border-radius: 20px;
     outline: none;
     
 } */
-    
-`
+`;
 
-
-const  HeaderLeft  = styled.div`
-display: flex;
->h4 {
+const HeaderLeft = styled.div`
+  display: flex;
+  > h4 {
     display: flex;
     margin-left: 10px;
-   
-}
-/* >h4 >.MuiSvgIcon-root{
+  }
+  /* >h4 >.MuiSvgIcon-root{
     margin-left: 5%;
     font-size: 30px;
     width: 50;
     height: 50;
 } */
-
-` 
-const  HeaderRight  = styled.div`
-
+`;
+const HeaderRight = styled.div`
+  display: flex;
+  > p {
     display: flex;
-    >p{
-        display: flex;
-        align-items: center;
-        font-size: 20px;
-    }
-` 
+    align-items: center;
+    font-size: 20px;
+  }
+`;
 
-const  Header  = styled.div`
-display: flex;
-justify-content: space-between;
-padding: 20px;
-border-bottom: 1px solid lightgray;
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  border-bottom: 1px solid lightgray;
+`;
 
-` 
-
-const  ChannelContainer = styled.div`
-flex:0.7%;
-flex-grow: 1;
-overflow-y: scroll;
-margin-top: 4%;
-
-` 
+const ChannelContainer = styled.div`
+  flex: 0.7%;
+  flex-grow: 1;
+  overflow-y: scroll;
+  margin-top: 4%;
+`;

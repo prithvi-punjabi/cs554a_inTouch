@@ -1,7 +1,7 @@
 const { gql } = require("apollo-server-express");
 const channelData = require("./data").channelData;
 const { GraphQLDateTime } = require("graphql-scalars");
-
+const mapper = require("./helper/mappers");
 const typeDefs = gql`
   scalar DateTime
   input channelCourse {
@@ -55,7 +55,7 @@ const typeDefs = gql`
     msg: String
   }
   type Subscription {
-    channel(channelId: ID): channel
+    channels(userId: ID): [channel]
   }
   type Query {
     getChannelById(id: ID): channel
@@ -141,16 +141,41 @@ const channelResolvers = {
       //   userName: "BigBoss",
       //   profilePicture: "invalid url",
       // };
+      console.log(args);
       const addedMessage = await channelData.addMessage(
         args.channelId,
         user,
         args.message
       );
-      const updatedChannel = await channelData.getById(args.channelId);
-      pubsub.publish([args.channelId], { channel: updatedChannel });
+      const updatedChannels = await channelData.getByUser(context.user._id);
+      // console.log(
+      //   updatedChannels[0].messages[updatedChannels[0].messages.length - 1]
+      // );
+      console.log("before:");
+      console.log(pubsub);
+      const channelUsers = await mapper.usersForChannel(args.channelId);
+      for (let i = 0; i <= channelUsers.length - 1; i++) {
+        pubsub.publish([String(channelUsers[i])], {
+          channels: updatedChannels,
+        });
+      }
+      console.log("after:");
+      console.log(pubsub);
+      // for (let i = 0; i<= channelUsers.) {
+      // console.log(doSend);
+      // if (doSend) {
+      //   console.log("yay");
+      //   console.log(pubsub);
+      //   pubsub.publish([String(eventUserId)], {
+      //     channels: updatedChannels,
+      //   });
+      // }
+      // }
+
+      // console.log("nay");
       // console.log(pubsub);
       // subscribers.forEach((fn) => fn());
-      return updatedChannel;
+      return updatedChannels;
     },
     deleteMessage: async (_, args, context) => {
       const deletedMesssage = await channelData.deleteMessage(
@@ -167,11 +192,11 @@ const channelResolvers = {
     },
   },
   Subscription: {
-    channel: {
+    channels: {
       subscribe: (_, args) => {
         console.log(_);
         console.log(args);
-        return pubsub.asyncIterator([args.channelId]);
+        return pubsub.asyncIterator([args.userId]);
       },
     },
     // messages: {

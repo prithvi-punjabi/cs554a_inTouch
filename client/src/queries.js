@@ -549,8 +549,8 @@ const channel = {
     }
   `,
   SUBSCRIBE_MESSAGE: gql`
-    subscription SubscribeChannel($channelId: ID) {
-      channel(channelId: $channelId) {
+    subscription SubscribeChannels($userId: ID) {
+      channels(userId: $userId) {
         _id
         name
         displayName

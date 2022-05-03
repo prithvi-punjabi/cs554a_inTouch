@@ -11,23 +11,70 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import AddIcon from "@mui/icons-material/Add";
 
 import queries from "../queries";
-import { useQuery } from "@apollo/client";
+import { useQuery, useSubscription } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@material-ui/core";
 
 function Sidebar(props) {
   const navigate = useNavigate();
+
   let userId = localStorage.getItem("userId");
 
-  // const { loading, error, data } = useQuery(queries.user.GET_BY_ID, {
-  //   variables: {
-  //     userId: userId,
-  //   },
-  //   errorPolicy: "all",
-  //   onError: (error) => {
-  //     console.log(error);
-  //   },
-  // });
+  const { loading, error, data } = useQuery(queries.channel.GET, {
+    variables: {
+      userId: userId,
+    },
+    fetchPolicy: "network-only",
+  });
+
+  const [allChannels, setAllChannels] = useState({});
+  const [selectedChannelId, setSelectedChannelId] = useState(null);
+  const [readState, setReadState] = useState({});
+
+  useEffect(() => {
+    async function fetchData(channels) {
+      let allChatTemp = {};
+      for (let i = 0; i <= channels.length - 1; i++) {
+        allChatTemp[channels[i]._id] = channels[i];
+      }
+      setAllChannels(allChatTemp);
+    }
+    if (data !== undefined) {
+      fetchData(data.getChannelsForUser);
+    }
+  }, [data]);
+
+  const {
+    data: subData,
+    loading: subLoading,
+    error: subError,
+  } = useSubscription(queries.channel.SUBSCRIBE_MESSAGE, {
+    variables: {
+      userId: userId,
+    },
+  });
+
+  useEffect(() => {
+    console.log(subData);
+    async function fetchData(channels) {
+      let allChatTemp = {};
+      for (let i = 0; i <= channels.length - 1; i++) {
+        allChatTemp[channels[i]._id] = channels[i];
+      }
+      console.log(allChatTemp);
+      setAllChannels(allChatTemp);
+    }
+    if (subData !== undefined) {
+      fetchData(subData.channels);
+    }
+  }, [subData]);
+  useEffect(() => {
+    console.log("allChannels Updated");
+    setChannel(allChannels[selectedChannelId]);
+  }, [allChannels]);
+  if (data) {
+    console.log(data);
+  }
 
   const [showChannels, setshowChannels] = useState(false);
 
@@ -40,24 +87,23 @@ function Sidebar(props) {
   };
 
   const channelMap = () => {
-    return props.user.courses?.map((ch) => (
+    return data.getChannelsForUser?.map((ch) => (
       <div
         onClick={() => {
           setBody("channel");
         }}
       >
-        <SideOptions title={ch.code} />
+        <SideOptions title={ch.name} />
       </div>
     ));
   };
 
   // let channels = channelMap()
+
   return (
     <SidebarContainer>
       <Sidebarheader>
-        <Sidebarinfo>
-          <h2>{props.user.name}</h2>
-        </Sidebarinfo>
+        <Sidebarinfo>{props.user && <h2>{props.user.name}</h2>}</Sidebarinfo>
       </Sidebarheader>
       <hr />
 
@@ -98,16 +144,17 @@ function Sidebar(props) {
       )}
 
       {showChannels &&
-        props.user.courses?.map((ch) => (
+        data.getChannelsForUser?.map((ch) => (
           <div
             onClick={() => {
               setBody("channel");
-              setChannel(ch.code);
+              setChannel(ch);
+              setSelectedChannelId(ch._id);
               navigate("/main");
             }}
-            key={ch.code}
+            key={ch.name}
           >
-            <SideOptions title={ch.code} />
+            <SideOptions title={ch.name} />
           </div>
         ))}
       <hr />

@@ -10,6 +10,7 @@ const bcrypt = require("bcryptjs");
 const axios = require("axios");
 const channelData = require("./channel");
 var jwt = require("jsonwebtoken");
+const mapper = require("../helper/mappers");
 
 const checkLoggedInUser = async (token) => {
   let decoded = jwt.verify(token, process.env.SECRET);
@@ -127,6 +128,7 @@ const create = async (
   if (insertInfo.insertedCount === 0) throw "Could not add user";
   const newId = insertInfo.insertedId;
   const curruser = await getUser(newId.toString());
+  await mapper.channelFromUser(newId);
   return curruser;
 };
 
