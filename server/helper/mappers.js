@@ -1,6 +1,6 @@
 // const fs = require("fs");
 // const channelMapsFile = "../maps/channelMaps.json";
-const channelData = require("../data").channelData;
+const channelDataFunctions = require("../data/channel");
 const mongoCollections = require("../config/mongoCollections");
 const userCollection = mongoCollections.users;
 const channelMapCollection = mongoCollections.channelMap;
@@ -50,7 +50,7 @@ module.exports = {
     //   }
   },
   async channelFromUser(userId) {
-    const channelsForUser = await channelData.getByUser(String(userId));
+    const channelsForUser = await channelDataFunctions.getByUser(String(userId));
     for (let j = 0; j <= channelsForUser.length - 1; j++) {
       console.log(channelsForUser[j]._id);
       await this.channelAndUser(userId, channelsForUser[j]._id);
