@@ -12,16 +12,24 @@ const styles = {
     height: 32,
   },
   largerIcon: {
-    width: 40,
-    height: 40,
+    width: 50,
+    height: 50,
   },
 };
 
 function Chat(props) {
+
+  const messageRef = useRef(null)
   const textBox = useRef(null);
   console.log(props);
   const [currentChannel, setCurrentChannel] = useState(props.currentChannel);
 
+  useEffect(() => {
+    messageRef?.current?.scrollIntoView({
+      behavior:"smooth"
+      
+    })
+}, [props,currentChannel])
   //   const { data, loading, error } = useSubscription(
   //     queries.channel.SUBSCRIBE_MESSAGE,
   //     {
@@ -34,6 +42,8 @@ function Chat(props) {
   useEffect(() => {
     setCurrentChannel(props.currentChannel);
   }, [props]);
+
+  
 
   //   if (data) {
   //     console.log(data);
@@ -54,15 +64,50 @@ function Chat(props) {
   const mapper = (chat) => {
     // console.log(chat);
     return chat.map((message) => {
+      
+      
+        let days = Math.floor(
+          (new Date() - new Date(message.dateCreated)) / (1000 * 3600 * 24)
+          )
+        let date = new Date(message.dateCreated)
+        let time = date.toTimeString()
+        let dateTime = date.toLocaleString()
+
+        let h =  date.getHours(), m = date.getMinutes();
+        time = (h > 12) ? (h-12 + ':' + m +' PM') : (h + ':' + m +' AM');
+
+        date = date.toDateString()
+  
+
       return (
-        <div key={message._id}>
-          <div>
+        
+        <ChannelMessagesContainer key={message._id}>
+       
+       
+          <img src={message.user.profilePicture}></img>
+          
+            <MessageInfo>
+            <h5>{message.user.userName}<span>{" "}
+                          {days === 0 && (<small className="mr-2">Today, {time}</small>)}
+                          {days === 1 && (
+                            <small className="mr-2">Yesterday, {time}</small>
+                          )}
+                          {days > 1 && (
+                            <small className="mr-2">{date}, {time}</small>
+                          )}</span></h5>
+            
+            <MessageDetail>
             <p>{message.message}</p>
-          </div>
-          <div>
-            <p> by {message.user.userName}</p>
-          </div>
-        </div>
+            </MessageDetail>
+            </MessageInfo>
+            
+          
+        </ChannelMessagesContainer>
+       
+
+        
+      
+        
       );
     });
   };
@@ -88,7 +133,11 @@ function Chat(props) {
         </HeaderRight>
       </Header>
 
-      <ChannelMessages>{chat}</ChannelMessages>
+      <ChannelMessages>
+       
+        {chat}
+        <MessageBottom ref={messageRef} />
+        </ChannelMessages>
 
       <ChannelInput>
         <form
@@ -110,8 +159,8 @@ function Chat(props) {
             ref={textBox}
           />
           <div>
-            {/* <SendIcon style={styles.largerIcon} /> */}
-            <button className="fa fa-paper-plane" type="submit"></button>
+           
+            <Button  type="submit"> <SendIcon style={styles.largerIcon} /></Button>
           </div>
         </form>
       </ChannelInput>
@@ -121,8 +170,51 @@ function Chat(props) {
 
 export default Chat;
 
+const MessageBottom = styled.div`
+padding-bottom: 100px;
+`
+
+const ChannelMessagesContainer = styled.div`
+display: flex;
+/* align-items: center; */
+
+padding: 10px;
+background-color: #ffffff;
+border: 1px solid lightgray;
+border-radius: 20px;
+margin-bottom: 10px;
+>img {
+  height: 60px;
+  border-radius: 8px;
+}
+
+`
+
+const MessageInfo = styled.div`
+padding-left:10px ;
+align-items: left;
+text-align: left;
+>h5>span{
+  color:gray;
+  font-weight: 300;
+  margin-left: 14px;
+  font-size: 14px;
+}
+
+p>{
+ 
+}
+`
+const MessageDetail = styled.div`
+float: left;
+`
 const ChannelMessages = styled.div`
-margin-bottom: 17%;:`;
+padding: 5px;
+margin-top: 110px;
+/* display: flex; */
+/* text-align: left; */
+
+`
 const ChannelInput = styled.div`
   border-radius: 20px;
 
@@ -144,11 +236,14 @@ const ChannelInput = styled.div`
     position: fixed;
     bottom: 30px;
 
-    margin-left: 56%;
+    /* margin-left: 1085px; */
+    margin-left: 56.5%;
     /* border-radius: 2px; */
-    padding: 0.9%;
+    padding: 0.1%;
     outline: none;
   }
+
+  
   /* >form>div >button {
     position: fixed;
     bottom: 30px;
@@ -163,10 +258,12 @@ const ChannelInput = styled.div`
 `;
 
 const HeaderLeft = styled.div`
+position: fixed;
   display: flex;
+  
   > h4 {
     display: flex;
-    margin-left: 10px;
+    /* margin-left: 10px; */
   }
   /* >h4 >.MuiSvgIcon-root{
     margin-left: 5%;
@@ -177,6 +274,11 @@ const HeaderLeft = styled.div`
 `;
 const HeaderRight = styled.div`
   display: flex;
+  position: fixed; 
+
+  align-items: right;
+  margin-left: 75%;
+  margin-right: 20px;
   > p {
     display: flex;
     align-items: center;
@@ -185,15 +287,19 @@ const HeaderRight = styled.div`
 `;
 
 const Header = styled.div`
-  display: flex;
+ 
+ display: flex;
+  position: fixed;
+  width: 100%;
   justify-content: space-between;
-  padding: 20px;
+  padding: 50px;
   border-bottom: 1px solid lightgray;
+  background-color: white;
 `;
 
 const ChannelContainer = styled.div`
-  flex: 0.7%;
+  flex: 0.7;
   flex-grow: 1;
   overflow-y: scroll;
-  margin-top: 4%;
+  margin-top: 49px;
 `;

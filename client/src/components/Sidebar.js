@@ -167,7 +167,7 @@ const SidebarContainer = styled.div`
   flex: 0.4;
   border-top: 1px solid var(--intouch-color1);
   max-width: 260px;
-  margin-top: 3.9%;
+  margin-top: 74px;
 
   color: white;
 

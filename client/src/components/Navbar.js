@@ -80,7 +80,7 @@ const NavbarSearch = styled.div`
 `;
 const NavbarContainer = styled.div`
   display: flex;
-  height: 8.2%;
+  height: 74px;
   position: fixed;
   width: 100%;
   align-items: center;
