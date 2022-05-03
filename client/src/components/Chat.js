@@ -98,7 +98,7 @@ function Chat(props) {
             addMessage({
               variables: {
                 channelId: currentChannel._id,
-                user: props.user,
+                // user: props.user,
                 message: textBox.current.value,
               },
             });

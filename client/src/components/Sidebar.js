@@ -21,9 +21,6 @@ function Sidebar(props) {
   let userId = localStorage.getItem("userId");
 
   const { loading, error, data } = useQuery(queries.channel.GET, {
-    variables: {
-      userId: userId,
-    },
     fetchPolicy: "network-only",
   });
 
