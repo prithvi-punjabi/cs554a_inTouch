@@ -36,12 +36,52 @@ const user = {
   `,
   ADD_FRIEND: gql`
     mutation AddFriend($friendId: ID!) {
-      addFriend(friendId: $friendId)
+      addFriend(friendId: $friendId) {
+        _id
+        name
+        email
+        password
+        profilePicture
+        userName
+        bio
+        designation
+        gender
+        contactNo
+        dob
+        courses {
+          id
+          name
+          code
+          end_date
+        }
+        privacy
+        friends
+      }
     }
   `,
   REMOVE_FRIEND: gql`
     mutation DeleteFriend($friendId: ID!) {
-      deleteFriend(friendId: $friendId)
+      deleteFriend(friendId: $friendId) {
+        _id
+        name
+        email
+        password
+        profilePicture
+        userName
+        bio
+        designation
+        gender
+        contactNo
+        dob
+        courses {
+          id
+          name
+          code
+          end_date
+        }
+        privacy
+        friends
+      }
     }
   `,
   CREATE: gql`

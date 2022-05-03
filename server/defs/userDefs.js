@@ -43,8 +43,8 @@ const typeDefs = gql`
       contactNo: String!
       dob: String!
     ): user
-    addFriend(friendId: ID!): String
-    deleteFriend(friendId: ID!): String
+    addFriend(friendId: ID!): user
+    deleteFriend(friendId: ID!): user
   }
 `;
 
