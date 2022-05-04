@@ -133,6 +133,7 @@ function Chat(props) {
         <MessageBottom ref={messageRef} />
       </ChannelMessages>
 
+      <ChannelFooter>
       <ChannelInput>
         <form
           method="POST"
@@ -179,6 +180,7 @@ function Chat(props) {
           </div>
         </form>
       </ChannelInput>
+      </ChannelFooter>
     </ChannelContainer>
   );
 }
@@ -190,18 +192,19 @@ const MessageBottom = styled.div`
 `;
 
 const ChannelMessagesContainer = styled.div`
-  display: flex;
-  /* align-items: center; */
+display: flex;
+/* align-items: center; */
 
-  padding: 10px;
-  background-color: #ffffff;
-  border: 1px solid lightgray;
-  border-radius: 20px;
-  margin-bottom: 10px;
-  > img {
-    height: 60px;
-    border-radius: 8px;
-  }
+padding: 10px;
+background-color: white;
+border: 0px solid lightgray;
+border-radius: 20px;
+margin-bottom: 10px;
+>img {
+  height: 60px;
+  border-radius: 8px;
+}
+
 `;
 
 const MessageInfo = styled.div`
@@ -222,14 +225,21 @@ const MessageDetail = styled.div`
   float: left;
 `;
 const ChannelMessages = styled.div`
-  padding: 5px;
-  margin-top: 110px;
-  /* display: flex; */
-  /* text-align: left; */
-`;
+padding: 5px;
+margin-top: 110px;
+margin-left: 20px;
+/* display: flex; */
+/* text-align: left; */
+
+`
+const ChannelFooter = styled.div`
+padding-right: 100px;
+background-color: black;
+`
+
 const ChannelInput = styled.div`
   border-radius: 20px;
-
+  
   > form {
     position: relative;
     display: flex;

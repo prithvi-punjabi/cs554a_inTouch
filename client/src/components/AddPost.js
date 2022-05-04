@@ -5,6 +5,13 @@ import { useNavigate } from "react-router";
 import { uploadFile } from "../helper";
 import useTextToxicity from "react-text-toxicity";
 import Swal from "sweetalert2";
+import styled from "styled-components";
+import { Button } from "@material-ui/core";
+import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import ConnectWithoutContactOutlinedIcon from '@mui/icons-material/ConnectWithoutContactOutlined';
+import WorkOutlineOutlinedIcon from '@mui/icons-material/WorkOutlineOutlined';
+
 
 const AddPost = (props) => {
   const navigate = useNavigate();
@@ -126,45 +133,65 @@ const AddPost = (props) => {
               </div>
               <div>
                 <fieldset>
-                  <input
-                    type="radio"
+                 
+                <div class="middle">
+  
+  <label>
+  <input type="radio"
                     value="academic"
                     name="category"
                     checked={category === "academic"}
-                    onClick={(e) => setCategory(e.target.value)}
-                  />
-                  Academic
-                  <span className="cat"> </span>
-                  <input
-                    type="radio"
+                    onClick={(e) => setCategory(e.target.value)} />
+  <div class="academic box">
+  <span><SchoolOutlinedIcon/></span>
+  <br/>
+    <span>Academic</span>
+  </div>
+</label>
+<label>
+  <input type="radio"
                     value="housing"
                     name="category"
                     checked={category === "housing"}
-                    onClick={(e) => setCategory(e.target.value)}
-                  />
-                  Housing
-                  <span className="cat"> </span>
-                  <input
-                    type="radio"
+                    onClick={(e) => setCategory(e.target.value)} />
+  <div class="housing box">
+  <span><HomeOutlinedIcon/></span>
+  <br/>
+    <span>Housing</span>
+  </div>
+</label>
+  <label>
+  <input type="radio"
                     value="social"
                     name="category"
                     checked={category === "social"}
-                    onClick={(e) => setCategory(e.target.value)}
-                  />
-                  Social
-                  <span className="cat"> </span>
-                  <input
-                    type="radio"
+                    onClick={(e) => setCategory(e.target.value)} />
+  <div class="social box">
+  <span><ConnectWithoutContactOutlinedIcon/></span>
+  <br/>
+    <span>Social</span>
+  </div>
+</label>
+  <label>
+  <input type="radio"
                     value="career"
                     name="category"
                     checked={category === "career"}
-                    onClick={(e) => setCategory(e.target.value)}
-                  />
-                  Career
+                    onClick={(e) => setCategory(e.target.value)}/>
+  <div class="career box">
+  <span><WorkOutlineOutlinedIcon/></span>
+  <br/>
+    <span>Career</span>
+  </div>
+</label>
+
+  
+</div>
+
                 </fieldset>
               </div>
               <div className="postBut">
-                <button type="submit">Post</button>
+                <button  type="submit">Post</button>
               </div>
             </form>
           </div>
@@ -175,3 +202,5 @@ const AddPost = (props) => {
 };
 
 export default AddPost;
+
+
