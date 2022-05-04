@@ -373,8 +373,8 @@ const post = {
 
 const channel = {
   GET: gql`
-    query GetChannelsForUser {
-      getChannelsForUser {
+    query GetChannelsForUser($userId: ID) {
+      getChannelsForUser(userId: $userId) {
         _id
         name
         displayName
