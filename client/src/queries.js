@@ -447,7 +447,7 @@ const channel = {
         messages {
           _id
           user {
-            _id
+            userId
             userName
             profilePicture
           }
@@ -469,7 +469,7 @@ const channel = {
         messages {
           _id
           user {
-            _id
+            userId
             userName
             profilePicture
           }
@@ -491,7 +491,7 @@ const channel = {
         messages {
           _id
           user {
-            _id
+            userId
             userName
             profilePicture
           }
@@ -521,7 +521,7 @@ const channel = {
         messages {
           _id
           user {
-            _id
+            userId
             userName
             profilePicture
           }
@@ -551,7 +551,7 @@ const channel = {
         messages {
           _id
           user {
-            _id
+            userId
             userName
             profilePicture
           }
@@ -568,7 +568,7 @@ const channel = {
         name
         messages {
           user {
-            _id
+            userId
             userName
             profilePicture
           }
@@ -588,7 +588,7 @@ const channel = {
       addMessage(channelId: $channelId, message: $message) {
         _id
         user {
-          _id
+          userId
           userName
           profilePicture
         }
@@ -602,7 +602,7 @@ const channel = {
       deleteMessage(messageId: $messageId, userId: $userId) {
         _id
         user {
-          _id
+          userId
           userName
           profilePicture
         }
