@@ -26,14 +26,13 @@ const getById = async (id) => {
 
 const getPostsForUser = async (user, pageNumber) => {
   user._id = utils.parseObjectId(user._id, "user._id");
-  user.friends = user.friends.map(
-    (userId) => (userId = utils.parseObjectId(userId, "friends.userId"))
-  );
   validator.checkUser(user);
   const postCol = await postCollection();
   let posts;
   posts = await postCol
-    .find({ "user.userId": { $in: user.friends.concat([user._id]) } })
+    .find({
+      "user._id": { $in: user.friends.concat([user._id.toString()]) },
+    })
     .skip(pageNumber > 0 ? (pageNumber - 1) * common.PER_PAGE_POST : 0)
     .limit(common.PER_PAGE_POST)
     .toArray();
@@ -49,9 +48,7 @@ const getByQuery = async (user, query) => {
   validator.checkUser(user);
   let { search, userId, category, page, sort_by } = query;
 
-  const main_query = [
-    { "user.userId": { $in: user.friends.concat([user._id]) } },
-  ];
+  const main_query = [{ "user._id": { $in: user.friends.concat([user._id]) } }];
 
   //#region master search
   const search_query = [];

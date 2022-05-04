@@ -155,6 +155,29 @@ const post = {
       }
     }
   `,
+  GET: gql`
+    query GetPostsForUser($pageNumber: Int) {
+      getPostsForUser(pageNumber: $pageNumber) {
+        _id
+        text
+        image
+        dateCreated
+        category
+        comments {
+          _id
+          comment
+          dateCreated
+        }
+        likes
+        user {
+          _id
+          name
+          userName
+          profilePicture
+        }
+      }
+    }
+  `,
   GET_ALL: gql`
     query GetAll($pageNumber: Int) {
       getAll(pageNumber: $pageNumber) {
@@ -424,7 +447,7 @@ const channel = {
         messages {
           _id
           user {
-            userId
+            _id
             userName
             profilePicture
           }
@@ -446,7 +469,7 @@ const channel = {
         messages {
           _id
           user {
-            userId
+            _id
             userName
             profilePicture
           }
@@ -468,7 +491,7 @@ const channel = {
         messages {
           _id
           user {
-            userId
+            _id
             userName
             profilePicture
           }
@@ -498,7 +521,7 @@ const channel = {
         messages {
           _id
           user {
-            userId
+            _id
             userName
             profilePicture
           }
@@ -528,7 +551,7 @@ const channel = {
         messages {
           _id
           user {
-            userId
+            _id
             userName
             profilePicture
           }
@@ -545,7 +568,7 @@ const channel = {
         name
         messages {
           user {
-            userId
+            _id
             userName
             profilePicture
           }
@@ -565,7 +588,7 @@ const channel = {
       addMessage(channelId: $channelId, message: $message) {
         _id
         user {
-          userId
+          _id
           userName
           profilePicture
         }
@@ -579,7 +602,7 @@ const channel = {
       deleteMessage(messageId: $messageId, userId: $userId) {
         _id
         user {
-          userId
+          _id
           userName
           profilePicture
         }

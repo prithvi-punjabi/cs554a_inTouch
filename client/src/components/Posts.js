@@ -15,7 +15,7 @@ import styled from "styled-components";
 import "../App.css";
 const Posts = (props) => {
   const navigate = useNavigate();
-  const { loading, error, data } = useQuery(queries.post.GET_ALL, {
+  const { loading, error, data } = useQuery(queries.post.GET, {
     fetchPolicy: "cache-and-network",
   });
 
@@ -25,7 +25,7 @@ const Posts = (props) => {
 
   const userId = localStorage.getItem("userId");
   if (data) {
-    let posts = data.getAll;
+    let posts = data.getPostsForUser;
 
     return (
       <PostDiv>

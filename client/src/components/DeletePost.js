@@ -9,10 +9,10 @@ const DeletePost = (props) => {
   const [deletePost] = useMutation(queries.post.REMOVE, {
     update(cache, { data: deletePost }) {
       const post = cache.readQuery({
-        query: queries.post.GET_ALL,
+        query: queries.post.GET,
       });
       cache.writeQuery({
-        query: queries.post.GET_ALL,
+        query: queries.post.GET,
         data: {
           getAll: post.getAll.filter((e) => e._id !== props.postId),
         },

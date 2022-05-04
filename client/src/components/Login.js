@@ -27,13 +27,6 @@ const Login = () => {
   );
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const { loading, error, data } = useQuery(queries.post.GET_ALL);
-
-  // useEffect(() => {
-  //   if (data) {
-  //     console.log(data.getAll);
-  //   }
-  // }, []);
 
   async function PostData(e) {
     e.preventDefault();
