@@ -111,8 +111,7 @@ const Profile = () => {
           friendId: userId,
         },
       });
-      console.log(data);
-      refetchUser();
+      setUser(data.addFriend);
     } catch (e) {
       console.log(e);
     }
@@ -125,8 +124,7 @@ const Profile = () => {
           friendId: userId,
         },
       });
-      refetchUser();
-      console.log(data);
+      setUser(data.deleteFriend);
     } catch (e) {
       console.log(e);
     }

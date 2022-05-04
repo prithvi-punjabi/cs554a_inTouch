@@ -213,7 +213,7 @@ const addFriend = async (userId, friendId) => {
   if (!friendExists) {
     const addedFriend = await userCol.updateOne(
       { _id: ObjectId(friendId) },
-      { $push: { friends: userId } }
+      { $push: { friends: userId.toString() } }
     );
     console.log(addedFriend.modifiedCount);
     if (addedFriend.modifiedCount == 0) {
@@ -223,7 +223,7 @@ const addFriend = async (userId, friendId) => {
     }
   }
   let thisFriend = await getUser(friendId);
-  return `${thisFriend.name} was added to your friend list.`;
+  return thisFriend;
 };
 
 const delFriend = async (userId, friendId) => {
@@ -234,7 +234,6 @@ const delFriend = async (userId, friendId) => {
   userId = utils.parseObjectId(userId);
   const userCol = await userCollection();
 
-  let thisFriend = await getUser(friendId);
   let friendExists = await userCol.findOne({
     _id: userId,
     friends: friendId,
@@ -266,7 +265,8 @@ const delFriend = async (userId, friendId) => {
       throw error;
     }
   }
-  return `${thisFriend.name} was removed from your friend list`;
+  let thisFriend = await getUser(friendId);
+  return thisFriend;
 };
 
 module.exports = {
