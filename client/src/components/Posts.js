@@ -211,11 +211,20 @@ const Posts = (props) => {
       </PostDiv>
     );
   } else if (error) {
-    return (
-      <PostDiv>
-        <div className="displayContainer">{error.message}</div>{" "}
-      </PostDiv>
-    );
+    if (error.message === "No posts found") {
+      return (
+        <PostDiv>
+          <AddPost user={props.user} currentBody={props.currentBody} />
+        </PostDiv>
+      );
+    } else {
+      return (
+        <PostDiv>
+          <div className="displayContainer">{typeof error.message}</div>{" "}
+        </PostDiv>
+      );
+    }
+    
   }
 };
 

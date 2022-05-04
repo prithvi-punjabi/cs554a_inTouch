@@ -1,5 +1,5 @@
 import AWS from "aws-sdk";
-
+import * as toxicity from "@tensorflow-models/toxicity";
 const S3_BUCKET = "cs-546-in-touch";
 AWS.config.update({
   accessKeyId: process.env.REACT_APP_AWS_ID,
@@ -33,4 +33,23 @@ export const isLoggedIn = () => {
     localStorage.getItem("token") != null &&
     localStorage.getItem("userId") != null
   );
+};
+
+export const predictor = async (text, model) => {
+  if (!text) return;
+  model.current = model.current || (await toxicity.load());
+  const result = await model.current.classify([text]).catch(() => {});
+
+  if (!result) return;
+
+  return result.map((prediction) => {
+    const [{ match, probabilities }] = prediction.results;
+    return {
+      label: prediction.label,
+      match,
+      text,
+      probabilities,
+      probability: (probabilities[1] * 100).toFixed(2) + "%",
+    };
+  });
 };

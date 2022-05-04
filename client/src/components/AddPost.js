@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import queries from "../queries";
 import { useNavigate } from "react-router";
-import { uploadFile } from "../helper";
-import useTextToxicity from "react-text-toxicity";
+import { uploadFile, predictor } from "../helper";
 import Swal from "sweetalert2";
 import styled from "styled-components";
 import { Button } from "@material-ui/core";
@@ -11,12 +10,12 @@ import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import ConnectWithoutContactOutlinedIcon from "@mui/icons-material/ConnectWithoutContactOutlined";
 import WorkOutlineOutlinedIcon from "@mui/icons-material/WorkOutlineOutlined";
-
 const AddPost = (props) => {
   const navigate = useNavigate();
-  const [text, setText] = useState("");
   const [category, setCategory] = useState("");
   const [image, setImage] = useState(null);
+  let tBox = useRef({ current: { value: "" } });
+  const model = useRef();
   const [addPost] = useMutation(queries.post.ADD, {
     update(cache, { data: addPost }) {
       let post = cache.readQuery({
@@ -29,16 +28,15 @@ const AddPost = (props) => {
     },
   });
 
-  const predictions = useTextToxicity(text);
-
   const setBody = (type) => {
     props.currentBody(type);
   };
 
   async function createPost(e) {
     e.preventDefault();
-    let isToxic = false;
+    const predictions = await predictor(tBox.current.value, model);
     if (predictions) {
+      let isToxic = false;
       predictions.forEach((x) => {
         if (x.match === true) {
           isToxic = true;
@@ -51,28 +49,36 @@ const AddPost = (props) => {
           });
         }
       });
-    }
-    if (!isToxic) {
-      if (image) {
-        const imagePath = await uploadFile(image);
-        await addPost({
-          variables: { text: text, image: imagePath, category: category },
-        });
-      } else {
-        await addPost({
-          variables: { text: text, image: "", category: category },
-        }).catch((e) => {
-          Swal.fire({
-            title: "Error!",
-            text: e.message,
-            icon: "error",
-            confirmButtonText: "I'll fix it!",
+      if (!isToxic) {
+        if (image) {
+          const imagePath = await uploadFile(image);
+          await addPost({
+            variables: {
+              text: tBox.current.value,
+              image: imagePath,
+              category: category,
+            },
           });
-        });
+        } else {
+          await addPost({
+            variables: {
+              text: tBox.current.value,
+              image: "",
+              category: category,
+            },
+          }).catch((e) => {
+            Swal.fire({
+              title: "Error!",
+              text: e.message,
+              icon: "error",
+              confirmButtonText: "I'll fix it!",
+            });
+          });
+        }
+        tBox.current.value = "";
+        setCategory("");
+        setImage("");
       }
-      setText("");
-      setCategory("");
-      setImage("");
     }
   }
 
@@ -113,8 +119,7 @@ const AddPost = (props) => {
             <form className="postForm" onSubmit={createPost}>
               <textarea
                 placeholder="Tell us what you're thinking..."
-                value={text}
-                onChange={(e) => setText(e.target.value)}
+                ref={tBox}
               />
               <div className="image-upload">
                 <label htmlFor="file-input">
