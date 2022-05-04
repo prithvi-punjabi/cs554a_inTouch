@@ -11,6 +11,7 @@ const bcrypt = require("bcryptjs");
 const axios = require("axios");
 const userDataFunc = require("../data/user");
 const postDataFunc = require("../data/post");
+const mapper = require("../helper/mappers");
 // const channelData = require("./channel");
 
 async function addUser(
@@ -47,6 +48,7 @@ async function addUser(
   if (insertInfo.insertedCount === 0) throw "Could not add user";
   const newId = insertInfo.insertedId;
   const curruser = await userDataFunc.getUser(newId.toString());
+  await mapper.channelFromUser(newId);
   return curruser;
 }
 
