@@ -1,6 +1,6 @@
 import { printIntrospectionSchema } from "graphql";
 import React, { useEffect, useState } from "react";
-import { useQuery } from "@apollo/client";
+import { useQuery, useLazyQuery } from "@apollo/client";
 import styled from "styled-components";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
@@ -15,7 +15,7 @@ function Main({ component }) {
   const userId = localStorage.getItem("userId");
 
   let navigate = useNavigate();
-
+  const [allChannels, setAllChannels] = useState([]);
   const { loading, data, error } = useQuery(queries.user.GET_BY_ID, {
     variables: { userId: userId },
     errorPolicy: "all",
@@ -26,12 +26,35 @@ function Main({ component }) {
   if (data) {
     console.log(data);
   }
+  const [skip, setSkip] = useState(false);
+  const {
+    loading: cLoading,
+    error: cError,
+    data: cData,
+  } = useQuery(queries.channel.GET, {
+    skip: skip,
+    variables: { userId: userId },
+  });
 
   useEffect(() => {
     if (!isLoggedIn()) {
       navigate("/login", { replace: true });
     }
   }, []);
+
+  useEffect(() => {
+    if (!cLoading && !!cData) {
+      console.log(cData);
+      setSkip(true);
+      setAllChannels(cData.getChannelsForUser);
+    }
+  }, [cLoading, cData]);
+
+  useEffect(() => {
+    if (cError) {
+      console.log(cError);
+    }
+  }, [cError]);
 
   const [currentBody, setCurrentBody] = useState(component);
   const [currentChannel, setCurrentChannel] = useState(component);
@@ -43,8 +66,10 @@ function Main({ component }) {
           <Sidebar
             currentBody={setCurrentBody}
             setChannel={setCurrentChannel}
+            allChannels={allChannels}
             user={data.getUser}
           ></Sidebar>
+
           {currentBody && currentBody === "feed" && (
             <Posts currentBody={setCurrentBody} user={data.getUser}></Posts>
           )}

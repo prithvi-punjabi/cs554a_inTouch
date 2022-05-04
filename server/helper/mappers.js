@@ -50,7 +50,9 @@ module.exports = {
     //   }
   },
   async channelFromUser(userId) {
-    const channelsForUser = await channelDataFunctions.getByUser(String(userId));
+    const channelsForUser = await channelDataFunctions.getByUser(
+      String(userId)
+    );
     for (let j = 0; j <= channelsForUser.length - 1; j++) {
       console.log(channelsForUser[j]._id);
       await this.channelAndUser(userId, channelsForUser[j]._id);
@@ -86,7 +88,7 @@ const sample = async () => {
   const allUsersCol = await userCollection();
   const allUsers = await allUsersCol.find({}).toArray();
   for (let i = 0; i <= allUsers.length - 1; i++) {
-    const channelsForUser = await channelData.getByUser(
+    const channelsForUser = await channelDataFunctions.getByUser(
       String(allUsers[i]._id)
     );
     for (let j = 0; j <= channelsForUser.length - 1; j++) {

@@ -6,6 +6,9 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { Button } from "@material-ui/core";
 import SendIcon from "@mui/icons-material/Send";
 import queries from "../queries";
+import useTextToxicity from "react-text-toxicity";
+import Swal from "sweetalert2";
+
 const styles = {
   largeIcon: {
     width: 40,
@@ -18,18 +21,17 @@ const styles = {
 };
 
 function Chat(props) {
-
-  const messageRef = useRef(null)
+  const messageRef = useRef(null);
   const textBox = useRef(null);
   console.log(props);
+  const [message, setMessage] = useState("");
   const [currentChannel, setCurrentChannel] = useState(props.currentChannel);
 
   useEffect(() => {
     messageRef?.current?.scrollIntoView({
-      behavior:"smooth"
-      
-    })
-}, [props,currentChannel])
+      behavior: "smooth",
+    });
+  }, [props, currentChannel]);
   //   const { data, loading, error } = useSubscription(
   //     queries.channel.SUBSCRIBE_MESSAGE,
   //     {
@@ -42,8 +44,6 @@ function Chat(props) {
   useEffect(() => {
     setCurrentChannel(props.currentChannel);
   }, [props]);
-
-  
 
   //   if (data) {
   //     console.log(data);
@@ -64,54 +64,49 @@ function Chat(props) {
   const mapper = (chat) => {
     // console.log(chat);
     return chat.map((message) => {
-      
-      
-        let days = Math.floor(
-          (new Date() - new Date(message.dateCreated)) / (1000 * 3600 * 24)
-          )
-        let date = new Date(message.dateCreated)
-        let time = date.toTimeString()
-        let dateTime = date.toLocaleString()
+      let days = Math.floor(
+        (new Date() - new Date(message.dateCreated)) / (1000 * 3600 * 24)
+      );
+      let date = new Date(message.dateCreated);
+      let time = date.toTimeString();
+      let dateTime = date.toLocaleString();
 
-        let h =  date.getHours(), m = date.getMinutes();
-        time = (h > 12) ? (h-12 + ':' + m +' PM') : (h + ':' + m +' AM');
+      let h = date.getHours(),
+        m = date.getMinutes();
+      time = h > 12 ? h - 12 + ":" + m + " PM" : h + ":" + m + " AM";
 
-        date = date.toDateString()
-  
+      date = date.toDateString();
 
       return (
-        
         <ChannelMessagesContainer key={message._id}>
-       
-       
           <img src={message.user.profilePicture}></img>
-          
-            <MessageInfo>
-            <h5>{message.user.userName}<span>{" "}
-                          {days === 0 && (<small className="mr-2">Today, {time}</small>)}
-                          {days === 1 && (
-                            <small className="mr-2">Yesterday, {time}</small>
-                          )}
-                          {days > 1 && (
-                            <small className="mr-2">{date}, {time}</small>
-                          )}</span></h5>
-            
-            <MessageDetail>
-            <p>{message.message}</p>
-            </MessageDetail>
-            </MessageInfo>
-            
-          
-        </ChannelMessagesContainer>
-       
 
-        
-      
-        
+          <MessageInfo>
+            <h5>
+              {message.user.userName}
+              <span>
+                {" "}
+                {days === 0 && <small className="mr-2">Today, {time}</small>}
+                {days === 1 && (
+                  <small className="mr-2">Yesterday, {time}</small>
+                )}
+                {days > 1 && (
+                  <small className="mr-2">
+                    {date}, {time}
+                  </small>
+                )}
+              </span>
+            </h5>
+
+            <MessageDetail>
+              <p>{message.message}</p>
+            </MessageDetail>
+          </MessageInfo>
+        </ChannelMessagesContainer>
       );
     });
   };
-
+  const predictions = useTextToxicity(message);
   let chat =
     currentChannel &&
     currentChannel.messages &&
@@ -134,36 +129,58 @@ function Chat(props) {
       </Header>
 
       <ChannelMessages>
-       
         {chat}
         <MessageBottom ref={messageRef} />
-        </ChannelMessages>
+      </ChannelMessages>
 
-      <ChannelInput>
-        <form
-          method="POST"
-          onSubmit={(e) => {
-            e.preventDefault();
-            addMessage({
-              variables: {
-                channelId: currentChannel._id,
-                user: props.user,
-                message: textBox.current.value,
-              },
-            });
-            textBox.current.value = "";
-          }}
-        >
-          <input
-            placeholder={`Send text in ${currentChannel.name}`}
-            ref={textBox}
-          />
-          <div>
-           
-            <Button  type="submit"> <SendIcon style={styles.largerIcon} /></Button>
-          </div>
-        </form>
-      </ChannelInput>
+      <ChannelFooter>
+        <ChannelInput>
+          <form
+            method="POST"
+            onSubmit={(e) => {
+              e.preventDefault();
+              setMessage(textBox.current.value);
+              let isToxic = false;
+              if (predictions) {
+                predictions.forEach((x) => {
+                  if (x.match === true) {
+                    isToxic = true;
+                    if ((x.label = "toxicity")) x.label = "toxic";
+                    Swal.fire({
+                      title: "Toxic Text Detected!",
+                      text: `Your message has been labelled ${x.label} with a probability of ${x.probability}. You send post it.`,
+                      icon: "error",
+                      confirmButtonText: "I'm sorry!",
+                    });
+                  }
+                });
+              }
+              if (isToxic == false) {
+                addMessage({
+                  variables: {
+                    channelId: currentChannel._id,
+                    // user: props.user,
+                    message: textBox.current.value,
+                  },
+                });
+
+                textBox.current.value = "";
+              }
+            }}
+          >
+            <input
+              placeholder={`Send text in ${currentChannel.name}`}
+              ref={textBox}
+            />
+            <div>
+              <Button type="submit">
+                {" "}
+                <SendIcon style={styles.largerIcon} />
+              </Button>
+            </div>
+          </form>
+        </ChannelInput>
+      </ChannelFooter>
     </ChannelContainer>
   );
 }
@@ -171,50 +188,53 @@ function Chat(props) {
 export default Chat;
 
 const MessageBottom = styled.div`
-padding-bottom: 100px;
-`
+  padding-bottom: 100px;
+`;
 
 const ChannelMessagesContainer = styled.div`
-display: flex;
-/* align-items: center; */
+  display: flex;
+  /* align-items: center; */
 
-padding: 10px;
-background-color: #ffffff;
-border: 1px solid lightgray;
-border-radius: 20px;
-margin-bottom: 10px;
->img {
-  height: 60px;
-  border-radius: 8px;
-}
-
-`
+  padding: 10px;
+  background-color: white;
+  border: 0px solid lightgray;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  > img {
+    height: 60px;
+    border-radius: 8px;
+  }
+`;
 
 const MessageInfo = styled.div`
-padding-left:10px ;
-align-items: left;
-text-align: left;
->h5>span{
-  color:gray;
-  font-weight: 300;
-  margin-left: 14px;
-  font-size: 14px;
-}
+  padding-left: 10px;
+  align-items: left;
+  text-align: left;
+  > h5 > span {
+    color: gray;
+    font-weight: 300;
+    margin-left: 14px;
+    font-size: 14px;
+  }
 
-p>{
- 
-}
-`
+  p > {
+  }
+`;
 const MessageDetail = styled.div`
-float: left;
-`
+  float: left;
+`;
 const ChannelMessages = styled.div`
-padding: 5px;
-margin-top: 110px;
-/* display: flex; */
-/* text-align: left; */
+  padding: 5px;
+  margin-top: 110px;
+  margin-left: 20px;
+  /* display: flex; */
+  /* text-align: left; */
+`;
+const ChannelFooter = styled.div`
+  padding-right: 100px;
+  background-color: black;
+`;
 
-`
 const ChannelInput = styled.div`
   border-radius: 20px;
 
@@ -243,7 +263,6 @@ const ChannelInput = styled.div`
     outline: none;
   }
 
-  
   /* >form>div >button {
     position: fixed;
     bottom: 30px;
@@ -258,9 +277,9 @@ const ChannelInput = styled.div`
 `;
 
 const HeaderLeft = styled.div`
-position: fixed;
+  position: fixed;
   display: flex;
-  
+
   > h4 {
     display: flex;
     /* margin-left: 10px; */
@@ -274,7 +293,7 @@ position: fixed;
 `;
 const HeaderRight = styled.div`
   display: flex;
-  position: fixed; 
+  position: fixed;
 
   align-items: right;
   margin-left: 75%;
@@ -287,8 +306,7 @@ const HeaderRight = styled.div`
 `;
 
 const Header = styled.div`
- 
- display: flex;
+  display: flex;
   position: fixed;
   width: 100%;
   justify-content: space-between;
