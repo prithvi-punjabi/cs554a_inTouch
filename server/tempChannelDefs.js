@@ -55,7 +55,7 @@ const typeDefs = gql`
     msg: String
   }
   type Subscription {
-    channels(userId: ID): [channel]
+    channels(userId: ID): channel
   }
   type Query {
     getChannelById(id: ID): channel
@@ -155,8 +155,9 @@ const channelResolvers = {
       console.log(pubsub);
       const channelUsers = await mapper.usersForChannel(args.channelId);
       for (let i = 0; i <= channelUsers.length - 1; i++) {
+        const updatedChannel = await channelData.getById(args.channelId);
         pubsub.publish([String(channelUsers[i])], {
-          channels: updatedChannels,
+          channels: updatedChannel,
         });
       }
       console.log("after:");
