@@ -1,5 +1,6 @@
 const { ObjectId } = require("mongodb");
 const dbConnection = require("../config/mongoConnection");
+const { userData } = require("../data");
 const seedFuncs = require("./seedfuncs");
 
 async function main() {
@@ -68,8 +69,9 @@ async function main() {
       "Female",
       "7764986763",
       "1998-04-12",
-      [JohnDoe._id.toString()]
+      []
     );
+    await userData.addFriend(JaneDoe._id.toString(), JohnDoe._id.toString());
     const MikeDowry = await seedFuncs.addUser(
       "Mike Dowry",
       "mikedow1997@stevens.edu",
@@ -100,8 +102,10 @@ async function main() {
       "Male",
       "6469045532",
       "1998-12-06",
-      [JaneDoe._id.toString(), JohnDoe._id.toString()]
+      []
     );
+    await userData.addFriend(MikeDowry._id.toString(), JaneDoe._id.toString());
+    await userData.addFriend(MikeDowry._id.toString(), JohnDoe._id.toString());
     const JasonLively = await seedFuncs.addUser(
       "Jason Lively",
       "jasonlive998@stevens.edu",
@@ -132,7 +136,15 @@ async function main() {
       "Male",
       "9124213443",
       "2000-05-17",
-      [MikeDowry._id.toString(), JohnDoe._id.toString()]
+      []
+    );
+    await userData.addFriend(
+      JasonLively._id.toString(),
+      JohnDoe._id.toString()
+    );
+    await userData.addFriend(
+      JasonLively._id.toString(),
+      MikeDowry._id.toString()
     );
     const MonicaPrice = await seedFuncs.addUser(
       "Monica Price",
@@ -164,11 +176,19 @@ async function main() {
       "Female",
       "2123987764",
       "1997-01-21",
-      [
-        JaneDoe._id.toString(),
-        JohnDoe._id.toString(),
-        JasonLively._id.toString(),
-      ]
+      []
+    );
+    await userData.addFriend(
+      MonicaPrice._id.toString(),
+      JaneDoe._id.toString()
+    );
+    await userData.addFriend(
+      MonicaPrice._id.toString(),
+      JohnDoe._id.toString()
+    );
+    await userData.addFriend(
+      MonicaPrice._id.toString(),
+      JasonLively._id.toString()
     );
     const AnchalShah = await seedFuncs.addUser(
       "Anchal Shah",
@@ -200,7 +220,7 @@ async function main() {
       "Female",
       "4145396639",
       "1996-09-30",
-      [JaneDoe._id.toString(), MonicaPrice._id.toString()]
+      []
     );
     const PatrickMountain = await seedFuncs.addUser(
       "Patrick Mountain",
@@ -232,14 +252,7 @@ async function main() {
       "Male",
       "9123129967",
       "1978-07-17",
-      [
-        JaneDoe._id.toString(),
-        MonicaPrice._id.toString(),
-        AnchalShah._id.toString(),
-        JohnDoe._id.toString(),
-        MikeDowry._id.toString(),
-        JasonLively._id.toString(),
-      ]
+      []
     );
     const TristanPrice = await seedFuncs.addUser(
       "Tristan Price",
@@ -271,7 +284,7 @@ async function main() {
       "Male",
       "4012988823",
       "1999-02-23",
-      [PatrickMountain._id.toString(), JohnDoe._id.toString()]
+      []
     );
     const NatashaZigler = await seedFuncs.addUser(
       "Natasha Zigler",
@@ -303,16 +316,7 @@ async function main() {
       "Female",
       "2129099978",
       "2000-11-16",
-      [
-        JaneDoe._id.toString(),
-        MonicaPrice._id.toString(),
-        AnchalShah._id.toString(),
-        JohnDoe._id.toString(),
-        MikeDowry._id.toString(),
-        JasonLively._id.toString(),
-        PatrickMountain._id.toString(),
-        TristanPrice._id.toString(),
-      ]
+      [toString()]
     );
     const DwightSchrute = await seedFuncs.addUser(
       "Dwight Schrute",
@@ -344,15 +348,7 @@ async function main() {
       "Male",
       "4012325545",
       "1966-01-20",
-      [
-        JaneDoe._id.toString(),
-        MonicaPrice._id.toString(),
-        AnchalShah._id.toString(),
-        JohnDoe._id.toString(),
-        PatrickMountain._id.toString(),
-        TristanPrice._id.toString(),
-        NatashaZigler._id.toString(),
-      ]
+      []
     );
     const post1 = await seedFuncs.addPost(
       {
