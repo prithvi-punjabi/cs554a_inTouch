@@ -134,52 +134,52 @@ function Chat(props) {
       </ChannelMessages>
 
       <ChannelFooter>
-      <ChannelInput>
-        <form
-          method="POST"
-          onSubmit={(e) => {
-            e.preventDefault();
-            setMessage(textBox.current.value);
-            let isToxic = false;
-            if (predictions) {
-              predictions.forEach((x) => {
-                if (x.match === true) {
-                  isToxic = true;
-                  if ((x.label = "toxicity")) x.label = "toxic";
-                  Swal.fire({
-                    title: "Toxic Text Detected!",
-                    text: `Your message has been labelled ${x.label} with a probability of ${x.probability}. You send post it.`,
-                    icon: "error",
-                    confirmButtonText: "I'm sorry!",
-                  });
-                }
-              });
-            }
-            if (isToxic == false) {
-              addMessage({
-                variables: {
-                  channelId: currentChannel._id,
-                  // user: props.user,
-                  message: textBox.current.value,
-                },
-              });
+        <ChannelInput>
+          <form
+            method="POST"
+            onSubmit={(e) => {
+              e.preventDefault();
+              setMessage(textBox.current.value);
+              let isToxic = false;
+              if (predictions) {
+                predictions.forEach((x) => {
+                  if (x.match === true) {
+                    isToxic = true;
+                    if ((x.label = "toxicity")) x.label = "toxic";
+                    Swal.fire({
+                      title: "Toxic Text Detected!",
+                      text: `Your message has been labelled ${x.label} with a probability of ${x.probability}. You send post it.`,
+                      icon: "error",
+                      confirmButtonText: "I'm sorry!",
+                    });
+                  }
+                });
+              }
+              if (isToxic == false) {
+                addMessage({
+                  variables: {
+                    channelId: currentChannel._id,
+                    // user: props.user,
+                    message: textBox.current.value,
+                  },
+                });
 
-              textBox.current.value = "";
-            }
-          }}
-        >
-          <input
-            placeholder={`Send text in ${currentChannel.name}`}
-            ref={textBox}
-          />
-          <div>
-            <Button type="submit">
-              {" "}
-              <SendIcon style={styles.largerIcon} />
-            </Button>
-          </div>
-        </form>
-      </ChannelInput>
+                textBox.current.value = "";
+              }
+            }}
+          >
+            <input
+              placeholder={`Send text in ${currentChannel.name}`}
+              ref={textBox}
+            />
+            <div>
+              <Button type="submit">
+                {" "}
+                <SendIcon style={styles.largerIcon} />
+              </Button>
+            </div>
+          </form>
+        </ChannelInput>
       </ChannelFooter>
     </ChannelContainer>
   );
@@ -192,19 +192,18 @@ const MessageBottom = styled.div`
 `;
 
 const ChannelMessagesContainer = styled.div`
-display: flex;
-/* align-items: center; */
+  display: flex;
+  /* align-items: center; */
 
-padding: 10px;
-background-color: white;
-border: 0px solid lightgray;
-border-radius: 20px;
-margin-bottom: 10px;
->img {
-  height: 60px;
-  border-radius: 8px;
-}
-
+  padding: 10px;
+  background-color: white;
+  border: 0px solid lightgray;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  > img {
+    height: 60px;
+    border-radius: 8px;
+  }
 `;
 
 const MessageInfo = styled.div`
@@ -225,21 +224,20 @@ const MessageDetail = styled.div`
   float: left;
 `;
 const ChannelMessages = styled.div`
-padding: 5px;
-margin-top: 110px;
-margin-left: 20px;
-/* display: flex; */
-/* text-align: left; */
-
-`
+  padding: 5px;
+  margin-top: 110px;
+  margin-left: 20px;
+  /* display: flex; */
+  /* text-align: left; */
+`;
 const ChannelFooter = styled.div`
-padding-right: 100px;
-background-color: black;
-`
+  padding-right: 100px;
+  background-color: black;
+`;
 
 const ChannelInput = styled.div`
   border-radius: 20px;
-  
+
   > form {
     position: relative;
     display: flex;
