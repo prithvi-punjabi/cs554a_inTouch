@@ -23,7 +23,9 @@ const AddPost = (props) => {
       });
       cache.writeQuery({
         query: queries.post.GET,
-        data: { getAll: [...[addPost.createPost], ...post.getAll] },
+        data: {
+          getPostsForUser: [...[addPost.createPost], ...post.getPostsForUser],
+        },
       });
     },
   });
@@ -34,6 +36,15 @@ const AddPost = (props) => {
 
   async function createPost(e) {
     e.preventDefault();
+    if (!category) {
+      Swal.fire({
+        title: "Error!",
+        text: "Please choose a category for your post!",
+        icon: "error",
+        confirmButtonText: "I'll fix it!",
+      });
+      return;
+    }
     const predictions = await predictor(tBox.current.value, model);
     if (predictions) {
       let isToxic = false;

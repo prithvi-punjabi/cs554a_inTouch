@@ -1,20 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useMutation } from "@apollo/client";
 import queries from "../queries";
 import useTextToxicity from "react-text-toxicity";
 import Swal from "sweetalert2";
+import { predictor } from "../helper";
 
 const AddComment = (props) => {
   const [addComment] = useMutation(queries.post.ADD_COMMENT);
-  const [comment, setComment] = useState("");
-  const predictions = useTextToxicity(comment);
-
+  const textBox = useRef(null);
+  const model = useRef();
   return (
     <div className="comment-input">
       {" "}
       <form
         onSubmit={async (e) => {
           e.preventDefault();
+          const predictions = await predictor(textBox.current.value, model);
           let isToxic = false;
           predictions.forEach((x) => {
             if (x.match === true) {
@@ -30,9 +31,12 @@ const AddComment = (props) => {
           });
           if (!isToxic) {
             const com = await addComment({
-              variables: { postId: props.postId, comment: comment },
+              variables: {
+                postId: props.postId,
+                comment: textBox.current.value,
+              },
             });
-            setComment("");
+            textBox.current.value = "";
           }
         }}
       >
@@ -40,8 +44,7 @@ const AddComment = (props) => {
           type="text"
           className="form-control"
           aria-label="Add Comment"
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
+          ref={textBox}
         />
         <div className="fonts">
           {" "}
