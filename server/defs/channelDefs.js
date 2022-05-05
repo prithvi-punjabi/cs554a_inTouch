@@ -1,7 +1,7 @@
 const { gql } = require("apollo-server-express");
-const channelData = require("../data").channelData;
+const channelData = require("./data").channelData;
 const { GraphQLDateTime } = require("graphql-scalars");
-
+const mapper = require("./helper/mappers");
 const typeDefs = gql`
   scalar DateTime
   input channelCourse {
@@ -51,10 +51,16 @@ const typeDefs = gql`
     status: Int
     messages: [message]
   }
+  type test {
+    msg: String
+  }
+  type Subscription {
+    channels(userId: ID): channel
+  }
   type Query {
     getChannelById(id: ID): channel
     getAllChannels: [channel]
-    getChannelsForUser: [channel]
+    getChannelsForUser(userId: ID): [channel]
   }
   type Mutation {
     createChannel(
@@ -68,11 +74,24 @@ const typeDefs = gql`
       description: String
     ): channel
     removeChannel(channelId: ID): channel
-    addMessage(channelId: ID, user: channelUserInp, message: String): message
+    addMessage(channelId: ID, message: String): message
     deleteMessage(messageId: ID, userId: ID): message
+    testMessage(msg: String): test
   }
 `;
+//REOMVED FROM ADD MESSAGE : , user: channelUserInp
+// type test {
+//   //   msg: String
+//   // }
+// type Subscription {
+//   messages: [test]
+// }
 
+///WHY IS IT CONST?
+const subscribers = [];
+const onMessagesUpdates = (fn) => subscribers.push(fn);
+const { PubSub } = require("graphql-subscriptions");
+const pubsub = new PubSub();
 const channelResolvers = {
   DateTime: GraphQLDateTime,
   Query: {
@@ -85,7 +104,7 @@ const channelResolvers = {
       return allChannels;
     },
     getChannelsForUser: async (_, args, context) => {
-      const userChannels = await channelData.getChannelsForUser(context.user);
+      const userChannels = await channelData.getByUser(args.userId);
       return userChannels;
     },
   },
@@ -111,17 +130,55 @@ const channelResolvers = {
       return removedChannel;
     },
     addMessage: async (_, args, context) => {
+      // console.log(context);
       const user = {
         _id: context.user._id,
-        userName: context.user._userName,
+        userName: context.user.userName,
         profilePicture: context.user.profilePicture,
       };
+      // const user = {
+      //   _id: "625a4cc4368c53d53cf0cdb1",
+      //   userName: "BigBoss",
+      //   profilePicture: "invalid url",
+      // };
+      console.log(args);
       const addedMessage = await channelData.addMessage(
         args.channelId,
         user,
         args.message
       );
-      return addedMessage;
+      const updatedChannels = await channelData.getByUser(context.user._id);
+      // console.log(
+      //   updatedChannels[0].messages[updatedChannels[0].messages.length - 1]
+      // );
+      ///////////////////////////////////
+      // console.log("before:");
+      // console.log(pubsub);
+      const channelUsers = await mapper.usersForChannel(args.channelId);
+      for (let i = 0; i <= channelUsers.length - 1; i++) {
+        const updatedChannel = await channelData.getById(args.channelId);
+        pubsub.publish([String(channelUsers[i])], {
+          channels: updatedChannel,
+        });
+      }
+      // console.log("after:");
+      // console.log(pubsub);
+      //////////////////////////////////
+      // for (let i = 0; i<= channelUsers.) {
+      // console.log(doSend);
+      // if (doSend) {
+      //   console.log("yay");
+      //   console.log(pubsub);
+      //   pubsub.publish([String(eventUserId)], {
+      //     channels: updatedChannels,
+      //   });
+      // }
+      // }
+
+      // console.log("nay");
+      // console.log(pubsub);
+      // subscribers.forEach((fn) => fn());
+      return updatedChannels;
     },
     deleteMessage: async (_, args, context) => {
       const deletedMesssage = await channelData.deleteMessage(
@@ -130,8 +187,44 @@ const channelResolvers = {
       );
       return deletedMesssage;
     },
+    testMessage: async (_, args, context) => {
+      // console.log(pubsub);
+      pubsub.publish("MESSAGE", { messages: [args] });
+      return args;
+      // subscribers.forEach((fn) => fn());
+    },
+  },
+  Subscription: {
+    channels: {
+      subscribe: (_, args) => {
+        // console.log(args);
+        return pubsub.asyncIterator([args.userId]);
+      },
+    },
+    // messages: {
+    //   subscibe: async (parent, args) => {
+    //     let channel = 1;
+    //     // const messages = await channelData.getById(channel);
+    //     console.log(pubsub);
+    //     onMessagesUpdates(() =>
+    //       pubsub.publish(["NUMBER_INCREMENTED"], {
+    //         messages: [{ msg: args.msg }],
+    //       })
+    //     );
+    //     setTimeout(
+    //       () =>
+    //         pubsub.publish(["NUMBER_INCREMENTED"], {
+    //           messages: [{ msg: args.msg }],
+    //         }),
+    //       0
+    //     );
+    //     return pubsub.asyncIterator(["NUMBER_INCREMENTED"]);
+    //     // return pubsub.asyncIterator("subscribed");
+    //   },
+    // },
   },
 };
+
 
 module.exports = {
   typeDefs,

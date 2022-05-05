@@ -54,8 +54,8 @@ const serverCleanup = useServer(
   {
     schema,
     onConnect: async (ctx) => {
-      //   console.log("New client connected");
-      //   console.log(ctx);
+      console.log("New client connected");
+      // console.log(ctx);
       //   // Check authentication every time a client connects.
       //   if (tokenIsNotValid(ctx.connectionParams)) {
       //     // You can return false to close the connection  or throw an explicit error

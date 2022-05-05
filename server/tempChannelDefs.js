@@ -151,8 +151,9 @@ const channelResolvers = {
       // console.log(
       //   updatedChannels[0].messages[updatedChannels[0].messages.length - 1]
       // );
-      console.log("before:");
-      console.log(pubsub);
+      ///////////////////////////////////
+      // console.log("before:");
+      // console.log(pubsub);
       const channelUsers = await mapper.usersForChannel(args.channelId);
       for (let i = 0; i <= channelUsers.length - 1; i++) {
         const updatedChannel = await channelData.getById(args.channelId);
@@ -160,8 +161,9 @@ const channelResolvers = {
           channels: updatedChannel,
         });
       }
-      console.log("after:");
-      console.log(pubsub);
+      // console.log("after:");
+      // console.log(pubsub);
+      //////////////////////////////////
       // for (let i = 0; i<= channelUsers.) {
       // console.log(doSend);
       // if (doSend) {
@@ -195,8 +197,7 @@ const channelResolvers = {
   Subscription: {
     channels: {
       subscribe: (_, args) => {
-        console.log(_);
-        console.log(args);
+        // console.log(args);
         return pubsub.asyncIterator([args.userId]);
       },
     },
