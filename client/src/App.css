@@ -558,4 +558,22 @@ textarea {
 	 color: black;
 }
  
- 
+ /* Sidebar responsive  */
+
+ .sidebar-toggle{
+  color: #fff;
+  float: right;
+  line-height: 50px;
+  font-size: 24px;
+  cursor: pointer;
+  display: none;
+
+}
+
+@media (max-width:991px) {
+.sidebar-toggle{
+  display: block;
+}
+}
+
+

@@ -42,6 +42,7 @@ function Main({ component }) {
     }
   }, []);
 
+
   useEffect(() => {
     if (!cLoading && !!cData) {
       console.log(cData);
@@ -58,17 +59,33 @@ function Main({ component }) {
 
   const [currentBody, setCurrentBody] = useState(component);
   const [currentChannel, setCurrentChannel] = useState(component);
+  const [showSideBar, setshowSideBar] = useState(true);
+
+  useEffect(() => {
+
+    console.log(currentChannel)
+      
+  }, [currentChannel])
+
+  console.log(showSideBar)
+
   if (data) {
     return (
       <>
-        <Navbar currentBody={setCurrentBody} user={data.getUser}></Navbar>
+        <Navbar currentBody={setCurrentBody} user={data.getUser} showSideBar={setshowSideBar} Sidebar={showSideBar} ></Navbar>
         <Appbody>
+          {/* { showSideBar && showSideBar === true && ( */}
           <Sidebar
             currentBody={setCurrentBody}
             setChannel={setCurrentChannel}
             allChannels={allChannels}
             user={data.getUser}
+            showSideBar={setshowSideBar}
+            Sidebar={showSideBar}
           ></Sidebar>
+           {/* )}  */}
+           
+          
 
           {currentBody && currentBody === "feed" && (
             <Posts currentBody={setCurrentBody} user={data.getUser}></Posts>
@@ -105,5 +122,5 @@ const Displaybody = styled.div`
   height: 100vh;
 `;
 const Sidebar1 = styled.div`
-  position: fixed;
+
 `;

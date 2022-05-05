@@ -31,7 +31,7 @@ function Chat(props) {
     messageRef?.current?.scrollIntoView({
       behavior: "smooth",
     });
-  }, [props, currentChannel]);
+  }, [props,currentChannel]);
   //   const { data, loading, error } = useSubscription(
   //     queries.channel.SUBSCRIBE_MESSAGE,
   //     {
@@ -117,7 +117,7 @@ function Chat(props) {
         <HeaderLeft>
           <StarBorderIcon style={styles.largeIcon} />
           <h4>
-            <strong>{currentChannel.name}</strong>
+            <strong>{currentChannel.displayName}</strong>
           </h4>
         </HeaderLeft>
         <HeaderRight>
@@ -131,6 +131,7 @@ function Chat(props) {
       <ChannelMessages>
         {chat}
         <MessageBottom ref={messageRef} />
+        <MessageCover  />
       </ChannelMessages>
 
       <ChannelFooter>
@@ -186,6 +187,19 @@ function Chat(props) {
 }
 
 export default Chat;
+
+const MessageCover = styled.div`
+  padding-bottom: 100px;
+  margin-left: 16%;
+  background-color: white;
+  position: fixed;
+   left: 0;
+   bottom: 0;
+   width: 82.5%;
+   color: white;
+   text-align: center;
+  
+`;
 
 const MessageBottom = styled.div`
   padding-bottom: 100px;

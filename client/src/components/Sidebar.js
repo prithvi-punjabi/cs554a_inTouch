@@ -133,12 +133,44 @@ function Sidebar(props) {
     ));
   };
 
-  // let channels = channelMap()
+  const setSidebar = (type) => {
+    props.showSideBar(type);
+  };
+
+
+  useEffect(() => {
+    window
+    .matchMedia("(max-width: 991px)")
+    .addEventListener('change', (e )=> {
+      console.log(e)
+  
+      if(e.matches === true){
+        setSidebar(false)
+      }
+      if(e.matches === false){
+        setSidebar(true)
+      }
+    });
+
+      
+    
+    
+  }, );
+
+  
+  let styleStatus = props.Sidebar===false?{display: 'none'}:{display: 'block'}
+  
 
   return (
-    <SidebarContainer>
+  
+      
+    <SidebarContainer style={styleStatus} >
+      
       <Sidebarheader>
-        <Sidebarinfo>{props.user && <h2>{props.user.name}</h2>}</Sidebarinfo>
+        
+        <Sidebarinfo>
+        
+      {props.user && <h2>{props.user.name}</h2>}</Sidebarinfo>
       </Sidebarheader>
       <hr />
 
@@ -184,11 +216,11 @@ function Sidebar(props) {
             allChannels[String(ch._id)] &&
             allChannels[String(ch._id)].messages.length
           ) {
-            console.log(ch);
-            console.log(
-              allChannels[String(ch._id)].messages.length,
-              readState[String(ch._id)]
-            );
+            // console.log(ch);
+            // console.log(
+            //   allChannels[String(ch._id)].messages.length,
+            //   readState[String(ch._id)]
+            // );
           }
 
           return (
@@ -202,8 +234,8 @@ function Sidebar(props) {
               key={ch.name}
             >
               <SideOptions
-                title={
-                  ch.name +
+                title={ch.name} 
+                read={
                   (allChannels[String(ch._id)] &&
                   allChannels[String(ch._id)].messages.length -
                     readState[String(ch._id)] !=
@@ -221,21 +253,42 @@ function Sidebar(props) {
         })}
       <hr />
     </SidebarContainer>
+  
   );
 }
 
 export default Sidebar;
 
+
+
 const SidebarContainer = styled.div`
   background-color: var(--intouch-color1);
-
+  display: block;
   flex: 0.4;
   border-top: 1px solid var(--intouch-color1);
-  max-width: 260px;
+  max-width: 290px;
   margin-top: 74px;
-
+  z-index: 2;
   color: white;
 
+  .sidebar-toggle{
+    color: #fff;
+    float: right;
+    line-height: 50px;
+    font-size: 24px;
+    cursor: pointer;
+    display: none;
+
+ }
+
+ @media (max-width:991px) {
+  
+    /* display: none; */
+
+  }
+ 
+
+ 
   > hr {
     margin-top: 10px;
     margin-bottom: 10px;

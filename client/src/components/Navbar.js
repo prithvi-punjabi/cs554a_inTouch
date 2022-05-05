@@ -14,11 +14,43 @@ function Navbar(props) {
   const setBody = (type) => {
     props.currentBody(type);
   };
+  const setSidebar = (type) => {
+    props.showSideBar(type);
+  };
 
   return (
     <NavbarContainer>
       <NavbarLeft>
         {/* <img src={logo} className="App-logo" alt="inTouch Logo" /> */}
+        {props.showSideBar && !props.Sidebar &&
+          (<div className="sidebar-toggle" 
+          onClick={()=>{
+            setSidebar(true);
+          }}
+          >
+            <i className="fa fa-bars" ></i>
+            </div>)
+        }
+
+{props.showSideBar  && props.Sidebar &&
+          (<div className="sidebar-toggle" 
+          onClick={()=>{
+            setSidebar(false);
+            
+          }}
+          >
+            <i className="fa fa-bars" ></i>
+            </div>)
+        }
+        
+{/* 
+          <div className="sidebar-toggle" 
+        onClick={()=>{
+          setSidebar(false);
+        }}
+        >
+         <i className="fa-solid fa-xmark"></i>
+          </div> */}
       </NavbarLeft>
       <NavbarSearch>
         <SearchIcon />
