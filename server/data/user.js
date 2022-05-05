@@ -95,7 +95,7 @@ const create = async (
 ) => {
   validator.checkPassword(password);
   validator.checkString(userName, "Username");
-  // validator.checkGender(gender, "Gender");
+  validator.checkGender(gender, "Gender");
   validator.checkPhoneNumber(contactNo, "Phone number");
   validator.checkDob(dob, "Date of Birth");
 

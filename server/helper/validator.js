@@ -72,7 +72,7 @@ module.exports = {
   },
 
   checkGender(genderCode, varName) {
-    if (genderCode == null) throw `Must pass gender`;
+    if (genderCode == null || genderCode=="") throw `Must pass gender`;
     genderCode = Number(genderCode);
     if (isNaN(genderCode)) throw `${varName} must be a number`;
     let isValid = false;

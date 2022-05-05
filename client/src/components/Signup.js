@@ -104,17 +104,6 @@ const Signup = () => {
 
               <div class="form-group ">
                 <label>
-                  Enter your Gender
-                  <br />
-                  <input
-                    class="form-input"
-                    ref={(node) => (gender = node)}
-                  ></input>
-                </label>
-              </div>
-
-              <div class="form-group ">
-                <label>
                   Enter your Contact number
                   <br />
                   <input
@@ -123,16 +112,39 @@ const Signup = () => {
                   ></input>
                 </label>
               </div>
-              <div class="form-group ">
+
+              <div class="form-row ">
+              <div class="form-group col-md-5.5 mb-3 ">
+                <label>
+                  Enter your Gender
+                  </label>
+                  <br />
+                  <select class="form-control2" id="gender" name="gender" placeholder="Select Gender"  ref={(node) => (gender = node)}>
+                              <option value="" class="gray" selected disabled hidden>Select Gender</option>
+                              <option value="1">Female</option>
+                              <option value="0">Male</option>
+                              <option value="2">Other</option>
+                            </select>
+                  {/* <input
+                    class="  form-input "
+                    ref={(node) => (gender = node)}
+                  ></input> */}
+                
+              </div>
+
+              
+              <div class="form-group  col-md-5.5 mb-3">
                 <label>
                   Enter your date of Birth
+                  </label>
                   <br />
                   <input
-                    class="form-input "
+                    class="form-control1 "
                     type="date"
                     ref={(node) => (dob = node)}
                   ></input>
-                </label>
+                
+              </div>
               </div>
               <br />
 
