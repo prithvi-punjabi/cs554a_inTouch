@@ -280,12 +280,21 @@ const SidebarContainer = styled.div`
     display: none;
 
  }
-
  @media (max-width:991px) {
+      /* width: 100px;
+      height: 200px;
+      overflow-y: scroll;
+      overflow-x: scroll;
+      position: fixed; */
+      
+      flex: 1;
+      max-width: 100%;
+      text-align: center;
+      align-items: center;
+      align-content: center;
+      
   
- 
-
-  }
+  } 
  
 
  

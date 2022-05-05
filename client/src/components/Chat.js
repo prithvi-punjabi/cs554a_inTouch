@@ -256,6 +256,7 @@ const ChannelInput = styled.div`
     position: relative;
     display: flex;
     justify-content: center;
+       
   }
   > form > input {
     position: fixed;
@@ -265,7 +266,14 @@ const ChannelInput = styled.div`
     border-radius: 3px;
     padding: 20px;
     outline: none;
+    
+    @media (max-width:991px) {
+      margin-left: 100px;
+      width: 90%;
   }
+    
+  }
+
   > form > div {
     position: fixed;
     bottom: 30px;
@@ -275,9 +283,14 @@ const ChannelInput = styled.div`
     /* border-radius: 2px; */
     padding: 0.1%;
     outline: none;
+    @media (max-width:991px) {
+      right:6.1%
   }
-
+  }
+ 
   /* >form>div >button {
+
+    
     position: fixed;
     bottom: 30px;
 
@@ -310,13 +323,18 @@ const HeaderRight = styled.div`
   position: fixed;
 
   align-items: right;
-  margin-left: 75%;
-  margin-right: 20px;
+  /* margin-left: 75%; */
+  right: 20px;
   > p {
     display: flex;
     align-items: center;
     font-size: 20px;
   }
+  @media (max-width:991px) {
+  
+    display: none;
+
+}
 `;
 
 const Header = styled.div`
@@ -327,6 +345,11 @@ const Header = styled.div`
   padding: 50px;
   border-bottom: 1px solid lightgray;
   background-color: white;
+  
+  @media (max-width:991px) {
+    padding-left: 10px;
+
+  }
 `;
 
 const ChannelContainer = styled.div`

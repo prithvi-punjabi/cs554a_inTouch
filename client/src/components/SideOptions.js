@@ -19,7 +19,7 @@ function SideOptions({Icon,title,read}) {
 	const [readZero, setReadZero] = useState([]);
 	let reading = false 
 	const reader = () =>{
-			
+
 	}
 	if(read >0){
 		reading = true
@@ -64,10 +64,12 @@ cursor: pointer;
 > h3 {
 	font-size:x-large;
 	font-weight: 400;
+	
 }
 >h3 > span {
 	padding: 15px;
 }
+
 `
 
 const OptionChannel = styled.h3`
@@ -83,8 +85,7 @@ align-items: center;
 	border-radius: 100%;
 	text-align: center;
 	width: 30px;
-	position: absolute;
-	left: 260px;
+	margin-left: 35px;
 	color: black;
 	height: 30px;
 	font-size: 20px;
