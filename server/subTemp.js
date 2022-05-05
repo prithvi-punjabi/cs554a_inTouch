@@ -68,6 +68,7 @@ const serverCleanup = useServer(
 
 const loginRequiredOperations = [
   "GetUser",
+  "GetFriendRecommendations",
   "AddFriend",
   "DeleteFriend",
   "GetPostById",

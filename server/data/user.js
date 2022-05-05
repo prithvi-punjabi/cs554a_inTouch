@@ -11,6 +11,7 @@ const axios = require("axios");
 const channelData = require("./channel");
 var jwt = require("jsonwebtoken");
 const mapper = require("../helper/mappers");
+const { users } = require("../config/mongoCollections");
 
 const checkLoggedInUser = async (token) => {
   let decoded = jwt.verify(token, process.env.SECRET);
@@ -150,6 +151,31 @@ const getUser = async (userId) => {
   }
 };
 
+const getFriendRecommendations = async (user) => {
+  validator.checkNonNull(user._id);
+  validator.checkString(user._id);
+  validator.checkObjectID(user._id);
+  user._id = utils.parseObjectId(user._id);
+  user.friends = user.friends.map((userId) =>
+    utils.parseObjectId(userId, "friends.userId")
+  );
+
+  const userCol = await userCollection();
+  if (user) {
+    const myCourses = user.courses.map((course) => course.id);
+    const recommendations = await userCol
+      .find({
+        _id: { $nin: user.friends.concat([user._id]) },
+        "courses.id": { $in: myCourses },
+      })
+      .limit(4)
+      .toArray();
+    return recommendations;
+  } else {
+    throw "No recommendations found";
+  }
+};
+
 const loginUser = async (email, password) => {
   validator.checkNonNull(email);
   validator.checkNonNull(password);
@@ -273,6 +299,7 @@ module.exports = {
   checkLoggedInUser,
   create,
   getUser,
+  getFriendRecommendations,
   loginUser,
   addFriend,
   delFriend,

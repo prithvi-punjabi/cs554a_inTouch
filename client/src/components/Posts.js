@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import queries from "../queries";
-import { useQuery } from "@apollo/client";
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import LikePost from "./LikePost";
 import AddComment from "./AddComment";
 import DeleteComment from "./DeleteComment";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import AddPost from "./AddPost";
 import DeletePost from "./DeletePost";
@@ -13,15 +13,101 @@ import EditPost from "./EditPost";
 import styled from "styled-components";
 
 import "../App.css";
+import {
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Grid,
+  Typography,
+} from "@mui/material";
+import { Button } from "@material-ui/core";
+import Swal from "sweetalert2";
+const newlyAdded = [];
 const Posts = (props) => {
   const navigate = useNavigate();
+  const [recommendations, setRecommendations] = useState();
   const { loading, error, data } = useQuery(queries.post.GET, {
     fetchPolicy: "cache-and-network",
   });
+  const [getFriendRecommendations] = useLazyQuery(
+    queries.user.GET_FRIEND_RECOMMENDATIONS
+  );
+  const [addFriend] = useMutation(queries.user.ADD_FRIEND);
+  const [removeFriend] = useMutation(queries.user.REMOVE_FRIEND);
 
   const setBody = (type) => {
     props.currentBody(type);
   };
+
+  async function handleAddFriend(friendId) {
+    try {
+      const { data } = await addFriend({
+        variables: {
+          friendId: friendId,
+        },
+      });
+      newlyAdded.push(friendId);
+      const newRecommendations = recommendations.map((user) => {
+        if (user._id.toString() == friendId) {
+          return data.addFriend;
+        }
+        return user;
+      });
+      if (newlyAdded.length == 4) {
+        Swal.fire({
+          icon: "success",
+          title: "Congratulations",
+          text: "You have made some new friends",
+          confirmButtonText: "Go to feed",
+        }).then(() => {
+          navigate("/main");
+        });
+      }
+      setRecommendations(newRecommendations);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async function handleRemoveFriend(friendId) {
+    try {
+      const { data } = await removeFriend({
+        variables: {
+          friendId: friendId,
+        },
+      });
+      newlyAdded.splice(newlyAdded.indexOf(friendId), 1);
+      const newRecommendations = recommendations.map((user) => {
+        if (user._id.toString() == friendId) {
+          return data.deleteFriend;
+        }
+        return user;
+      });
+      setRecommendations(newRecommendations);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async function fetchRecommendations() {
+    try {
+      const { data } = await getFriendRecommendations();
+      if (
+        data &&
+        data.getFriendRecommendations &&
+        data.getFriendRecommendations.length > 0
+      ) {
+        setRecommendations(data.getFriendRecommendations);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    fetchRecommendations();
+  }, [error]);
 
   const userId = localStorage.getItem("userId");
   if (data) {
@@ -211,11 +297,93 @@ const Posts = (props) => {
       </PostDiv>
     );
   } else if (error) {
-    return (
-      <PostDiv>
-        <div className="displayContainer">{error.message}</div>{" "}
-      </PostDiv>
-    );
+    if (recommendations) {
+      return (
+        <div style={{ marginTop: "5%", padding: "2%" }}>
+          <Typography
+            variant="h5"
+            component="h3"
+            style={{ color: "#dc3545", fontWeight: "bold" }}
+          >
+            Start making new friends to enjoy feed
+          </Typography>
+          <Grid container spacing={6} style={{ marginTop: "0px" }}>
+            {recommendations.map((user) => {
+              return (
+                <Grid item xs={3} key={user._id}>
+                  <Card style={{ borderRadius: "7px", height: "58vh" }}>
+                    <Link
+                      to={`/user/${user._id}`}
+                      style={{ textDecoration: "none", color: "#dc3545" }}
+                    >
+                      <CardMedia
+                        component="img"
+                        style={{ height: "30vh" }}
+                        image={user.profilePicture}
+                        alt={user.name}
+                      />
+                      <CardContent>
+                        <Typography
+                          style={{
+                            display: "-webkit-box",
+                            overflow: "hidden",
+                            WebkitBoxOrient: "vertical",
+                            WebkitLineClamp: 3,
+                          }}
+                          gutterBottom
+                          variant="h5"
+                          component="div"
+                        >
+                          {user.name}
+                        </Typography>
+                        <Typography
+                          variant="body2"
+                          color="text.secondary"
+                          style={{
+                            display: "-webkit-box",
+                            overflow: "hidden",
+                            WebkitBoxOrient: "vertical",
+                            WebkitLineClamp: 3,
+                          }}
+                        >
+                          {user.bio}
+                        </Typography>
+                      </CardContent>
+                      <CardActions style={{ justifyContent: "center" }}>
+                        {userId != user._id && !user.friends.includes(userId) && (
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => {
+                              handleAddFriend(user._id);
+                            }}
+                          >
+                            + Add friend
+                          </Button>
+                        )}
+                        {userId != user._id && user.friends.includes(userId) && (
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => {
+                              handleRemoveFriend(user._id);
+                            }}
+                          >
+                            - Unfriend
+                          </Button>
+                        )}
+                      </CardActions>
+                    </Link>
+                  </Card>
+                </Grid>
+              );
+            })}
+          </Grid>
+        </div>
+      );
+    } else {
+      return <PostDiv>Fetching recommendations...</PostDiv>;
+    }
   }
 };
 

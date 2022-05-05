@@ -33,6 +33,7 @@ const typeDefs = gql`
   type Query {
     getUser(userId: ID!): user
     loginUser(email: String!, password: String!): userLogin
+    getFriendRecommendations: [user]
   }
   type Mutation {
     createUser(
@@ -53,6 +54,12 @@ const userResolvers = {
     getUser: async (_, args) => {
       const user = await userData.getUser(args.userId);
       return user;
+    },
+    getFriendRecommendations: async (_, args, context) => {
+      const recommendations = await userData.getFriendRecommendations(
+        context.user
+      );
+      return recommendations;
     },
     loginUser: async (_, args, context) => {
       const loggedInUser = await userData.loginUser(args.email, args.password);

@@ -34,6 +34,31 @@ const user = {
       }
     }
   `,
+  GET_FRIEND_RECOMMENDATIONS: gql`
+    query GetFriendRecommendations {
+      getFriendRecommendations {
+        _id
+        name
+        email
+        password
+        profilePicture
+        userName
+        bio
+        designation
+        gender
+        contactNo
+        dob
+        courses {
+          id
+          name
+          code
+          end_date
+        }
+        privacy
+        friends
+      }
+    }
+  `,
   ADD_FRIEND: gql`
     mutation AddFriend($friendId: ID!) {
       addFriend(friendId: $friendId) {

@@ -37,9 +37,7 @@ const getPostsForUser = async (user, pageNumber) => {
     .limit(common.PER_PAGE_POST)
     .toArray();
   if (!Array.isArray(posts) || posts.length == 0) {
-    // throw new MyError(errorCode.NOT_FOUND, `No posts found`);
-    const posts = await getAll();
-    return posts;
+    throw new MyError(errorCode.NOT_FOUND, `No posts found`);
   }
   posts = await manipulatePosts(posts);
   return posts;
