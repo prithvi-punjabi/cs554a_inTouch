@@ -19,7 +19,7 @@ function SideOptions({Icon,title,read}) {
 	const [readZero, setReadZero] = useState([]);
 	let reading = false 
 	const reader = () =>{
-
+			
 	}
 	if(read >0){
 		reading = true

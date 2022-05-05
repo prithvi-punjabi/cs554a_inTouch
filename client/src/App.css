@@ -182,6 +182,7 @@ button {
   background-position: center center;
   padding: 100px 0;
   background-attachment: fixed;
+  /* overflow-y: scroll; */
 }
 
 .main1 {
@@ -201,11 +202,13 @@ button {
   background-position: center center;
   padding: 220px 0;
   background-attachment: fixed;
+  
 }
 
 .container1 {
   width: 600px;
   /* position: relative; */
+  
   margin: 0 auto;
 }
 
@@ -490,10 +493,7 @@ textarea {
 /* radio button css  */
 
 @import url("https://fonts.googleapis.com/css?family=Inter:400'");
- html {
-	 background-color: #1a1a1a;
-	 overflow: hidden;
-}
+
  .middle {
 	 width: 100%;
 	 text-align: center;

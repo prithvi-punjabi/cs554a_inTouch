@@ -160,7 +160,7 @@ function Sidebar(props) {
   
   let styleStatus = props.Sidebar===false?{display: 'none'}:{display: 'block'}
   
-
+  
   return (
   
       
@@ -283,7 +283,7 @@ const SidebarContainer = styled.div`
 
  @media (max-width:991px) {
   
-    /* display: none; */
+ 
 
   }
  

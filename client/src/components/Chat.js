@@ -190,12 +190,12 @@ export default Chat;
 
 const MessageCover = styled.div`
   padding-bottom: 100px;
-  margin-left: 16%;
+  margin-right: 10%;
   background-color: white;
   position: fixed;
    left: 0;
    bottom: 0;
-   width: 82.5%;
+   width: 90%;
    color: white;
    text-align: center;
   
