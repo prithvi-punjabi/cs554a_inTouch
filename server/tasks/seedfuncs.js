@@ -12,7 +12,7 @@ const axios = require("axios");
 const userDataFunc = require("../data/user");
 const postDataFunc = require("../data/post");
 const mapper = require("../helper/mappers");
-// const channelData = require("./channel");
+const channelData = require("../data/channel");
 
 async function addUser(
   name,
@@ -46,6 +46,25 @@ async function addUser(
   };
   const insertInfo = await userCol.insertOne(newUser);
   if (insertInfo.insertedCount === 0) throw "Could not add user";
+  for (let i = 0; i <= courses.length - 1; i++) {
+    let x = courses[i];
+    const allChannels = await channelData.getAll();
+    let channelNotFound = true;
+    for (let j = 0; j <= allChannels.length - 1; j++) {
+      if (x.code == allChannels[j].name) {
+        // here x.code is the '2022 CS..' thing which is the x.name in canvas
+        //and its the channel field name in channel object
+        channelNotFound = false;
+      }
+    }
+    if (channelNotFound) {
+      let newChannelData = await channelData.create(
+        x.code,
+        x.name,
+        "No Description"
+      );
+    }
+  }
   const newId = insertInfo.insertedId;
   const curruser = await userDataFunc.getUser(newId.toString());
   await mapper.channelFromUser(newId);
