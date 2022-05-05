@@ -1,7 +1,7 @@
 const { gql } = require("apollo-server-express");
-const channelData = require("./data").channelData;
+const channelData = require("../data").channelData;
 const { GraphQLDateTime } = require("graphql-scalars");
-const mapper = require("./helper/mappers");
+const mapper = require("../helper/mappers");
 const typeDefs = gql`
   scalar DateTime
   input channelCourse {
