@@ -40,7 +40,8 @@ const Posts = (props) => {
     props.currentBody(type);
   };
 
-  async function handleAddFriend(friendId) {
+  async function handleAddFriend(friendId, e) {
+    e.preventDefault();
     try {
       const { data } = await addFriend({
         variables: {
@@ -70,7 +71,8 @@ const Posts = (props) => {
     }
   }
 
-  async function handleRemoveFriend(friendId) {
+  async function handleRemoveFriend(friendId, e) {
+    e.preventDefault();
     try {
       const { data } = await removeFriend({
         variables: {
@@ -106,7 +108,7 @@ const Posts = (props) => {
   }
 
   useEffect(() => {
-    fetchRecommendations();
+    if (error && error.message === "No posts found") fetchRecommendations();
   }, [error]);
 
   const userId = localStorage.getItem("userId");
@@ -297,92 +299,113 @@ const Posts = (props) => {
       </PostDiv>
     );
   } else if (error) {
-    if (recommendations) {
-      return (
-        <div style={{ marginTop: "5%", padding: "2%" }}>
-          <Typography
-            variant="h5"
-            component="h3"
-            style={{ color: "#dc3545", fontWeight: "bold" }}
-          >
-            Start making new friends to enjoy feed
-          </Typography>
-          <Grid container spacing={6} style={{ marginTop: "0px" }}>
-            {recommendations.map((user) => {
-              return (
-                <Grid item xs={3} key={user._id}>
-                  <Card style={{ borderRadius: "7px", height: "58vh" }}>
-                    <Link
-                      to={`/user/${user._id}`}
-                      style={{ textDecoration: "none", color: "#dc3545" }}
-                    >
-                      <CardMedia
-                        component="img"
-                        style={{ height: "30vh" }}
-                        image={user.profilePicture}
-                        alt={user.name}
-                      />
-                      <CardContent>
-                        <Typography
-                          style={{
-                            display: "-webkit-box",
-                            overflow: "hidden",
-                            WebkitBoxOrient: "vertical",
-                            WebkitLineClamp: 3,
-                          }}
-                          gutterBottom
-                          variant="h5"
-                          component="div"
-                        >
-                          {user.name}
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          color="text.secondary"
-                          style={{
-                            display: "-webkit-box",
-                            overflow: "hidden",
-                            WebkitBoxOrient: "vertical",
-                            WebkitLineClamp: 3,
-                          }}
-                        >
-                          {user.bio}
-                        </Typography>
-                      </CardContent>
-                      <CardActions style={{ justifyContent: "center" }}>
-                        {userId != user._id && !user.friends.includes(userId) && (
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={() => {
-                              handleAddFriend(user._id);
+    if (error.message === "No posts found") {
+      if (recommendations) {
+        return (
+          <PostDiv style={{ marginTop: "5%", padding: "0% 2%" }}>
+            <AddPost user={props.user} currentBody={props.currentBody} />
+            <Typography
+              variant="h5"
+              component="h3"
+              style={{ color: "#dc3545", fontWeight: "bold" }}
+            >
+              OR
+            </Typography>
+            <Typography
+              variant="h5"
+              component="h3"
+              style={{ color: "#dc3545", fontWeight: "bold" }}
+            >
+              Start making new friends to enjoy feed
+            </Typography>
+            <Grid
+              container
+              spacing={3}
+              style={{ marginTop: "0px", padding: "1% 5%" }}
+            >
+              {recommendations.map((user) => {
+                return (
+                  <Grid item xs={3} key={user._id}>
+                    <Card style={{ borderRadius: "7px", height: "57vh" }}>
+                      <Link
+                        to={`/user/${user._id}`}
+                        style={{ textDecoration: "none", color: "#dc3545" }}
+                      >
+                        <CardMedia
+                          component="img"
+                          style={{ height: "30vh" }}
+                          image={user.profilePicture}
+                          alt={user.name}
+                        />
+                        <CardContent>
+                          <Typography
+                            style={{
+                              display: "-webkit-box",
+                              overflow: "hidden",
+                              WebkitBoxOrient: "vertical",
+                              WebkitLineClamp: 3,
+                            }}
+                            gutterBottom
+                            variant="h5"
+                            component="div"
+                          >
+                            {user.name}
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            color="text.secondary"
+                            style={{
+                              display: "-webkit-box",
+                              overflow: "hidden",
+                              WebkitBoxOrient: "vertical",
+                              WebkitLineClamp: 3,
                             }}
                           >
-                            + Add friend
-                          </Button>
-                        )}
-                        {userId != user._id && user.friends.includes(userId) && (
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={() => {
-                              handleRemoveFriend(user._id);
-                            }}
-                          >
-                            - Unfriend
-                          </Button>
-                        )}
-                      </CardActions>
-                    </Link>
-                  </Card>
-                </Grid>
-              );
-            })}
-          </Grid>
-        </div>
-      );
+                            {user.bio}
+                          </Typography>
+                        </CardContent>
+                        <CardActions style={{ justifyContent: "center" }}>
+                          {userId != user._id &&
+                            !user.friends.includes(userId) && (
+                              <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={(e) => {
+                                  handleAddFriend(user._id, e);
+                                }}
+                              >
+                                + Add friend
+                              </Button>
+                            )}
+                          {userId != user._id && user.friends.includes(userId) && (
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              onClick={(e) => {
+                                handleRemoveFriend(user._id, e);
+                              }}
+                            >
+                              - Unfriend
+                            </Button>
+                          )}
+                        </CardActions>
+                      </Link>
+                    </Card>
+                  </Grid>
+                );
+              })}
+            </Grid>
+          </PostDiv>
+        );
+      } else {
+        return <PostDiv>Fetching recommendations...</PostDiv>;
+      }
     } else {
-      return <PostDiv>Fetching recommendations...</PostDiv>;
+      return (
+        <PostDiv>
+          <div className="displayContainer">{typeof error.message}</div>{" "}
+        </PostDiv>
+      );
     }
   }
 };

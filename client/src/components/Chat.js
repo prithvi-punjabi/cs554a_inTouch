@@ -8,7 +8,7 @@ import SendIcon from "@mui/icons-material/Send";
 import queries from "../queries";
 import useTextToxicity from "react-text-toxicity";
 import Swal from "sweetalert2";
-
+import { predictor } from "../helper";
 const styles = {
   largeIcon: {
     width: 40,
@@ -26,7 +26,7 @@ function Chat(props) {
   console.log(props);
   const [message, setMessage] = useState("");
   const [currentChannel, setCurrentChannel] = useState(props.currentChannel);
-
+  const model = useRef();
   useEffect(() => {
     messageRef?.current?.scrollIntoView({
       behavior: "smooth",
@@ -137,9 +137,9 @@ function Chat(props) {
         <ChannelInput>
           <form
             method="POST"
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
               e.preventDefault();
-              setMessage(textBox.current.value);
+              const predictions = await predictor(textBox.current.value, model);
               let isToxic = false;
               if (predictions) {
                 predictions.forEach((x) => {
