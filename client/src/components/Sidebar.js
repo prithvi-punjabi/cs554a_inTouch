@@ -18,11 +18,12 @@ import { useBadge } from "@mui/base";
 
 function Sidebar(props) {
   const navigate = useNavigate();
-  // console.log(props);
+  console.log(props);
   let userId = localStorage.getItem("userId");
-
+  //PROPS
   const data = props.allChannels;
-
+  const readData = props.readArr;
+  //STATES
   const [allChannels, setAllChannels] = useState({});
   const [selectedChannelId, setSelectedChannelId] = useState(null);
   const [readState, setReadState] = useState({});
@@ -35,23 +36,35 @@ function Sidebar(props) {
       console.log("DATA CHANGED");
       console.log(channels.length);
       let allChatTemp = {};
-      let readStateTemp = {};
+
       for (let i = 0; i <= channels.length - 1; i++) {
         allChatTemp[channels[i]._id] = channels[i];
-        readStateTemp[channels[i]._id] = channels[i].messages.length;
       }
       setAllChannels(allChatTemp);
-      //Currently setting from allChannel, can get from DB for persistence
-      setReadState(readStateTemp);
       setcDataState(channels);
     }
-    if (data !== undefined) {
+    if (data !== undefined && props.readArr !== undefined) {
       fetchData(data);
     }
   }, [data]);
 
+  //Need seperate for readState as that
   useEffect(() => {
-    // console.log(readState);
+    async function iterator(channels) {
+      let readStateTemp = {};
+      for (let i = 0; i <= channels.length - 1; i++) {
+        readStateTemp[channels[i]._id] = props.readArr[i].mCount;
+      }
+
+      setReadState(readStateTemp);
+    }
+    if (data !== undefined && props.readArr !== undefined) {
+      iterator(data);
+    }
+  }, [readData]);
+
+  useEffect(() => {
+    console.log(readState);
   }, [readState]);
 
   useEffect(() => {}, [selectedChannelId]);
@@ -65,6 +78,10 @@ function Sidebar(props) {
       userId: userId,
     },
   });
+
+  if (subData) {
+    console.log(subData);
+  }
 
   useEffect(() => {
     console.log(subData);
@@ -93,6 +110,7 @@ function Sidebar(props) {
       });
     }
     if (subData !== undefined) {
+      console.log("subData found!!!!");
       fetchData(subData.channels);
     }
   }, [subData]);
@@ -104,20 +122,16 @@ function Sidebar(props) {
   useEffect(() => {
     console.log("allChannels Updated");
     console.log(allChannels);
-    console.log(selectedChannelId);
+    // console.log(selectedChannelId);
     setChannel(allChannels[selectedChannelId]);
   }, [allChannels]);
-
-  if (data) {
-    console.log(data);
-  }
 
   const setBody = (type) => {
     props.currentBody(type);
   };
 
   const setChannel = (channel) => {
-    console.log(channel);
+    // console.log(channel);
     props.setChannel(channel);
   };
 
@@ -137,40 +151,26 @@ function Sidebar(props) {
     props.showSideBar(type);
   };
 
-
   useEffect(() => {
-    window
-    .matchMedia("(max-width: 991px)")
-    .addEventListener('change', (e )=> {
-      console.log(e)
-  
-      if(e.matches === true){
-        setSidebar(false)
+    window.matchMedia("(max-width: 991px)").addEventListener("change", (e) => {
+      console.log(e);
+
+      if (e.matches === true) {
+        setSidebar(false);
       }
-      if(e.matches === false){
-        setSidebar(true)
+      if (e.matches === false) {
+        setSidebar(true);
       }
     });
+  });
 
-      
-    
-    
-  }, );
+  let styleStatus =
+    props.Sidebar === false ? { display: "none" } : { display: "block" };
 
-  
-  let styleStatus = props.Sidebar===false?{display: 'none'}:{display: 'block'}
-  
-  
   return (
-  
-      
-    <SidebarContainer style={styleStatus} >
-      
+    <SidebarContainer style={styleStatus}>
       <Sidebarheader>
-        
-        <Sidebarinfo>
-        
-      {props.user && <h2>{props.user.name}</h2>}</Sidebarinfo>
+        <Sidebarinfo>{props.user && <h2>{props.user.name}</h2>}</Sidebarinfo>
       </Sidebarheader>
       <hr />
 
@@ -211,49 +211,66 @@ function Sidebar(props) {
       )}
 
       {showChannels &&
-        cData?.map((ch) => {
-          if (
-            allChannels[String(ch._id)] &&
-            allChannels[String(ch._id)].messages.length
-          ) {
+        cData?.map((ch, index) => {
+          if (allChannels[String(ch._id)]) {
             // console.log(ch);
-            // console.log(
-            //   allChannels[String(ch._id)].messages.length,
-            //   readState[String(ch._id)]
-            // );
-          }
+            console.log(
+              allChannels[String(ch._id)].messages.length,
+              readState[String(ch._id)]
+            );
 
-          return (
-            <div
-              onClick={() => {
-                setBody("channel");
-                setChannel(ch);
-                setSelectedChannelId(String(ch._id));
-                navigate("/main");
-              }}
-              key={ch.name}
-            >
-              <SideOptions
-                title={ch.name} 
-                read={
-                  (allChannels[String(ch._id)] &&
-                  allChannels[String(ch._id)].messages.length -
-                    readState[String(ch._id)] !=
-                    NaN &&
-                  allChannels[String(ch._id)].messages.length -
-                    readState[String(ch._id)] !=
-                    0
-                    ? allChannels[String(ch._id)].messages.length -
-                      readState[String(ch._id)]
-                    : "")
-                }
-              />
-            </div>
-          );
+            return (
+              <div
+                onClick={() => {
+                  setBody("channel");
+                  setChannel(ch);
+                  setSelectedChannelId(String(ch._id));
+                  navigate("/main");
+                  props.setReadArr((prevArr) => {
+                    let temp = [];
+                    prevArr.forEach((ele, ind) => {
+                      temp[ind] = { ...ele };
+                    });
+                    const eleInd = temp.findIndex(
+                      (ele) => ele.c_id == String(ch._id)
+                    );
+                    console.log(eleInd);
+                    temp[eleInd].mCount =
+                      allChannels[String(ch._id)].messages.length;
+                    return temp;
+                  });
+                  props.dbUpdateRead({
+                    variables: {
+                      c_id: String(ch._id),
+                      mCount: allChannels[String(ch._id)].messages.length,
+                    },
+                  });
+                }}
+                key={ch.name}
+              >
+                <SideOptions
+                  title={ch.name}
+                  read={
+                    allChannels[String(ch._id)] &&
+                    allChannels[String(ch._id)].messages.length -
+                      readState[String(ch._id)] !=
+                      NaN &&
+                    allChannels[String(ch._id)].messages.length -
+                      readState[String(ch._id)] !=
+                      0
+                      ? allChannels[String(ch._id)].messages.length -
+                        readState[String(ch._id)]
+                      : ""
+                  }
+                />
+              </div>
+            );
+          } else {
+            return null;
+          }
         })}
       <hr />
     </SidebarContainer>
-  
   );
 }
 

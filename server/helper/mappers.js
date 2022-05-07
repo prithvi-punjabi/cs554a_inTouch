@@ -45,6 +45,14 @@ module.exports = {
       { name: "CHANNEL_MAP" },
       { $addToSet: { [String(channelId)]: String(userId) } }
     );
+    let readStatusObj = {};
+    readStatusObj["c_id"] = String(channelId);
+    readStatusObj["mCount"] = 0;
+    const userCol = await userCollection();
+    const final = userCol.updateOne(
+      { _id: ObjectId(userId) },
+      { $addToSet: { readStatus: readStatusObj } }
+    );
     //   if (updated.modifiedCount == 1) {
     //     console.log("modified");
     //   }
@@ -78,6 +86,14 @@ const channelToUser = async (userId, channelId) => {
   const updated = await channelMapCol.updateOne(
     { name: "CHANNEL_MAP" },
     { $addToSet: { [String(channelId)]: String(userId) } }
+  );
+  let readStatusObj = {};
+  readStatusObj["c_id"] = String(channelId);
+  readStatusObj["mCount"] = 0;
+  const userCol = await userCollection();
+  const final = userCol.updateOne(
+    { _id: ObjectId(userId) },
+    { $addToSet: { readStatus: readStatusObj } }
   );
   //   if (updated.modifiedCount == 1) {
   //     console.log("modified");

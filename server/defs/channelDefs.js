@@ -157,6 +157,7 @@ const channelResolvers = {
       const channelUsers = await mapper.usersForChannel(args.channelId);
       for (let i = 0; i <= channelUsers.length - 1; i++) {
         const updatedChannel = await channelData.getById(args.channelId);
+        // console.log(updatedChannel);
         pubsub.publish([String(channelUsers[i])], {
           channels: updatedChannel,
         });

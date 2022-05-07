@@ -3,6 +3,7 @@ const userData = require("../data").userData;
 var jwt = require("jsonwebtoken");
 
 const typeDefs = gql`
+  scalar DateTime
   type course {
     id: Int
     name: String
@@ -13,7 +14,10 @@ const typeDefs = gql`
     token: String
     userId: String
   }
-
+  type readStatusType {
+    c_id: String!
+    mCount: Int
+  }
   type user {
     _id: String
     name: String
@@ -29,6 +33,7 @@ const typeDefs = gql`
     courses: [course]
     privacy: [String]
     friends: [String]
+    readStatus: [readStatusType]
   }
   type Query {
     getUser(userId: ID!): user
@@ -46,6 +51,7 @@ const typeDefs = gql`
     ): user
     addFriend(friendId: ID!): user
     deleteFriend(friendId: ID!): user
+    readChange(c_id: String!, mCount: Int!): [readStatusType]
   }
 `;
 
@@ -97,6 +103,16 @@ const userResolvers = {
       const userId = context.user._id;
       const delFriend = await userData.delFriend(userId, args.friendId);
       return delFriend;
+    },
+    readChange: async (_, args, context) => {
+      console.log(args);
+      // const userId = context.user._id;
+      const changed = await userData.changeReadStatus(
+        "62746f1a04183e900360e93e",
+        args.c_id,
+        args.mCount
+      );
+      return changed;
     },
   },
 };

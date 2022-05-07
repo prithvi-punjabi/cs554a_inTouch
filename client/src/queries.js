@@ -29,6 +29,10 @@ const user = {
           code
           end_date
         }
+        readStatus {
+          c_id
+          mCount
+        }
         privacy
         friends
       }
@@ -145,6 +149,14 @@ const user = {
         }
         privacy
         friends
+      }
+    }
+  `,
+  UPDATE_MESSAGE_READ: gql`
+    mutation UpdateMessageRead($c_id: String!, $mCount: Int!) {
+      readChange(c_id: $c_id, mCount: $mCount) {
+        c_id
+        mCount
       }
     }
   `,

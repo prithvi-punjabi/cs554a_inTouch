@@ -1,6 +1,5 @@
-import { printIntrospectionSchema } from "graphql";
 import React, { useEffect, useState } from "react";
-import { useQuery, useLazyQuery } from "@apollo/client";
+import { useQuery, useLazyQuery, useMutation } from "@apollo/client";
 import styled from "styled-components";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
@@ -16,6 +15,10 @@ function Main({ component }) {
 
   let navigate = useNavigate();
   const [allChannels, setAllChannels] = useState([]);
+  const [readStatusArr, setReadStatusArr] = useState([]);
+  const [currentBody, setCurrentBody] = useState(component);
+  const [currentChannel, setCurrentChannel] = useState([]); //previously default state was component why??
+  const [showSideBar, setshowSideBar] = useState(true);
   const { loading, data, error } = useQuery(queries.user.GET_BY_ID, {
     variables: { userId: userId },
     errorPolicy: "all",
@@ -23,6 +26,8 @@ function Main({ component }) {
       console.log(error);
     },
   });
+  //READ STATUS UPDATE
+  const [dbUpdateRead] = useMutation(queries.user.UPDATE_MESSAGE_READ);
   if (data) {
     console.log(data);
   }
@@ -42,6 +47,12 @@ function Main({ component }) {
     }
   }, []);
 
+  useEffect(() => {
+    if (data) {
+      console.log(data.getUser.readStatus);
+      setReadStatusArr(data.getUser.readStatus);
+    }
+  }, [data]);
 
   useEffect(() => {
     if (!cLoading && !!cData) {
@@ -57,22 +68,21 @@ function Main({ component }) {
     }
   }, [cError]);
 
-  const [currentBody, setCurrentBody] = useState(component);
-  const [currentChannel, setCurrentChannel] = useState(component);
-  const [showSideBar, setshowSideBar] = useState(true);
-
   useEffect(() => {
+    console.log(currentChannel);
+  }, [currentChannel]);
 
-    console.log(currentChannel)
-      
-  }, [currentChannel])
-
-  console.log(showSideBar)
+  console.log(showSideBar);
 
   if (data) {
     return (
       <>
-        <Navbar currentBody={setCurrentBody} user={data.getUser} showSideBar={setshowSideBar} Sidebar={showSideBar} ></Navbar>
+        <Navbar
+          currentBody={setCurrentBody}
+          user={data.getUser}
+          showSideBar={setshowSideBar}
+          Sidebar={showSideBar}
+        ></Navbar>
         <Appbody>
           {/* { showSideBar && showSideBar === true && ( */}
           <Sidebar
@@ -82,10 +92,11 @@ function Main({ component }) {
             user={data.getUser}
             showSideBar={setshowSideBar}
             Sidebar={showSideBar}
+            setReadArr={setReadStatusArr}
+            readArr={readStatusArr}
+            dbUpdateRead={dbUpdateRead}
           ></Sidebar>
-           {/* )}  */}
-           
-          
+          {/* )}  */}
 
           {currentBody && currentBody === "feed" && (
             <Posts currentBody={setCurrentBody} user={data.getUser}></Posts>
@@ -94,7 +105,12 @@ function Main({ component }) {
           {currentBody && currentBody === "user" && <Profile></Profile>}
 
           {data && currentBody && currentBody === "channel" && (
-            <Chat currentChannel={currentChannel} user={data.getUser} />
+            <Chat
+              currentChannel={currentChannel}
+              user={data.getUser}
+              readArr={readStatusArr}
+              setReadArr={setReadStatusArr}
+            />
           )}
         </Appbody>
       </>
@@ -121,6 +137,4 @@ const Displaybody = styled.div`
   flex: 0.4;
   height: 100vh;
 `;
-const Sidebar1 = styled.div`
-
-`;
+const Sidebar1 = styled.div``;
