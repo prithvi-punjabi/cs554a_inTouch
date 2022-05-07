@@ -665,6 +665,31 @@ const channel = {
       }
     }
   `,
+  GET_USERS: gql`
+    query GetUsersForChannel($getUsersForChannelId: ID) {
+      getUsersForChannel(id: $getUsersForChannelId) {
+        _id
+        name
+        email
+        password
+        profilePicture
+        userName
+        bio
+        designation
+        gender
+        contactNo
+        dob
+        courses {
+          id
+          name
+          code
+          end_date
+        }
+        privacy
+        friends
+      }
+    }
+  `,
 };
 
 let exported = {

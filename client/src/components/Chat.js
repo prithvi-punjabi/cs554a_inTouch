@@ -8,6 +8,7 @@ import SendIcon from "@mui/icons-material/Send";
 import queries from "../queries";
 import useTextToxicity from "react-text-toxicity";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 import { predictor } from "../helper";
 const styles = {
   largeIcon: {
@@ -23,6 +24,7 @@ const styles = {
 function Chat(props) {
   const messageRef = useRef(null);
   const textBox = useRef(null);
+  const navigate = useNavigate();
   console.log(props);
   const [message, setMessage] = useState("");
   const [currentChannel, setCurrentChannel] = useState(props.currentChannel);
@@ -31,7 +33,7 @@ function Chat(props) {
     messageRef?.current?.scrollIntoView({
       behavior: "smooth",
     });
-  }, [props,currentChannel]);
+  }, [props, currentChannel]);
   //   const { data, loading, error } = useSubscription(
   //     queries.channel.SUBSCRIBE_MESSAGE,
   //     {
@@ -121,7 +123,10 @@ function Chat(props) {
           </h4>
         </HeaderLeft>
         <HeaderRight>
-          <p>
+          <p
+            className="detP"
+            onClick={() => navigate(`/channel/members/${currentChannel._id}`)}
+          >
             <InfoOutlinedIcon style={styles.largeIcon} />
             Details
           </p>
@@ -131,7 +136,7 @@ function Chat(props) {
       <ChannelMessages>
         {chat}
         <MessageBottom ref={messageRef} />
-        <MessageCover  />
+        <MessageCover />
       </ChannelMessages>
 
       <ChannelFooter>
@@ -193,12 +198,11 @@ const MessageCover = styled.div`
   margin-right: 10%;
   background-color: white;
   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 90%;
-   color: white;
-   text-align: center;
-  
+  left: 0;
+  bottom: 0;
+  width: 90%;
+  color: white;
+  text-align: center;
 `;
 
 const MessageBottom = styled.div`
@@ -256,7 +260,6 @@ const ChannelInput = styled.div`
     position: relative;
     display: flex;
     justify-content: center;
-       
   }
   > form > input {
     position: fixed;
@@ -266,12 +269,11 @@ const ChannelInput = styled.div`
     border-radius: 3px;
     padding: 20px;
     outline: none;
-    
-    @media (max-width:991px) {
+
+    @media (max-width: 991px) {
       margin-left: 100px;
       width: 90%;
-  }
-    
+    }
   }
 
   > form > div {
@@ -283,11 +285,11 @@ const ChannelInput = styled.div`
     /* border-radius: 2px; */
     padding: 0.1%;
     outline: none;
-    @media (max-width:991px) {
-      right:6.1%
+    @media (max-width: 991px) {
+      right: 6.1%;
+    }
   }
-  }
- 
+
   /* >form>div >button {
 
     
@@ -330,11 +332,9 @@ const HeaderRight = styled.div`
     align-items: center;
     font-size: 20px;
   }
-  @media (max-width:991px) {
-  
+  @media (max-width: 991px) {
     display: none;
-
-}
+  }
 `;
 
 const Header = styled.div`
@@ -345,10 +345,9 @@ const Header = styled.div`
   padding: 50px;
   border-bottom: 1px solid lightgray;
   background-color: white;
-  
-  @media (max-width:991px) {
-    padding-left: 10px;
 
+  @media (max-width: 991px) {
+    padding-left: 10px;
   }
 `;
 

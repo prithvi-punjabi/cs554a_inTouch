@@ -202,19 +202,17 @@ button {
   background-position: center center;
   padding: 230px 0 479px 0;
   background-attachment: fixed;
-  
 }
 
 .container1 {
   width: 600px;
   /* position: relative; */
-  
+
   margin: 0 auto;
 }
 
 .signup-content,
 .createTrainer-content {
-  
   background: #fff;
   border-radius: 10px;
   -moz-border-radius: 10px;
@@ -235,7 +233,6 @@ button {
 }
 
 .form-input {
-  
   width: 450px;
   border: 1px solid var(--intouch-color);
   border-radius: 5px;
@@ -306,7 +303,6 @@ button {
   color: #222;
 }
 
-
 .form-control1 {
   margin-left: 28px;
   width: 205px;
@@ -357,9 +353,9 @@ button {
   /* -moz-border-image-source: -moz-linear-gradient(to right, var(--intouch-color),var(--intouch-color1));
   -o-border-image-source: -o-linear-gradient(to right, var(--intouch-color),var(--intouch-color1));
   border-image-source: linear-gradient(to right, var(--intouch-color),var(--intouch-color1)); */
-  -moz-border-image-source: -moz-linear-gradient(to right, black,black);
-  -o-border-image-source: -o-linear-gradient(to right, black,black);
-  border-image-source: linear-gradient(to right, black,black);
+  -moz-border-image-source: -moz-linear-gradient(to right, black, black);
+  -o-border-image-source: -o-linear-gradient(to right, black, black);
+  border-image-source: linear-gradient(to right, black, black);
   -webkit-border-image-slice: 1;
   border-image-slice: 1;
   border-radius: 5px;
@@ -433,9 +429,9 @@ button {
   /* -moz-border-image-source: -moz-linear-gradient(to right, var(--intouch-color),var(--intouch-color1));
   -o-border-image-source: -o-linear-gradient(to right, var(--intouch-color),var(--intouch-color1));
   border-image-source: linear-gradient(to right, var(--intouch-color),var(--intouch-color1)); */
-  -moz-border-image-source: -moz-linear-gradient(to right, black,black);
-  -o-border-image-source: -o-linear-gradient(to right, black,black);
-  border-image-source: linear-gradient(to right, black,black);
+  -moz-border-image-source: -moz-linear-gradient(to right, black, black);
+  -o-border-image-source: -o-linear-gradient(to right, black, black);
+  border-image-source: linear-gradient(to right, black, black);
   -webkit-border-image-slice: 1;
   border-image-slice: 1;
   border-radius: 5px;
@@ -458,8 +454,6 @@ button {
 .form-control1:focus:-moz-placeholder {
   color: #222;
 }
-
-
 
 .form-submit {
   width: 100%;
@@ -556,8 +550,6 @@ hr {
   color: blue;
 }
 
-
-
 .comment-input {
   position: relative;
 }
@@ -568,7 +560,6 @@ hr {
   top: 8px;
   color: #a09c9c;
 }
-
 
 .displayContainer {
   margin-top: 5%;
@@ -637,91 +628,91 @@ textarea {
   text-align: left;
 }
 
-
 /* radio button css  */
 
 @import url("https://fonts.googleapis.com/css?family=Inter:400'");
 
- .middle {
-	 width: 100%;
-	 text-align: center;
+.middle {
+  width: 100%;
+  text-align: center;
 }
- .middle h1 {
-	 font-family: "Inter", sans-serif;
-	 color: #fff;
+.middle h1 {
+  font-family: "Inter", sans-serif;
+  color: #fff;
 }
- .middle input[type="radio"] {
-	 display: none;
+.middle input[type="radio"] {
+  display: none;
 }
- .middle input[type="radio"]:checked + .box {
-   border: 1px solid var(--intouch-color);
-   border-radius: 15px;
-	 /* background-color: var(--intouch-color1); */
+.middle input[type="radio"]:checked + .box {
+  border: 1px solid var(--intouch-color);
+  border-radius: 15px;
+  /* background-color: var(--intouch-color1); */
 }
- .middle input[type="radio"]:checked + .box span {
-	 color: var(--intouch-color);
-	 transform: translateY(0px);
+.middle input[type="radio"]:checked + .box span {
+  color: var(--intouch-color);
+  transform: translateY(0px);
 }
- .middle input[type="radio"]:checked + .box span:before {
-	 transform: translateY(0px);
-	 opacity: 1;
+.middle input[type="radio"]:checked + .box span:before {
+  transform: translateY(0px);
+  opacity: 1;
 }
- .middle .box {
-	 width: 100px;
-	 height: 50px;
-   margin: 15px;
-	 background-color: #fff;
-   /* border-radius: 15px; */
-	 transition: all 250ms ease;
-	 will-change: transition;
-	 display: inline-block;
-	 text-align: center;
-	 cursor: pointer;
-	 position: relative;
-	 font-family: "Inter", sans-serif;
-	 font-weight: 700;
+.middle .box {
+  width: 100px;
+  height: 50px;
+  margin: 15px;
+  background-color: #fff;
+  /* border-radius: 15px; */
+  transition: all 250ms ease;
+  will-change: transition;
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
 }
- .middle .box:active {
-	 transform: translateY(10px);
+.middle .box:active {
+  transform: translateY(10px);
 }
- .middle .box span {
-	 position: absolute;
-	 /* transform: translate(0, 60px); */
-   /* display: block; */
-	 left: 0;
-	 right: 0;
-	 transition: all 300ms ease;
-	 font-size: 100%;
-	 user-select: none;
-	 color: var(--intouch-color1);
+.middle .box span {
+  position: absolute;
+  /* transform: translate(0, 60px); */
+  /* display: block; */
+  left: 0;
+  right: 0;
+  transition: all 300ms ease;
+  font-size: 100%;
+  user-select: none;
+  color: var(--intouch-color1);
 }
- .middle .box span:before {
-	 font-size: 10px;
-	 font-family: FontAwesome;
-	 display: block;
-	 transform: translateY(-80px);
-	 opacity: 0;
-	 transition: all 300ms ease-in-out;
-	 font-weight: normal;
-	 color: black;
+.middle .box span:before {
+  font-size: 10px;
+  font-family: FontAwesome;
+  display: block;
+  transform: translateY(-80px);
+  opacity: 0;
+  transition: all 300ms ease-in-out;
+  font-weight: normal;
+  color: black;
 }
- 
- /* Sidebar responsive  */
 
- .sidebar-toggle{
+/* Sidebar responsive  */
+
+.sidebar-toggle {
   color: #fff;
   float: right;
   line-height: 50px;
   font-size: 24px;
   cursor: pointer;
   display: none;
-
 }
 
-@media (max-width:991px) {
-.sidebar-toggle{
-  display: block;
-}
+@media (max-width: 991px) {
+  .sidebar-toggle {
+    display: block;
+  }
 }
 
-
+.detP {
+  cursor: pointer;
+}

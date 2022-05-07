@@ -2,6 +2,7 @@ const { gql } = require("apollo-server-express");
 const channelData = require("../data").channelData;
 const { GraphQLDateTime } = require("graphql-scalars");
 const mapper = require("../helper/mappers");
+const userData = require("../data").userData;
 const typeDefs = gql`
   scalar DateTime
   input channelCourse {
@@ -61,6 +62,7 @@ const typeDefs = gql`
     getChannelById(id: ID): channel
     getAllChannels: [channel]
     getChannelsForUser(userId: ID): [channel]
+    getUsersForChannel(id: ID): [user]
   }
   type Mutation {
     createChannel(
@@ -106,6 +108,15 @@ const channelResolvers = {
     getChannelsForUser: async (_, args, context) => {
       const userChannels = await channelData.getByUser(args.userId);
       return userChannels;
+    },
+    getUsersForChannel: async (_, args) => {
+      const userStrings = await mapper.usersForChannel(args.id);
+      let users = [];
+      for (x of userStrings) {
+        let thisUser = await userData.getUser(x);
+        users.push(thisUser);
+      }
+      return users;
     },
   },
   Mutation: {
@@ -224,7 +235,6 @@ const channelResolvers = {
     // },
   },
 };
-
 
 module.exports = {
   typeDefs,

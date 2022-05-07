@@ -7,6 +7,7 @@ import Feed from "./components/Feed";
 import Channel from "./components/Channel";
 import Posts from "./components/Posts";
 import Main from "./components/Main";
+import ChannelDeets from "./components/ChannelDeets";
 import { AppContext } from "./context/appContext";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
@@ -113,6 +114,7 @@ function App() {
                 <Route path="/profile" element={<Main component="user" />} />
                 <Route path="/feed" element={<Feed />} />
                 <Route path="/channels" element={<Channel />} />
+                <Route path="/channel/members/:id" element={<ChannelDeets />} />
                 <Route path="/posts" element={<Posts />} />
                 <Route path="/main" element={<Main />} />
                 <Route path="/channels2" element={<Channel2 />} />
