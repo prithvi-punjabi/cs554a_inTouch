@@ -14,7 +14,9 @@ const DeletePost = (props) => {
       cache.writeQuery({
         query: queries.post.GET,
         data: {
-          getAll: post.getAll.filter((e) => e._id !== props.postId),
+          getPostsForUser: post.getPostsForUser.filter(
+            (e) => e._id !== props.postId
+          ),
         },
       });
     },

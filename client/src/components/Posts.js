@@ -63,6 +63,8 @@ const Posts = (props) => {
           confirmButtonText: "Go to feed",
         }).then(() => {
           navigate("/main");
+          // window.location.reload();
+          setBody("feed");
         });
       }
       setRecommendations(newRecommendations);
