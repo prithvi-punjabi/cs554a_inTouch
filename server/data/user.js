@@ -295,6 +295,20 @@ const delFriend = async (userId, friendId) => {
   return thisFriend;
 };
 
+const changeReadStatus = async (userId, c_id, mCount) => {
+  validator.checkNonNull(userId);
+  validator.checkNonNull(c_id);
+  validator.checkObjectID(userId);
+  validator.checkObjectID(c_id);
+  const userCol = await userCollection();
+  const update = await userCol.updateOne(
+    { _id: ObjectId(userId), "readStatus.c_id": c_id },
+    { $set: { "readStatus.$.mCount": mCount } }
+  );
+  const updatedUser = await userCol.findOne({ _id: ObjectId(userId) });
+  return updatedUser.readStatus;
+};
+
 module.exports = {
   checkLoggedInUser,
   create,
@@ -303,4 +317,5 @@ module.exports = {
   loginUser,
   addFriend,
   delFriend,
+  changeReadStatus,
 };

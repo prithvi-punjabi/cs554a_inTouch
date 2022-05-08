@@ -26,7 +26,7 @@ module.exports = {
       return true;
     }
   },
-  async channelAndUser(userId, channelId) {
+  async channelAndUser(userId, channelId, cName) {
     const channelMapCol = await channelMapCollection();
     const channelMap = await channelMapCol.findOne({ name: "CHANNEL_MAP" });
     //   console.log(channelMap);
@@ -45,6 +45,15 @@ module.exports = {
       { name: "CHANNEL_MAP" },
       { $addToSet: { [String(channelId)]: String(userId) } }
     );
+    let readStatusObj = {};
+    readStatusObj["c_id"] = String(channelId);
+    readStatusObj["cName"] = cName;
+    readStatusObj["mCount"] = 0;
+    const userCol = await userCollection();
+    const final = userCol.updateOne(
+      { _id: ObjectId(userId) },
+      { $addToSet: { readStatus: readStatusObj } }
+    );
     //   if (updated.modifiedCount == 1) {
     //     console.log("modified");
     //   }
@@ -55,7 +64,11 @@ module.exports = {
     );
     for (let j = 0; j <= channelsForUser.length - 1; j++) {
       console.log(channelsForUser[j]._id);
-      await this.channelAndUser(userId, channelsForUser[j]._id);
+      await this.channelAndUser(
+        userId,
+        channelsForUser[j]._id,
+        channelsForUser[j].name
+      );
     }
   },
 };
@@ -79,6 +92,15 @@ const channelToUser = async (userId, channelId) => {
     { name: "CHANNEL_MAP" },
     { $addToSet: { [String(channelId)]: String(userId) } }
   );
+  let readStatusObj = {};
+  readStatusObj["c_id"] = String(channelId);
+  readStatusObj["cName"] = cName;
+  readStatusObj["mCount"] = 0;
+  const userCol = await userCollection();
+  const final = userCol.updateOne(
+    { _id: ObjectId(userId) },
+    { $addToSet: { readStatus: readStatusObj } }
+  );
   //   if (updated.modifiedCount == 1) {
   //     console.log("modified");
   //   }
@@ -93,7 +115,11 @@ const sample = async () => {
     );
     for (let j = 0; j <= channelsForUser.length - 1; j++) {
       console.log(channelsForUser[j]._id);
-      await channelToUser(allUsers[i]._id, channelsForUser[j]._id);
+      await channelToUser(
+        allUsers[i]._id,
+        channelsForUser[j]._id,
+        channelsForUser[j].name
+      );
     }
   }
 
