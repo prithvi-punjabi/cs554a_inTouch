@@ -14,7 +14,9 @@ import {
 import { Button } from "@material-ui/core";
 
 const Friends = (props) => {
-  const { loading, error, data } = useQuery(queries.user.GET_FRIENDS);
+  const { loading, error, data } = useQuery(queries.user.GET_FRIENDS, {
+    fetchPolicy: "cache-and-network",
+  });
   const [removeFriend] = useMutation(queries.user.REMOVE_FRIEND, {
     update(cache, { data: removeFriend }) {
       const friends = cache.readQuery({
