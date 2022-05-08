@@ -120,7 +120,7 @@ function App() {
                   element={<Main component="members" />}
                 />
                 <Route path="/posts" element={<Posts />} />
-                <Route path="/friends" element={<Friends />} />
+                <Route path="/friends" element={<Main component="friends" />} />
                 <Route path="/main" element={<Main component="feed" />} />
                 <Route path="/channels2" element={<Channel2 />} />
               </Routes>

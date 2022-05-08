@@ -9,7 +9,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ArrowRightOutlinedIcon from "@mui/icons-material/ArrowRightOutlined";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import AddIcon from "@mui/icons-material/Add";
-import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
+import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 
 import queries from "../queries";
 import { useLazyQuery, useQuery, useSubscription } from "@apollo/client";
@@ -172,12 +172,12 @@ function Sidebar(props) {
       >
         <SideOptions Icon={InboxIcon} title="Feed" />
       </div>
-     
+
       <div
-        // onClick={() => {
-        //   setBody("feed");
-        //   navigate("/main");
-        // }}
+        onClick={() => {
+          setBody("friends");
+          navigate("/main");
+        }}
       >
         <SideOptions Icon={PeopleAltOutlinedIcon} title="Friends" />
       </div>
@@ -277,8 +277,6 @@ function Sidebar(props) {
 
 export default Sidebar;
 
-
-
 const SidebarContainer = styled.div`
   background-color: var(--intouch-color1);
   display: block;
@@ -289,33 +287,28 @@ const SidebarContainer = styled.div`
   z-index: 2;
   color: white;
 
-  .sidebar-toggle{
+  .sidebar-toggle {
     color: #fff;
     float: right;
     line-height: 50px;
     font-size: 24px;
     cursor: pointer;
     display: none;
-
- }
- @media (max-width:991px) {
-      /* width: 100px;
+  }
+  @media (max-width: 991px) {
+    /* width: 100px;
       height: 200px;
       overflow-y: scroll;
       overflow-x: scroll;
       position: fixed; */
-      
-      flex: 2000;
-      max-width: 100%;
-      text-align: center;
-      align-items: center;
-      align-content: center;
-      
-  
-  } 
- 
 
- 
+    flex: 2000;
+    max-width: 100%;
+    text-align: center;
+    align-items: center;
+    align-content: center;
+  }
+
   > hr {
     margin-top: 10px;
     margin-bottom: 10px;

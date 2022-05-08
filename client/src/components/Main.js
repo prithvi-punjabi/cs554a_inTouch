@@ -9,6 +9,7 @@ import { isLoggedIn } from "../helper";
 import Profile from "./Profile";
 import Chat from "./Chat";
 import ChannelDeets from "./ChannelDeets";
+import Friends from "./Friends";
 import queries from "../queries";
 import { CircularProgress } from "@mui/material";
 //currentBody fun
@@ -244,7 +245,12 @@ function Main({ component }) {
               setReadObj={setReadStatusObj}
             />
           )}
-
+          {currentBody && currentBody === "friends" && (
+            <Friends
+              setCurrentBody={setCurrentBody}
+              currentBody={currentBody}
+            ></Friends>
+          )}
           {currentBody && currentBody === "members" && (
             <ChannelDeets currentBody={setCurrentBody}></ChannelDeets>
           )}

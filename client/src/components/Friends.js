@@ -32,6 +32,9 @@ const Friends = (props) => {
     },
   });
 
+  const setBody = (type) => {
+    props.setCurrentBody(type);
+  };
   async function handleRemoveFriend(friendId, e) {
     e.preventDefault();
     try {
