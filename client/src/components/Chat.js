@@ -10,6 +10,7 @@ import useTextToxicity from "react-text-toxicity";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { predictor } from "../helper";
+import typing from "../img/typing2.gif"
 const styles = {
   largeIcon: {
     width: 40,
@@ -123,10 +124,7 @@ function Chat(props) {
           </h4>
         </HeaderLeft>
         <HeaderRight>
-          <p
-            className="detP"
-            onClick={() => navigate(`/channel/members/${currentChannel._id}`)}
-          >
+          <p>
             <InfoOutlinedIcon style={styles.largeIcon} />
             Details
           </p>
@@ -135,6 +133,14 @@ function Chat(props) {
 
       <ChannelMessages>
         {chat}
+        <ChannelMessagesContainer key="Loader">
+          <img src={props.user.profilePicture}></img>
+          <MessageInfo>
+            <h5>{props.user.userName}</h5>
+            <MessageLoading> <img src={typing}></img></MessageLoading>
+            
+          </MessageInfo>
+        </ChannelMessagesContainer>
         <MessageBottom ref={messageRef} />
         <MessageCover />
       </ChannelMessages>
@@ -221,6 +227,7 @@ const ChannelMessagesContainer = styled.div`
   > img {
     height: 60px;
     border-radius: 8px;
+    padding-right: 10px;
   }
 `;
 
@@ -240,6 +247,15 @@ const MessageInfo = styled.div`
 `;
 const MessageDetail = styled.div`
   float: left;
+`;
+const MessageLoading = styled.div`
+  float: left;
+  /* background-image: url("../src/img/typing.gif"); */
+  > img {
+    height: 35px;
+    border-radius: 20px;
+    width: 70px;
+  }
 `;
 const ChannelMessages = styled.div`
   padding: 5px;

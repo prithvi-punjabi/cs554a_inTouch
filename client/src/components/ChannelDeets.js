@@ -137,6 +137,7 @@ const ChannelDeets = () => {
   } else if (loading) {
     return <div>Loading...</div>;
   } else if (error) {
+    console.log(error)
     return <p>Error</p>;
   }
 };
