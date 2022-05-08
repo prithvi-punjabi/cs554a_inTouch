@@ -21,6 +21,10 @@ const AddPost = (props) => {
       let post = cache.readQuery({
         query: queries.post.GET,
       });
+      console.log(post);
+      if (!post) {
+        post.getPostsForUser = [];
+      }
       cache.writeQuery({
         query: queries.post.GET,
         data: {

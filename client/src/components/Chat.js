@@ -199,36 +199,40 @@ function Chat(props) {
               e.preventDefault();
               setToxicProcessing(true);
               setToxicScroller(true);
+              setTimeout(async () => {
+                const predictions = await predictor(
+                  textBox.current.value,
+                  model
+                );
+                console.log(toxicProcessing);
+                let isToxic = false;
+                if (predictions) {
+                  predictions.forEach((x) => {
+                    if (x.match === true) {
+                      isToxic = true;
+                      if ((x.label = "toxicity")) x.label = "toxic";
+                      setToxicProcessing(false);
+                      Swal.fire({
+                        title: "Toxic Text Detected!",
+                        text: `Your message has been labelled ${x.label} with a probability of ${x.probability}. You send post it.`,
+                        icon: "error",
+                        confirmButtonText: "I'm sorry!",
+                      });
+                    }
+                  });
+                }
+                if (isToxic == false) {
+                  addMessage({
+                    variables: {
+                      channelId: currentChannel._id,
+                      // user: props.user,
+                      message: textBox.current.value,
+                    },
+                  });
 
-              const predictions = await predictor(textBox.current.value, model);
-              console.log(toxicProcessing);
-              let isToxic = false;
-              if (predictions) {
-                predictions.forEach((x) => {
-                  if (x.match === true) {
-                    isToxic = true;
-                    if ((x.label = "toxicity")) x.label = "toxic";
-                    setToxicProcessing(false);
-                    Swal.fire({
-                      title: "Toxic Text Detected!",
-                      text: `Your message has been labelled ${x.label} with a probability of ${x.probability}. You send post it.`,
-                      icon: "error",
-                      confirmButtonText: "I'm sorry!",
-                    });
-                  }
-                });
-              }
-              if (isToxic == false) {
-                addMessage({
-                  variables: {
-                    channelId: currentChannel._id,
-                    // user: props.user,
-                    message: textBox.current.value,
-                  },
-                });
-
-                textBox.current.value = "";
-              }
+                  textBox.current.value = "";
+                }
+              }, 500);
             }}
           >
             <input
