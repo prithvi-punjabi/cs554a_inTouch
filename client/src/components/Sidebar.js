@@ -295,7 +295,7 @@ const SidebarContainer = styled.div`
       overflow-x: scroll;
       position: fixed; */
       
-      flex: 1;
+      flex: 2000;
       max-width: 100%;
       text-align: center;
       align-items: center;
