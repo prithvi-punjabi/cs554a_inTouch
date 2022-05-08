@@ -32,14 +32,13 @@ function Sidebar(props) {
   const [showChannels, setshowChannels] = useState(false);
   //PROPS TO FUNCTIONS
   const setBody = (type) => {
-    props.currentBody(type);
+    props.setCurrentBody(type);
   };
 
   const setChannelId = (channelId) => {
     // console.log(channel);
     props.setChannelId(channelId);
   };
-
   //USE EFFECT
   // useEffect(() => {
   //   console.log("All and read set");
@@ -248,7 +247,9 @@ function Sidebar(props) {
                     readObj[String(ch.c_id)].cCount -
                       readObj[String(ch.c_id)].mCount !=
                       0 &&
-                    String(ch.c_id) !== String(props.currentChannelId)
+                    (String(ch.c_id) !== String(props.currentChannelId) ||
+                      (String(ch.c_id) === String(props.currentChannelId) &&
+                        props.currentBody !== "channel"))
                       ? readObj[String(ch.c_id)].cCount -
                         readObj[String(ch.c_id)].mCount
                       : ""

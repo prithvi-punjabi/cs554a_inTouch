@@ -29,12 +29,45 @@ function Chat(props) {
   console.log(props);
   const [message, setMessage] = useState("");
   const [currentChannel, setCurrentChannel] = useState(props.currentChannel);
+  const [toxicProcessing, setToxicProcessing] = useState(false);
+  const [toxicScroller, setToxicScroller] = useState(false);
   const model = useRef();
+
+  //RATHER COMPLEX LOGIC FOR SCROLLING AND SHOWING LOADER
   useEffect(() => {
-    messageRef?.current?.scrollIntoView({
-      behavior: "smooth",
-    });
-  }, [props, currentChannel]);
+    if (toxicProcessing) {
+      messageRef?.current?.scrollIntoView({
+        behavior: "smooth",
+      });
+    }
+    if (props.currentChannel !== currentChannel) {
+      console.log("CALLED ME");
+      setCurrentChannel(props.currentChannel);
+      setToxicProcessing(false);
+    }
+    if (
+      props.currentChannel.messages &&
+      props.user &&
+      props.currentChannel.messages.length > 0
+    ) {
+      if (
+        // Checks if incoming message is same as the one last sent then dont load
+        !(
+          props.currentChannel.messages[
+            props.currentChannel.messages.length - 1
+          ].user.userId === props.user._id &&
+          props.currentChannel.messages[
+            props.currentChannel.messages.length - 1
+          ].message === textBox.current.value
+        )
+      ) {
+        messageRef?.current?.scrollIntoView({
+          behavior: "smooth",
+        });
+      }
+    }
+  }, [props, currentChannel, toxicProcessing]);
+  useEffect(() => {}, [props]);
   //   const { data, loading, error } = useSubscription(
   //     queries.channel.SUBSCRIBE_MESSAGE,
   //     {
@@ -43,10 +76,6 @@ function Chat(props) {
   //       },
   //     }
   //   );
-
-  useEffect(() => {
-    setCurrentChannel(props.currentChannel);
-  }, [props]);
 
   //   if (data) {
   //     console.log(data);
@@ -66,47 +95,49 @@ function Chat(props) {
   //POPULATOR FUNCTIONS
   const mapper = (chat) => {
     // console.log(chat);
-    return chat.map((message) => {
-      let days = Math.floor(
-        (new Date() - new Date(message.dateCreated)) / (1000 * 3600 * 24)
-      );
-      let date = new Date(message.dateCreated);
-      let time = date.toTimeString();
-      let dateTime = date.toLocaleString();
+    return chat.map((message, index) => {
+      if (index <= chat.length - 1) {
+        let days = Math.floor(
+          (new Date() - new Date(message.dateCreated)) / (1000 * 3600 * 24)
+        );
+        let date = new Date(message.dateCreated);
+        let time = date.toTimeString();
+        let dateTime = date.toLocaleString();
 
-      let h = date.getHours(),
-        m = date.getMinutes();
-      time = h > 12 ? h - 12 + ":" + m + " PM" : h + ":" + m + " AM";
+        let h = date.getHours(),
+          m = date.getMinutes();
+        time = h > 12 ? h - 12 + ":" + m + " PM" : h + ":" + m + " AM";
 
-      date = date.toDateString();
+        date = date.toDateString();
 
-      return (
-        <ChannelMessagesContainer key={message._id}>
-          <img src={message.user.profilePicture}></img>
+        return (
+          <ChannelMessagesContainer key={message._id}>
+            <img src={message.user.profilePicture}></img>
 
-          <MessageInfo>
-            <h5>
-              {message.user.userName}
-              <span>
-                {" "}
-                {days === 0 && <small className="mr-2">Today, {time}</small>}
-                {days === 1 && (
-                  <small className="mr-2">Yesterday, {time}</small>
-                )}
-                {days > 1 && (
-                  <small className="mr-2">
-                    {date}, {time}
-                  </small>
-                )}
-              </span>
-            </h5>
+            <MessageInfo>
+              <h5>
+                {message.user.userName}
+                <span>
+                  {" "}
+                  {days === 0 && <small className="mr-2">Today, {time}</small>}
+                  {days === 1 && (
+                    <small className="mr-2">Yesterday, {time}</small>
+                  )}
+                  {days > 1 && (
+                    <small className="mr-2">
+                      {date}, {time}
+                    </small>
+                  )}
+                </span>
+              </h5>
 
-            <MessageDetail>
-              <p>{message.message}</p>
-            </MessageDetail>
-          </MessageInfo>
-        </ChannelMessagesContainer>
-      );
+              <MessageDetail>
+                <p>{message.message}</p>
+              </MessageDetail>
+            </MessageInfo>
+          </ChannelMessagesContainer>
+        );
+      }
     });
   };
   const predictions = useTextToxicity(message);
@@ -133,14 +164,17 @@ function Chat(props) {
 
       <ChannelMessages>
         {chat}
-        <ChannelMessagesContainer key="Loader">
-          <img src={props.user.profilePicture}></img>
-          <MessageInfo>
-            <h5>{props.user.userName}</h5>
-            <MessageLoading> <img src={typing}></img></MessageLoading>
-            
-          </MessageInfo>
-        </ChannelMessagesContainer>
+        {toxicProcessing && (
+          <ChannelMessagesContainer key={"loader"}>
+            <img src={props.user.profilePicture}></img>
+            <MessageInfo>
+              <h5>{props.user.userName}</h5>
+              <MessageLoading>
+                <img src={typing}></img>
+              </MessageLoading>
+            </MessageInfo>
+          </ChannelMessagesContainer>
+        )}
         <MessageBottom ref={messageRef} />
         <MessageCover />
       </ChannelMessages>
@@ -151,13 +185,18 @@ function Chat(props) {
             method="POST"
             onSubmit={async (e) => {
               e.preventDefault();
+              setToxicProcessing(true);
+              setToxicScroller(true);
+
               const predictions = await predictor(textBox.current.value, model);
+              console.log(toxicProcessing);
               let isToxic = false;
               if (predictions) {
                 predictions.forEach((x) => {
                   if (x.match === true) {
                     isToxic = true;
                     if ((x.label = "toxicity")) x.label = "toxic";
+                    setToxicProcessing(false);
                     Swal.fire({
                       title: "Toxic Text Detected!",
                       text: `Your message has been labelled ${x.label} with a probability of ${x.probability}. You send post it.`,

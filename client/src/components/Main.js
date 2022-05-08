@@ -216,7 +216,8 @@ function Main({ component }) {
         <Appbody>
           {/* { showSideBar && showSideBar === true && ( */}
           <Sidebar
-            currentBody={setCurrentBody}
+            setCurrentBody={setCurrentBody}
+            currentBody={currentBody}
             setChannelId={setCurrentChannelId}
             currentChannelId={currentChannelId}
             user={data.getUser}
