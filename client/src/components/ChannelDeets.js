@@ -63,7 +63,7 @@ const ChannelDeets = () => {
         >
           {users.map((user) => {
             return (
-              <Grid item xs={3} key={user._id}>
+              <Grid item xs={12} sm={6} md={4} lg={3} key={user._id}>
                 <Card style={{ borderRadius: "7px", height: "57vh" }}>
                   <Link
                     to={`/user/${user._id}`}
@@ -81,7 +81,7 @@ const ChannelDeets = () => {
                           display: "-webkit-box",
                           overflow: "hidden",
                           WebkitBoxOrient: "vertical",
-                          WebkitLineClamp: 3,
+                          WebkitLineClamp: 1,
                         }}
                         gutterBottom
                         variant="h5"
@@ -137,7 +137,7 @@ const ChannelDeets = () => {
   } else if (loading) {
     return <div>Loading...</div>;
   } else if (error) {
-    console.log(error)
+    console.log(error);
     return <p>Error</p>;
   }
 };
