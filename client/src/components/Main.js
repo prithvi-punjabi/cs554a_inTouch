@@ -8,7 +8,9 @@ import { useNavigate } from "react-router";
 import { isLoggedIn } from "../helper";
 import Profile from "./Profile";
 import Chat from "./Chat";
+import ChannelDeets from "./ChannelDeets";
 import queries from "../queries";
+import { CircularProgress } from '@mui/material';
 //currentBody fun
 function Main({ component }) {
   const userId = localStorage.getItem("userId");
@@ -214,7 +216,6 @@ function Main({ component }) {
           Sidebar={showSideBar}
         ></Navbar>
         <Appbody>
-          {/* { showSideBar && showSideBar === true && ( */}
           <Sidebar
             setCurrentBody={setCurrentBody}
             currentBody={currentBody}
@@ -228,8 +229,6 @@ function Main({ component }) {
             readObj={readStatusObj}
             dbUpdateRead={dbUpdateRead}
           ></Sidebar>
-          {/* )}  */}
-
           {currentBody && currentBody === "feed" && (
             <Posts currentBody={setCurrentBody} user={data.getUser}></Posts>
           )}
@@ -238,18 +237,21 @@ function Main({ component }) {
 
           {data && currentBody && currentBody === "channel" && (
             <Chat
+              currentBody={setCurrentBody}
               currentChannel={currentChannel}
               user={data.getUser}
               readObj={readStatusObj}
               setReadObj={setReadStatusObj}
             />
           )}
+
+          {currentBody && currentBody === "members" && <ChannelDeets></ChannelDeets>}
         </Appbody>
       </>
     );
   }
   if (loading) {
-    return <p>loader page goes here</p>;
+    return <div className="displayContainer"><CircularProgress color="success" /></div>
   }
   if (error) {
     return <p>Couldnt get user from gql</p>;

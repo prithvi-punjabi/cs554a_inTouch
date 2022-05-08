@@ -211,6 +211,13 @@ button {
   margin: 0 auto;
 }
 
+@media screen and (max-width: 605px) {
+  .container1 {
+    width: 70%;
+    height: 100%;
+  }
+}
+
 .signup-content,
 .createTrainer-content {
   background: #fff;
@@ -302,6 +309,16 @@ button {
 .form-input:focus:-moz-placeholder {
   color: #222;
 }
+
+
+@media screen and (max-width: 605px) {
+  .form-input {
+    width: 100%;
+   
+  }
+}
+
+
 
 .form-control1 {
   margin-left: 28px;
@@ -454,6 +471,12 @@ button {
 .form-control1:focus:-moz-placeholder {
   color: #222;
 }
+@media screen and (max-width: 605px) {
+  .form-control2 {
+    /* width: 100%; */
+    margin-left: 0px;
+  }
+}
 
 .form-submit {
   width: 100%;
@@ -490,6 +513,15 @@ button {
   color: #222;
 }
 
+@media screen and (max-width: 605px) {
+  .loginhere {
+    font-size: small;
+   
+  }
+  .loginhere-link{
+    font-size: small;
+  }
+}
 .card {
   border: none;
 }
@@ -562,7 +594,7 @@ hr {
 }
 
 .displayContainer {
-  margin-top: 5%;
+  margin-top: 45%;
 }
 
 .rightTrash {

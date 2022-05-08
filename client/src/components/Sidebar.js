@@ -142,7 +142,7 @@ function Sidebar(props) {
 
   useEffect(() => {
     window.matchMedia("(max-width: 991px)").addEventListener("change", (e) => {
-      console.log(e);
+      // console.log(e);
 
       if (e.matches === true) {
         setSidebar(false);

@@ -9,6 +9,7 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import AddPost from "./AddPost";
 import DeletePost from "./DeletePost";
 import EditPost from "./EditPost";
+import { CircularProgress } from '@mui/material';
 
 import styled from "styled-components";
 
@@ -297,7 +298,8 @@ const Posts = (props) => {
   } else if (loading) {
     return (
       <PostDiv>
-        <div className="displayContainer">Loading...</div>{" "}
+        <div className="displayContainer"><CircularProgress color="success" />Loading...</div>{" "}
+        
       </PostDiv>
     );
   } else if (error) {
@@ -400,7 +402,9 @@ const Posts = (props) => {
           </PostDiv>
         );
       } else {
-        return <PostDiv>Fetching recommendations...</PostDiv>;
+        return <PostDiv><div className="displayContainer">Fetching recommendations... <CircularProgress color="success" /></div>
+          
+        </PostDiv>;
       }
     } else {
       return (

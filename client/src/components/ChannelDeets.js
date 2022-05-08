@@ -4,6 +4,8 @@ import queries from "../queries";
 import { useParams, Link } from "react-router-dom";
 import styled from "styled-components";
 import "../App.css";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
+import { CircularProgress } from '@mui/material';
 import {
   Card,
   CardActions,
@@ -15,12 +17,31 @@ import {
 import { Button } from "@material-ui/core";
 import Swal from "sweetalert2";
 
+
+const styles = {
+  largeIcon: {
+    width: 40,
+    height: 32,
+  },
+  largerIcon: {
+    width: 50,
+    height: 50,
+  },
+};
+
+
 const ChannelDeets = () => {
   const params = useParams();
   console.log(params);
   const { loading, error, data } = useQuery(queries.channel.GET_USERS, {
     variables: { getUsersForChannelId: params.id },
   });
+  
+  const { loading:cLoading, error: cError, data: cData} = useQuery(queries.channel.GET_BY_ID, {
+    variables: { channelId: params.id },
+  });
+
+
   const userId = localStorage.getItem("userId");
   const [addFriend] = useMutation(queries.user.ADD_FRIEND);
   const [removeFriend] = useMutation(queries.user.REMOVE_FRIEND);
@@ -51,11 +72,25 @@ const ChannelDeets = () => {
     }
   }
 
-  if (data) {
+  if (data ) {
     let users = data.getUsersForChannel;
+    let Channel = cData.getChannelById
     return (
-      <div>
-        <h1>Channel Members</h1>
+      
+      <ChannelMembersContainer>
+       <Header>
+        <HeaderLeft>
+          <StarBorderIcon style={styles.largeIcon} />
+          <h4>
+            <strong>{cData && (Channel.displayName)}</strong>
+            
+          </h4>
+        </HeaderLeft>
+        <HeaderRight>
+          
+        </HeaderRight>
+      </Header>
+      <MembersContainer>
         <Grid
           container
           spacing={3}
@@ -132,10 +167,11 @@ const ChannelDeets = () => {
             );
           })}
         </Grid>
-      </div>
+        </MembersContainer>
+      </ChannelMembersContainer>
     );
   } else if (loading) {
-    return <div>Loading...</div>;
+    return <div><CircularProgress color="success" />Loading...</div>;
   } else if (error) {
     console.log(error);
     return <p>Error</p>;
@@ -143,3 +179,58 @@ const ChannelDeets = () => {
 };
 
 export default ChannelDeets;
+
+
+const ChannelMembersContainer = styled.div`
+  flex: 0.6;
+  flex-grow: 1;
+  overflow-y: scroll;
+  margin-top: 49px;
+  float: left;
+`;
+
+const MembersContainer = styled.div`
+  margin-top: 80px;
+  margin-bottom: 2%;
+`;
+
+const HeaderLeft = styled.div`
+  position: fixed;
+  display: flex;
+
+  > h4 {
+    display: flex;
+    /* margin-left: 10px; */
+  }
+  
+`;
+const HeaderRight = styled.div`
+  display: flex;
+  position: fixed;
+
+  align-items: right;
+  /* margin-left: 75%; */
+  right: 20px;
+  > p {
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+  }
+  @media (max-width: 991px) {
+    display: none;
+  }
+`;
+
+const Header = styled.div`
+  display: flex;
+  position: fixed;
+  width: 100%;
+  justify-content: space-between;
+  padding: 50px;
+  border-bottom: 1px solid lightgray;
+  background-color: white;
+
+  @media (max-width: 991px) {
+    padding-left: 10px;
+  }
+`;

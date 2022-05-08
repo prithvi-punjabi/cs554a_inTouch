@@ -114,9 +114,9 @@ function App() {
                 <Route path="/profile" element={<Main component="user" />} />
                 <Route path="/feed" element={<Feed />} />
                 <Route path="/channels" element={<Channel />} />
-                <Route path="/channel/members/:id" element={<ChannelDeets />} />
+                <Route path="/channel/members/:id" element={<Main component="members" />} />
                 <Route path="/posts" element={<Posts />} />
-                <Route path="/main" element={<Main />} />
+                <Route path="/main" element={<Main component="feed"/>} />
                 <Route path="/channels2" element={<Channel2 />} />
               </Routes>
             </div>

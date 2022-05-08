@@ -33,6 +33,11 @@ function Chat(props) {
   const [toxicScroller, setToxicScroller] = useState(false);
   const model = useRef();
 
+  const setBody = (type) => {
+    props.currentBody(type);
+  };
+
+
   //RATHER COMPLEX LOGIC FOR SCROLLING AND SHOWING LOADER
   useEffect(() => {
     if (toxicProcessing) {
@@ -106,6 +111,9 @@ function Chat(props) {
 
         let h = date.getHours(),
           m = date.getMinutes();
+          if (m <10){
+            m = "0" + m
+          }
         time = h > 12 ? h - 12 + ":" + m + " PM" : h + ":" + m + " AM";
 
         date = date.toDateString();
@@ -155,7 +163,11 @@ function Chat(props) {
           </h4>
         </HeaderLeft>
         <HeaderRight>
-          <p>
+          <p className="detP"
+            onClick={() =>{ 
+              setBody("members");
+            navigate(`/channel/members/${currentChannel._id}`)
+            }}>
             <InfoOutlinedIcon style={styles.largeIcon} />
             Details
           </p>
