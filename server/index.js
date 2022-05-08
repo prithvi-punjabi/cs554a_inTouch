@@ -87,6 +87,7 @@ const loginRequiredOperations = [
   "RemovePost",
   "AddMessage",
   "DeleteMessage",
+  "UpdateMessageRead",
 ];
 
 //Creating Server Instance with Socket enabling Config

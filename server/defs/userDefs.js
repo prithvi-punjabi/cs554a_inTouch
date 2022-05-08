@@ -17,6 +17,7 @@ const typeDefs = gql`
   type readStatusType {
     c_id: String!
     mCount: Int
+    cName: String
   }
   type user {
     _id: String
@@ -105,10 +106,11 @@ const userResolvers = {
       return delFriend;
     },
     readChange: async (_, args, context) => {
-      console.log(args);
-      // const userId = context.user._id;
+      // console.log(args);
+      // console.log(context);
+      const userId = context.user._id;
       const changed = await userData.changeReadStatus(
-        "62746f1a04183e900360e93e",
+        userId,
         args.c_id,
         args.mCount
       );

@@ -32,6 +32,7 @@ const user = {
         readStatus {
           c_id
           mCount
+          cName
         }
         privacy
         friends
