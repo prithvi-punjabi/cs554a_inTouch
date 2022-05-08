@@ -9,6 +9,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ArrowRightOutlinedIcon from "@mui/icons-material/ArrowRightOutlined";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import AddIcon from "@mui/icons-material/Add";
+import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 
 import queries from "../queries";
 import { useLazyQuery, useQuery, useSubscription } from "@apollo/client";
@@ -171,7 +172,15 @@ function Sidebar(props) {
       >
         <SideOptions Icon={InboxIcon} title="Feed" />
       </div>
-
+     
+      <div
+        // onClick={() => {
+        //   setBody("feed");
+        //   navigate("/main");
+        // }}
+      >
+        <SideOptions Icon={PeopleAltOutlinedIcon} title="Friends" />
+      </div>
       {/* <SideOptions Icon = {ExpandLessIcon} title = "Show less"/> */}
       <hr />
 
