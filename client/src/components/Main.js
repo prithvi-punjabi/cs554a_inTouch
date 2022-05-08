@@ -10,7 +10,7 @@ import Profile from "./Profile";
 import Chat from "./Chat";
 import ChannelDeets from "./ChannelDeets";
 import queries from "../queries";
-import { CircularProgress } from '@mui/material';
+import { CircularProgress } from "@mui/material";
 //currentBody fun
 function Main({ component }) {
   const userId = localStorage.getItem("userId");
@@ -245,13 +245,19 @@ function Main({ component }) {
             />
           )}
 
-          {currentBody && currentBody === "members" && <ChannelDeets></ChannelDeets>}
+          {currentBody && currentBody === "members" && (
+            <ChannelDeets currentBody={setCurrentBody}></ChannelDeets>
+          )}
         </Appbody>
       </>
     );
   }
   if (loading) {
-    return <div className="displayContainer"><CircularProgress color="success" /></div>
+    return (
+      <div className="displayContainer">
+        <CircularProgress color="success" />
+      </div>
+    );
   }
   if (error) {
     return <p>Couldnt get user from gql</p>;

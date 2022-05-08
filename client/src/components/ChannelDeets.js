@@ -5,7 +5,7 @@ import { useParams, Link } from "react-router-dom";
 import styled from "styled-components";
 import "../App.css";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
-import { CircularProgress } from '@mui/material';
+import { CircularProgress } from "@mui/material";
 import {
   Card,
   CardActions,
@@ -16,7 +16,6 @@ import {
 } from "@mui/material";
 import { Button } from "@material-ui/core";
 import Swal from "sweetalert2";
-
 
 const styles = {
   largeIcon: {
@@ -29,18 +28,24 @@ const styles = {
   },
 };
 
-
-const ChannelDeets = () => {
+const ChannelDeets = (props) => {
   const params = useParams();
   console.log(params);
   const { loading, error, data } = useQuery(queries.channel.GET_USERS, {
     variables: { getUsersForChannelId: params.id },
   });
-  
-  const { loading:cLoading, error: cError, data: cData} = useQuery(queries.channel.GET_BY_ID, {
+
+  const setBody = (type) => {
+    props.currentBody(type);
+  };
+
+  const {
+    loading: cLoading,
+    error: cError,
+    data: cData,
+  } = useQuery(queries.channel.GET_BY_ID, {
     variables: { channelId: params.id },
   });
-
 
   const userId = localStorage.getItem("userId");
   const [addFriend] = useMutation(queries.user.ADD_FRIEND);
@@ -72,106 +77,110 @@ const ChannelDeets = () => {
     }
   }
 
-  if (data ) {
+  if (data) {
     let users = data.getUsersForChannel;
-    let Channel = cData.getChannelById
+    let Channel = cData.getChannelById;
     return (
-      
       <ChannelMembersContainer>
-       <Header>
-        <HeaderLeft>
-          <StarBorderIcon style={styles.largeIcon} />
-          <h4>
-            <strong>{cData && (Channel.displayName)}</strong>
-            
-          </h4>
-        </HeaderLeft>
-        <HeaderRight>
-          
-        </HeaderRight>
-      </Header>
-      <MembersContainer>
-        <Grid
-          container
-          spacing={3}
-          style={{ marginTop: "0px", padding: "1% 5%" }}
-        >
-          {users.map((user) => {
-            return (
-              <Grid item xs={12} sm={6} md={4} lg={3} key={user._id}>
-                <Card style={{ borderRadius: "7px", height: "57vh" }}>
-                  <Link
-                    to={`/user/${user._id}`}
-                    style={{ textDecoration: "none", color: "#dc3545" }}
+        <Header>
+          <HeaderLeft>
+            <StarBorderIcon style={styles.largeIcon} />
+            <h4>
+              <strong>{cData && Channel.displayName}</strong>
+            </h4>
+          </HeaderLeft>
+          <HeaderRight></HeaderRight>
+        </Header>
+        <MembersContainer>
+          <Grid
+            container
+            spacing={3}
+            style={{ marginTop: "0px", padding: "1% 5%" }}
+          >
+            {users.map((user) => {
+              return (
+                <Grid item xs={12} sm={6} md={4} lg={3} key={user._id}>
+                  <Card
+                    style={{ borderRadius: "7px", height: "57vh" }}
+                    onClick={() => setBody("user")}
                   >
-                    <CardMedia
-                      component="img"
-                      style={{ height: "30vh" }}
-                      image={user.profilePicture}
-                      alt={user.name}
-                    />
-                    <CardContent>
-                      <Typography
-                        style={{
-                          display: "-webkit-box",
-                          overflow: "hidden",
-                          WebkitBoxOrient: "vertical",
-                          WebkitLineClamp: 1,
-                        }}
-                        gutterBottom
-                        variant="h5"
-                        component="div"
-                      >
-                        {user.name}
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        color="text.secondary"
-                        style={{
-                          display: "-webkit-box",
-                          overflow: "hidden",
-                          WebkitBoxOrient: "vertical",
-                          WebkitLineClamp: 3,
-                        }}
-                      >
-                        {user.bio}
-                      </Typography>
-                    </CardContent>
-                    <CardActions style={{ justifyContent: "center" }}>
-                      {userId != user._id && !user.friends.includes(userId) && (
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          onClick={(e) => {
-                            handleAddFriend(user._id, e);
+                    <Link
+                      to={`/user/${user._id}`}
+                      style={{ textDecoration: "none", color: "#dc3545" }}
+                    >
+                      <CardMedia
+                        component="img"
+                        style={{ height: "30vh" }}
+                        image={user.profilePicture}
+                        alt={user.name}
+                      />
+                      <CardContent>
+                        <Typography
+                          style={{
+                            display: "-webkit-box",
+                            overflow: "hidden",
+                            WebkitBoxOrient: "vertical",
+                            WebkitLineClamp: 1,
+                          }}
+                          gutterBottom
+                          variant="h5"
+                          component="div"
+                        >
+                          {user.name}
+                        </Typography>
+                        <Typography
+                          variant="body2"
+                          color="text.secondary"
+                          style={{
+                            display: "-webkit-box",
+                            overflow: "hidden",
+                            WebkitBoxOrient: "vertical",
+                            WebkitLineClamp: 3,
                           }}
                         >
-                          + Add friend
-                        </Button>
-                      )}
-                      {userId != user._id && user.friends.includes(userId) && (
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          onClick={(e) => {
-                            handleRemoveFriend(user._id, e);
-                          }}
-                        >
-                          - Unfriend
-                        </Button>
-                      )}
-                    </CardActions>
-                  </Link>
-                </Card>
-              </Grid>
-            );
-          })}
-        </Grid>
+                          {user.bio}
+                        </Typography>
+                      </CardContent>
+                      <CardActions style={{ justifyContent: "center" }}>
+                        {userId != user._id && !user.friends.includes(userId) && (
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={(e) => {
+                              handleAddFriend(user._id, e);
+                            }}
+                          >
+                            + Add friend
+                          </Button>
+                        )}
+                        {userId != user._id && user.friends.includes(userId) && (
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={(e) => {
+                              handleRemoveFriend(user._id, e);
+                            }}
+                          >
+                            - Unfriend
+                          </Button>
+                        )}
+                      </CardActions>
+                    </Link>
+                  </Card>
+                </Grid>
+              );
+            })}
+          </Grid>
         </MembersContainer>
       </ChannelMembersContainer>
     );
   } else if (loading) {
-    return <div><CircularProgress color="success" />Loading...</div>;
+    return (
+      <div>
+        <CircularProgress color="success" />
+        Loading...
+      </div>
+    );
   } else if (error) {
     console.log(error);
     return <p>Error</p>;
@@ -179,7 +188,6 @@ const ChannelDeets = () => {
 };
 
 export default ChannelDeets;
-
 
 const ChannelMembersContainer = styled.div`
   flex: 0.6;
@@ -202,7 +210,6 @@ const HeaderLeft = styled.div`
     display: flex;
     /* margin-left: 10px; */
   }
-  
 `;
 const HeaderRight = styled.div`
   display: flex;
