@@ -327,7 +327,7 @@ const Posts = (props) => {
             >
               {recommendations.map((user) => {
                 return (
-                  <Grid item xs={3} key={user._id}>
+                  <Grid item xs={12} sm={6} md={4} lg={3} key={user._id}>
                     <Card style={{ borderRadius: "7px", height: "57vh" }}>
                       <Link
                         to={`/user/${user._id}`}
@@ -345,7 +345,7 @@ const Posts = (props) => {
                               display: "-webkit-box",
                               overflow: "hidden",
                               WebkitBoxOrient: "vertical",
-                              WebkitLineClamp: 3,
+                              WebkitLineClamp: 1,
                             }}
                             gutterBottom
                             variant="h5"
