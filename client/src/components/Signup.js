@@ -20,12 +20,12 @@ const Signup = () => {
   let contactNo;
   let dob;
   return (
-    <div class="main">
-      <section class="signup">
-        <div class="container1">
-          <div class="signup-content">
+    <div className="main">
+      <section className="signup">
+        <div className="container1">
+          <div className="signup-content">
             <form
-              class="signup-form"
+              className="signup-form"
               onSubmit={async (e) => {
                 e.preventDefault();
                 try {
@@ -66,95 +66,100 @@ const Signup = () => {
                 }
               }}
             >
-              <h2 class="form-title">Create account</h2>
+              <h2 className="form-title">Create account</h2>
               <br />
-              <div class="form-group ">
+              <div className="form-group ">
                 <label>
                   Enter your access token
                   <br />
                   <input
-                    class="form-input"
+                    className="form-input"
                     ref={(node) => (accessKey = node)}
                   ></input>
                 </label>
               </div>
 
-              <div class="form-group ">
+              <div className="form-group ">
                 <label>
                   Enter your Username
                   <br />
                   <input
-                    class="form-input"
+                    className="form-input"
                     ref={(node) => (userName = node)}
                   ></input>
                 </label>
               </div>
 
-              <div class="form-group ">
+              <div className="form-group ">
                 <label>
                   Enter your password
                   <br />
                   <input
-                    class="form-input"
+                    className="form-input"
                     type="password"
                     ref={(node) => (password = node)}
                   ></input>
                 </label>
               </div>
 
-              <div class="form-group ">
+              <div className="form-group ">
                 <label>
                   Enter your Contact number
                   <br />
                   <input
-                    class="form-input"
+                    className="form-input"
                     ref={(node) => (contactNo = node)}
                   ></input>
                 </label>
               </div>
 
-              <div class="form-row ">
-              <div class="form-group col-md-5.5 mb-3 ">
-                <label>
-                  Enter your Gender
-                  </label>
+              <div className="form-row ">
+                <div className="form-group col-md-5.5 mb-3 ">
+                  <label>Enter your Gender</label>
                   <br />
-                  <select class="form-control2" id="gender" name="gender" placeholder="Select Gender"  ref={(node) => (gender = node)}>
-                              <option value="" class="gray" selected disabled hidden>Select Gender</option>
-                              <option value="1">Female</option>
-                              <option value="0">Male</option>
-                              <option value="2">Other</option>
-                            </select>
+                  <select
+                    className="form-control2"
+                    id="gender"
+                    name="gender"
+                    placeholder="Select Gender"
+                    ref={(node) => (gender = node)}
+                  >
+                    <option value="" class="gray" selected disabled hidden>
+                      Select Gender
+                    </option>
+                    <option value="1">Female</option>
+                    <option value="0">Male</option>
+                    <option value="2">Other</option>
+                  </select>
                   {/* <input
                     class="  form-input "
                     ref={(node) => (gender = node)}
                   ></input> */}
-                
-              </div>
+                </div>
 
-              
-              <div class="form-group  col-md-5.5 mb-3">
-                <label>
-                  Enter your date of Birth
-                  </label>
+                <div className="form-group  col-md-5.5 mb-3">
+                  <label>Enter your date of Birth</label>
                   <br />
                   <input
-                    class="form-control1 "
+                    className="form-control1 "
                     type="date"
                     ref={(node) => (dob = node)}
                   ></input>
-                
-              </div>
+                </div>
               </div>
               <br />
 
-              <button class="btn-lg btn-danger" type="submit">
+              <button className="btn-lg btn-danger" type="submit">
                 Sign Up
               </button>
             </form>
-            <p class="loginhere">
+            <p className="loginhere">
               Have already an account ?{" "}
-              <Link to={`/login`} class="loginhere-link" variant="contained">
+              <Link
+                to={`/login`}
+                className="loginhere-link"
+                variant="contained"
+              >
                 Log in
               </Link>
             </p>
