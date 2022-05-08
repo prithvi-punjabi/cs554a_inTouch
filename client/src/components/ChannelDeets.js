@@ -78,7 +78,7 @@ const ChannelDeets = (props) => {
     }
   }
 
-  if (data) {
+  if (data && cData) {
     let users = data.getUsersForChannel;
     let Channel = cData.getChannelById;
     return (
@@ -183,15 +183,16 @@ const ChannelDeets = (props) => {
         </MembersContainer>
       </ChannelMembersContainer>
     );
-  } else if (loading) {
+  } else if (loading || cLoading) {
     return (
       <div>
         <CircularProgress color="success" />
         Loading...
       </div>
     );
-  } else if (error) {
+  } else if (error || cError) {
     console.log(error);
+    console.log(cError);
     return <p>Error</p>;
   }
 };
