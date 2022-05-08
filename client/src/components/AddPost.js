@@ -23,6 +23,7 @@ const AddPost = (props) => {
       });
 
       if (!post) {
+        post = [];
         post.getPostsForUser = [];
       }
       cache.writeQuery({
