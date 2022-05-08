@@ -1,7 +1,7 @@
 import { useQuery, useMutation } from "@apollo/client";
 import React from "react";
 import queries from "../queries";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import "../App.css";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
@@ -30,6 +30,7 @@ const styles = {
 
 const ChannelDeets = (props) => {
   const params = useParams();
+  const navigate = useNavigate();
   console.log(params);
   const { loading, error, data } = useQuery(queries.channel.GET_USERS, {
     variables: { getUsersForChannelId: params.id },
@@ -92,6 +93,14 @@ const ChannelDeets = (props) => {
           <HeaderRight></HeaderRight>
         </Header>
         <MembersContainer>
+          <button
+            onClick={() => {
+              navigate("/main");
+              setBody("channel");
+            }}
+          >
+            Back
+          </button>
           <Grid
             container
             spacing={3}
