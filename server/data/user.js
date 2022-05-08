@@ -151,6 +151,22 @@ const getUser = async (userId) => {
   }
 };
 
+const getFriends = async (userId) => {
+  validator.checkNonNull(userId);
+  validator.checkString(userId);
+  validator.checkObjectID(userId);
+  userId = utils.parseObjectId(userId);
+  const userCol = await userCollection();
+  const user = await userCol.findOne({ _id: userId });
+  if (user) {
+    return user.friends;
+  } else {
+    const error = new Error("User does not exist");
+    error.code = common.errorCode.NOT_FOUND;
+    throw error;
+  }
+};
+
 const getFriendRecommendations = async (user) => {
   validator.checkNonNull(user._id);
   validator.checkString(user._id);
@@ -318,4 +334,5 @@ module.exports = {
   addFriend,
   delFriend,
   changeReadStatus,
+  getFriends,
 };
