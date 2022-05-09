@@ -36,7 +36,7 @@ const AddPost = (props) => {
   });
 
   const setBody = (type) => {
-    props.currentBody(type);
+    props.setCurrentBody(type);
   };
 
   async function createPost(e) {
@@ -113,7 +113,12 @@ const AddPost = (props) => {
                   alt={props.user.userName}
                   onClick={() => {
                     setBody("user");
-                    navigate("/profile");
+                    navigate("/profile", {
+                      state: {
+                        prevLocation: window.location.pathname,
+                        prevElement: props.currentBody,
+                      },
+                    });
                   }}
                   style={{ cursor: "pointer" }}
                 />
@@ -123,7 +128,12 @@ const AddPost = (props) => {
                     className="font-weight-bold"
                     onClick={() => {
                       setBody("user");
-                      navigate("/profile");
+                      navigate("/profile", {
+                        state: {
+                          prevLocation: window.location.pathname,
+                          prevElement: props.currentBody,
+                        },
+                      });
                     }}
                     style={{ cursor: "pointer" }}
                   >
