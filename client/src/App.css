@@ -310,15 +310,11 @@ button {
   color: #222;
 }
 
-
 @media screen and (max-width: 605px) {
   .form-input {
     width: 100%;
-   
   }
 }
-
-
 
 .form-control1 {
   margin-left: 28px;
@@ -516,9 +512,8 @@ button {
 @media screen and (max-width: 605px) {
   .loginhere {
     font-size: small;
-   
   }
-  .loginhere-link{
+  .loginhere-link {
     font-size: small;
   }
 }
@@ -747,4 +742,9 @@ textarea {
 
 .detP {
   cursor: pointer;
+}
+
+.howToImg {
+  width: 80%;
+  height: 30%;
 }
