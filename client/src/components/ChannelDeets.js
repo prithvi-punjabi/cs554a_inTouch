@@ -53,7 +53,7 @@ const ChannelDeets = (props) => {
   const [addFriend] = useMutation(queries.user.ADD_FRIEND);
   const [removeFriend] = useMutation(queries.user.REMOVE_FRIEND);
 
-  async function handleAddFriend(friendId, e) {
+  async function handleAddFriend(friendId, e, fname) {
     e.preventDefault();
     try {
       const { data } = await addFriend({
@@ -61,22 +61,39 @@ const ChannelDeets = (props) => {
           friendId: friendId,
         },
       });
+      Swal.fire({
+        title: "Friend Added!",
+        text: `${fname} has been added to your friend list!`,
+        icon: "success",
+        confirmButtonText: "Awesome!",
+      });
     } catch (e) {
       console.log(e);
     }
   }
 
-  async function handleRemoveFriend(friendId, e) {
+  async function handleRemoveFriend(friendId, e, fname) {
     e.preventDefault();
-    try {
-      const { data } = await removeFriend({
-        variables: {
-          friendId: friendId,
-        },
-      });
-    } catch (e) {
-      console.log(e);
-    }
+    Swal.fire({
+      title: "Confirm Unfriending",
+      text: `Are you sure you want to remove ${fname} from your friend list?`,
+      icon: "info",
+      showDenyButton: true,
+      denyButtonText: `Oops! No!`,
+      confirmButtonText: "Yes, I'm sure!",
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        removeFriend({
+          variables: {
+            friendId: friendId,
+          },
+        });
+        Swal.fire(`${fname} was removed from your friend list`, "", "success");
+      } else if (result.isDenied) {
+        Swal.fire(`${fname} was not removed from your friend list`, "", "info");
+      }
+    });
   }
 
   if (data && cData) {
@@ -175,7 +192,7 @@ const ChannelDeets = (props) => {
                           variant="contained"
                           color="primary"
                           onClick={(e) => {
-                            handleAddFriend(user._id, e);
+                            handleAddFriend(user._id, e, user.name);
                           }}
                         >
                           + Add friend
@@ -186,7 +203,7 @@ const ChannelDeets = (props) => {
                           variant="contained"
                           color="primary"
                           onClick={(e) => {
-                            handleRemoveFriend(user._id, e);
+                            handleRemoveFriend(user._id, e, user.name);
                           }}
                         >
                           - Unfriend
