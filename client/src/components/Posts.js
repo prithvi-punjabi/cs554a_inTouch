@@ -9,7 +9,7 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import AddPost from "./AddPost";
 import DeletePost from "./DeletePost";
 import EditPost from "./EditPost";
-import { CircularProgress } from '@mui/material';
+import { CircularProgress } from "@mui/material";
 
 import styled from "styled-components";
 
@@ -38,7 +38,7 @@ const Posts = (props) => {
   const [removeFriend] = useMutation(queries.user.REMOVE_FRIEND);
 
   const setBody = (type) => {
-    props.currentBody(type);
+    props.setCurrentBody(type);
   };
 
   async function handleAddFriend(friendId, e) {
@@ -143,11 +143,21 @@ const Posts = (props) => {
                               setBody("user");
                               {
                                 userId === post.user._id &&
-                                  navigate("/profile");
+                                  navigate("/profile", {
+                                    state: {
+                                      prevLocation: window.location.pathname,
+                                      prevElement: props.currentBody,
+                                    },
+                                  });
                               }
                               {
                                 userId !== post.user._id &&
-                                  navigate(`/user/${post.user._id}`);
+                                  navigate(`/user/${post.user._id}`, {
+                                    state: {
+                                      prevLocation: window.location.pathname,
+                                      prevElement: props.currentBody,
+                                    },
+                                  });
                               }
                             }}
                             style={{ cursor: "pointer" }}
@@ -160,11 +170,21 @@ const Posts = (props) => {
                                 setBody("user");
                                 {
                                   userId === post.user._id &&
-                                    navigate("/profile");
+                                    navigate("/profile", {
+                                      state: {
+                                        prevLocation: window.location.pathname,
+                                        prevElement: props.currentBody,
+                                      },
+                                    });
                                 }
                                 {
                                   userId !== post.user._id &&
-                                    navigate(`/user/${post.user._id}`);
+                                    navigate(`/user/${post.user._id}`, {
+                                      state: {
+                                        prevLocation: window.location.pathname,
+                                        prevElement: props.currentBody,
+                                      },
+                                    });
                                 }
                               }}
                               style={{ cursor: "pointer" }}
@@ -249,7 +269,13 @@ const Posts = (props) => {
                                     alt={comment.user.userName}
                                     onClick={() => {
                                       setBody("user");
-                                      navigate(`/user/${post.user._id}`);
+                                      navigate(`/user/${post.user._id}`, {
+                                        state: {
+                                          prevLocation:
+                                            window.location.pathname,
+                                          prevElement: props.currentBody,
+                                        },
+                                      });
                                     }}
                                     style={{ cursor: "pointer" }}
                                   />
@@ -259,7 +285,13 @@ const Posts = (props) => {
                                       className="name"
                                       onClick={() => {
                                         setBody("user");
-                                        navigate(`/user/${comment.user._id}`);
+                                        navigate(`/user/${comment.user._id}`, {
+                                          state: {
+                                            prevLocation:
+                                              window.location.pathname,
+                                            prevElement: props.currentBody,
+                                          },
+                                        });
                                       }}
                                       style={{
                                         cursor: "pointer",
@@ -298,8 +330,10 @@ const Posts = (props) => {
   } else if (loading) {
     return (
       <PostDiv>
-        <div className="displayContainer"><CircularProgress color="success" />Loading...</div>{" "}
-        
+        <div className="displayContainer">
+          <CircularProgress color="success" />
+          Loading...
+        </div>{" "}
       </PostDiv>
     );
   } else if (error) {
@@ -402,9 +436,13 @@ const Posts = (props) => {
           </PostDiv>
         );
       } else {
-        return <PostDiv><div className="displayContainer">Fetching recommendations... <CircularProgress color="success" /></div>
-          
-        </PostDiv>;
+        return (
+          <PostDiv>
+            <div className="displayContainer">
+              Fetching recommendations... <CircularProgress color="success" />
+            </div>
+          </PostDiv>
+        );
       }
     } else {
       return (

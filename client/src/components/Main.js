@@ -232,7 +232,11 @@ function Main({ component }) {
             dbUpdateRead={dbUpdateRead}
           ></Sidebar>
           {currentBody && currentBody === "feed" && (
-            <Posts currentBody={setCurrentBody} user={data.getUser}></Posts>
+            <Posts
+              setCurrentBody={setCurrentBody}
+              currentBody={currentBody}
+              user={data.getUser}
+            ></Posts>
           )}
 
           {currentBody && currentBody === "user" && (
@@ -256,7 +260,7 @@ function Main({ component }) {
           )}
           {currentBody && currentBody === "members" && (
             <ChannelDeets
-              currentBody={setCurrentBody}
+              currentBody={currentBody}
               setCurrentBody={setCurrentBody}
             ></ChannelDeets>
           )}

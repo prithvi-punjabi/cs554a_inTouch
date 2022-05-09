@@ -86,13 +86,23 @@ const Friends = (props) => {
                   image={user.profilePicture}
                   alt={user.name}
                   onClick={() => {
-                    navigate(`/user/${user._id}`);
+                    navigate(`/user/${user._id}`, {
+                      state: {
+                        prevLocation: window.location.pathname,
+                        prevElement: props.currentBody,
+                      },
+                    });
                     setBody("user");
                   }}
                 />
                 <CardContent
                   onClick={() => {
-                    navigate(`/user/${user._id}`);
+                    navigate(`/user/${user._id}`, {
+                      state: {
+                        prevLocation: window.location.pathname,
+                        prevElement: props.currentBody,
+                      },
+                    });
                     setBody("user");
                   }}
                 >
