@@ -37,7 +37,7 @@ const ChannelDeets = (props) => {
   });
 
   const setBody = (type) => {
-    props.currentBody(type);
+    props.setCurrentBody(type);
   };
 
   const {
@@ -110,71 +110,78 @@ const ChannelDeets = (props) => {
               return (
                 <Grid item xs={12} sm={6} md={4} lg={3} key={user._id}>
                   <Card
-                    style={{ borderRadius: "7px", height: "57vh" }}
-                    onClick={() => setBody("user")}
+                    style={{
+                      borderRadius: "7px",
+                      height: "57vh",
+                      cursor: "pointer",
+                    }}
                   >
-                    <Link
-                      to={`/user/${user._id}`}
-                      style={{ textDecoration: "none", color: "#dc3545" }}
+                    <CardMedia
+                      component="img"
+                      style={{ height: "30vh" }}
+                      image={user.profilePicture}
+                      alt={user.name}
+                      onClick={() => {
+                        navigate(`/user/${user._id}`);
+                        setBody("user");
+                      }}
+                    />
+                    <CardContent
+                      onClick={() => {
+                        navigate(`/user/${user._id}`);
+                        setBody("user");
+                      }}
                     >
-                      <CardMedia
-                        component="img"
-                        style={{ height: "30vh" }}
-                        image={user.profilePicture}
-                        alt={user.name}
-                      />
-                      <CardContent>
-                        <Typography
-                          style={{
-                            display: "-webkit-box",
-                            overflow: "hidden",
-                            WebkitBoxOrient: "vertical",
-                            WebkitLineClamp: 1,
+                      <Typography
+                        style={{
+                          display: "-webkit-box",
+                          overflow: "hidden",
+                          WebkitBoxOrient: "vertical",
+                          WebkitLineClamp: 1,
+                        }}
+                        gutterBottom
+                        variant="h5"
+                        component="div"
+                      >
+                        {user.name}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        style={{
+                          display: "-webkit-box",
+                          overflow: "hidden",
+                          WebkitBoxOrient: "vertical",
+                          WebkitLineClamp: 3,
+                        }}
+                      >
+                        {user.bio}
+                      </Typography>
+                    </CardContent>
+                    <CardActions style={{ justifyContent: "center" }}>
+                      {userId != user._id && !user.friends.includes(userId) && (
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={(e) => {
+                            handleAddFriend(user._id, e);
                           }}
-                          gutterBottom
-                          variant="h5"
-                          component="div"
                         >
-                          {user.name}
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          color="text.secondary"
-                          style={{
-                            display: "-webkit-box",
-                            overflow: "hidden",
-                            WebkitBoxOrient: "vertical",
-                            WebkitLineClamp: 3,
+                          + Add friend
+                        </Button>
+                      )}
+                      {userId != user._id && user.friends.includes(userId) && (
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={(e) => {
+                            handleRemoveFriend(user._id, e);
                           }}
                         >
-                          {user.bio}
-                        </Typography>
-                      </CardContent>
-                      <CardActions style={{ justifyContent: "center" }}>
-                        {userId != user._id && !user.friends.includes(userId) && (
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={(e) => {
-                              handleAddFriend(user._id, e);
-                            }}
-                          >
-                            + Add friend
-                          </Button>
-                        )}
-                        {userId != user._id && user.friends.includes(userId) && (
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={(e) => {
-                              handleRemoveFriend(user._id, e);
-                            }}
-                          >
-                            - Unfriend
-                          </Button>
-                        )}
-                      </CardActions>
-                    </Link>
+                          - Unfriend
+                        </Button>
+                      )}
+                    </CardActions>
                   </Card>
                 </Grid>
               );

@@ -252,7 +252,10 @@ function Main({ component }) {
             ></Friends>
           )}
           {currentBody && currentBody === "members" && (
-            <ChannelDeets currentBody={setCurrentBody}></ChannelDeets>
+            <ChannelDeets
+              currentBody={setCurrentBody}
+              setCurrentBody={setCurrentBody}
+            ></ChannelDeets>
           )}
         </Appbody>
       </>
