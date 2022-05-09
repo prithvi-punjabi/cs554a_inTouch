@@ -12,7 +12,7 @@ function Navbar(props) {
   const navigate = useNavigate();
 
   const setBody = (type) => {
-    props.currentBody(type);
+    props.setCurrentBody(type);
   };
   const setSidebar = (type) => {
     props.showSideBar(type);
@@ -22,28 +22,29 @@ function Navbar(props) {
     <NavbarContainer>
       <NavbarLeft>
         {/* <img src={logo} className="App-logo" alt="inTouch Logo" /> */}
-        {props.showSideBar && !props.Sidebar &&
-          (<div className="sidebar-toggle" 
-          onClick={()=>{
-            setSidebar(true);
-          }}
+        {props.showSideBar && !props.Sidebar && (
+          <div
+            className="sidebar-toggle"
+            onClick={() => {
+              setSidebar(true);
+            }}
           >
-            <i className="fa fa-bars" ></i>
-            </div>)
-        }
+            <i className="fa fa-bars"></i>
+          </div>
+        )}
 
-{props.showSideBar  && props.Sidebar &&
-          (<div className="sidebar-toggle" 
-          onClick={()=>{
-            setSidebar(false);
-            
-          }}
+        {props.showSideBar && props.Sidebar && (
+          <div
+            className="sidebar-toggle"
+            onClick={() => {
+              setSidebar(false);
+            }}
           >
-            <i className="fa fa-bars" ></i>
-            </div>)
-        }
-        
-{/* 
+            <i className="fa fa-bars"></i>
+          </div>
+        )}
+
+        {/* 
           <div className="sidebar-toggle" 
         onClick={()=>{
           setSidebar(false);
@@ -62,7 +63,12 @@ function Navbar(props) {
           src={props.user.profilePicture}
           onClick={() => {
             setBody("user");
-            navigate("/profile");
+            navigate("/profile", {
+              state: {
+                prevLocation: window.location.pathname,
+                prevElement: props.currentBody,
+              },
+            });
           }}
         />
       </NavbarRight>

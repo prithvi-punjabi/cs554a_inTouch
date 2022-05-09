@@ -211,7 +211,8 @@ function Main({ component }) {
     return (
       <>
         <Navbar
-          currentBody={setCurrentBody}
+          setCurrentBody={setCurrentBody}
+          currentBody={currentBody}
           user={data.getUser}
           showSideBar={setshowSideBar}
           Sidebar={showSideBar}
@@ -234,7 +235,9 @@ function Main({ component }) {
             <Posts currentBody={setCurrentBody} user={data.getUser}></Posts>
           )}
 
-          {currentBody && currentBody === "user" && <Profile></Profile>}
+          {currentBody && currentBody === "user" && (
+            <Profile setCurrentBody={setCurrentBody}></Profile>
+          )}
 
           {data && currentBody && currentBody === "channel" && (
             <Chat

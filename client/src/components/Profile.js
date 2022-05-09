@@ -65,9 +65,10 @@ const useStyles = makeStyles({
   },
 });
 
-const Profile = () => {
+const Profile = (props) => {
   let navigate = useNavigate();
   const location = useLocation();
+  console.log(location.state);
   const params = useParams();
   useEffect(() => {
     if (!isLoggedIn()) {
@@ -99,6 +100,9 @@ const Profile = () => {
       setUser(data.getUser);
     });
   }
+  const setBody = (type) => {
+    props.setCurrentBody(type);
+  };
 
   useEffect(() => {
     refetchUser();
@@ -139,6 +143,14 @@ const Profile = () => {
           <div className={classes.outerContainerInnerLayer}></div>
         </div>
         <div className={classes.profileCard}>
+          <button
+            onClick={() => {
+              navigate(location.state.prevLocation);
+              setBody(location.state.prevElement);
+            }}
+          >
+            Back
+          </button>
           <Grid container spacing={0} direction="row">
             <Grid item xs={12} sm={8} md={6}>
               <img
