@@ -148,6 +148,57 @@ const AddPost = (props) => {
                 ref={tBox}
               />
               <div className="image-upload">
+                <div
+                  class="card col-md-3"
+                  id="div-imgPost"
+                  style={{
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    display: "none",
+                    gridTemplate: "1fr/1fr",
+                    placeItems: "center",
+                    cursor: "pointer",
+                  }}
+                  onMouseOver={() => {
+                    document.getElementById("btn-remove-img").style.display =
+                      "block";
+                  }}
+                  onMouseLeave={() => {
+                    document.getElementById("btn-remove-img").style.display =
+                      "none";
+                  }}
+                  onClick={() => {
+                    document.getElementById("imgPost").src = "#";
+                    document.getElementById("div-imgPost").style.display =
+                      "none";
+                    setImage(null);
+                  }}
+                >
+                  <img
+                    id="imgPost"
+                    alt="image to be uploaded"
+                    style={{
+                      width: "100px",
+                      height: "100px",
+                      gridColumn: "1/1",
+                      gridRow: "1/1",
+                    }}
+                  />
+                  <span
+                    id="btn-remove-img"
+                    class="span-x hide"
+                    style={{
+                      display: "none",
+                      gridColumn: "1/1",
+                      gridRow: "1/1",
+                      padding: "5px 10px",
+                      background: "#00000054",
+                    }}
+                  >
+                    X
+                  </span>
+                </div>
+                <br />
                 <label htmlFor="file-input">
                   <i
                     className="fa fa-upload fa-lg"
@@ -158,7 +209,13 @@ const AddPost = (props) => {
                 <input
                   id="file-input"
                   type="file"
-                  onChange={(e) => setImage(e.target.files[0])}
+                  onChange={(e) => {
+                    document.getElementById("imgPost").src =
+                      URL.createObjectURL(e.target.files[0]);
+                    document.getElementById("div-imgPost").style.display =
+                      "grid";
+                    setImage(e.target.files[0]);
+                  }}
                 />
               </div>
               <div>
