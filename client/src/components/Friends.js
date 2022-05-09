@@ -1,7 +1,7 @@
 import React from "react";
 import queries from "../queries";
 import { useQuery, useMutation } from "@apollo/client";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import {
   Card,
@@ -15,6 +15,7 @@ import { Button } from "@material-ui/core";
 import Swal from "sweetalert2";
 
 const Friends = (props) => {
+  const navigate = useNavigate();
   const { loading, error, data } = useQuery(queries.user.GET_FRIENDS, {
     fetchPolicy: "cache-and-network",
   });
@@ -72,56 +73,66 @@ const Friends = (props) => {
         {friends.map((user) => {
           return (
             <Grid item xs={12} sm={6} md={4} lg={3} key={user._id}>
-              <Card style={{ borderRadius: "7px", height: "57vh" }}>
-                <Link
-                  to={`/user/${user._id}`}
-                  style={{ textDecoration: "none", color: "#dc3545" }}
+              <Card
+                style={{
+                  borderRadius: "7px",
+                  height: "57vh",
+                  cursor: "pointer",
+                }}
+              >
+                <CardMedia
+                  component="img"
+                  style={{ height: "30vh" }}
+                  image={user.profilePicture}
+                  alt={user.name}
+                  onClick={() => {
+                    navigate(`/user/${user._id}`);
+                    setBody("user");
+                  }}
+                />
+                <CardContent
+                  onClick={() => {
+                    navigate(`/user/${user._id}`);
+                    setBody("user");
+                  }}
                 >
-                  <CardMedia
-                    component="img"
-                    style={{ height: "30vh" }}
-                    image={user.profilePicture}
-                    alt={user.name}
-                  />
-                  <CardContent>
-                    <Typography
-                      style={{
-                        display: "-webkit-box",
-                        overflow: "hidden",
-                        WebkitBoxOrient: "vertical",
-                        WebkitLineClamp: 1,
-                      }}
-                      gutterBottom
-                      variant="h5"
-                      component="div"
-                    >
-                      {user.name}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      style={{
-                        display: "-webkit-box",
-                        overflow: "hidden",
-                        WebkitBoxOrient: "vertical",
-                        WebkitLineClamp: 3,
-                      }}
-                    >
-                      {user.bio}
-                    </Typography>
-                  </CardContent>
-                  <CardActions style={{ justifyContent: "center" }}>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={(e) => {
-                        handleRemoveFriend(user.name, user._id, e);
-                      }}
-                    >
-                      - Unfriend
-                    </Button>
-                  </CardActions>
-                </Link>
+                  <Typography
+                    style={{
+                      display: "-webkit-box",
+                      overflow: "hidden",
+                      WebkitBoxOrient: "vertical",
+                      WebkitLineClamp: 1,
+                    }}
+                    gutterBottom
+                    variant="h5"
+                    component="div"
+                  >
+                    {user.name}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    style={{
+                      display: "-webkit-box",
+                      overflow: "hidden",
+                      WebkitBoxOrient: "vertical",
+                      WebkitLineClamp: 3,
+                    }}
+                  >
+                    {user.bio}
+                  </Typography>
+                </CardContent>
+                <CardActions style={{ justifyContent: "center" }}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={(e) => {
+                      handleRemoveFriend(user.name, user._id, e);
+                    }}
+                  >
+                    - Unfriend
+                  </Button>
+                </CardActions>
               </Card>
             </Grid>
           );
