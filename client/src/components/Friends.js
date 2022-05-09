@@ -12,7 +12,20 @@ import {
   Typography,
 } from "@mui/material";
 import { Button } from "@material-ui/core";
+import styled from "styled-components";
+import "../App.css";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
 import Swal from "sweetalert2";
+const styles = {
+  largeIcon: {
+    width: 40,
+    height: 32,
+  },
+  largerIcon: {
+    width: 50,
+    height: 50,
+  },
+};
 
 const Friends = (props) => {
   const navigate = useNavigate();
@@ -65,89 +78,100 @@ const Friends = (props) => {
   if (data) {
     let friends = data.getFriends;
     return (
-      <Grid
-        container
-        spacing={3}
-        style={{ marginTop: "0px", padding: "1% 5%" }}
-      >
-        {friends.map((user) => {
-          return (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={user._id}>
-              <Card
-                style={{
-                  borderRadius: "7px",
-                  height: "57vh",
-                  cursor: "pointer",
-                }}
-              >
-                <CardMedia
-                  component="img"
-                  style={{ height: "30vh" }}
-                  image={user.profilePicture}
-                  alt={user.name}
-                  onClick={() => {
-                    navigate(`/user/${user._id}`, {
-                      state: {
-                        prevLocation: window.location.pathname,
-                        prevElement: props.currentBody,
-                      },
-                    });
-                    setBody("user");
-                  }}
-                />
-                <CardContent
-                  onClick={() => {
-                    navigate(`/user/${user._id}`, {
-                      state: {
-                        prevLocation: window.location.pathname,
-                        prevElement: props.currentBody,
-                      },
-                    });
-                    setBody("user");
-                  }}
-                >
-                  <Typography
+      <ChannelMembersContainer>
+        <Header>
+          <HeaderLeft>
+            <StarBorderIcon style={styles.largeIcon} />
+            <h4>Friends</h4>
+          </HeaderLeft>
+          <HeaderRight></HeaderRight>
+        </Header>
+        <MembersContainer>
+          <Grid
+            container
+            spacing={3}
+            style={{ marginTop: "0px", padding: "1% 5%" }}
+          >
+            {friends.map((user) => {
+              return (
+                <Grid item xs={12} sm={6} md={4} lg={3} key={user._id}>
+                  <Card
                     style={{
-                      display: "-webkit-box",
-                      overflow: "hidden",
-                      WebkitBoxOrient: "vertical",
-                      WebkitLineClamp: 1,
-                    }}
-                    gutterBottom
-                    variant="h5"
-                    component="div"
-                  >
-                    {user.name}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    style={{
-                      display: "-webkit-box",
-                      overflow: "hidden",
-                      WebkitBoxOrient: "vertical",
-                      WebkitLineClamp: 3,
+                      borderRadius: "7px",
+                      height: "57vh",
+                      cursor: "pointer",
                     }}
                   >
-                    {user.bio}
-                  </Typography>
-                </CardContent>
-                <CardActions style={{ justifyContent: "center" }}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={(e) => {
-                      handleRemoveFriend(user.name, user._id, e);
-                    }}
-                  >
-                    - Unfriend
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          );
-        })}
-      </Grid>
+                    <CardMedia
+                      component="img"
+                      style={{ height: "30vh" }}
+                      image={user.profilePicture}
+                      alt={user.name}
+                      onClick={() => {
+                        navigate(`/user/${user._id}`, {
+                          state: {
+                            prevLocation: window.location.pathname,
+                            prevElement: props.currentBody,
+                          },
+                        });
+                        setBody("user");
+                      }}
+                    />
+                    <CardContent
+                      onClick={() => {
+                        navigate(`/user/${user._id}`, {
+                          state: {
+                            prevLocation: window.location.pathname,
+                            prevElement: props.currentBody,
+                          },
+                        });
+                        setBody("user");
+                      }}
+                    >
+                      <Typography
+                        style={{
+                          display: "-webkit-box",
+                          overflow: "hidden",
+                          WebkitBoxOrient: "vertical",
+                          WebkitLineClamp: 1,
+                        }}
+                        gutterBottom
+                        variant="h5"
+                        component="div"
+                      >
+                        {user.name}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        style={{
+                          display: "-webkit-box",
+                          overflow: "hidden",
+                          WebkitBoxOrient: "vertical",
+                          WebkitLineClamp: 3,
+                        }}
+                      >
+                        {user.bio}
+                      </Typography>
+                    </CardContent>
+                    <CardActions style={{ justifyContent: "center" }}>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={(e) => {
+                          handleRemoveFriend(user.name, user._id, e);
+                        }}
+                      >
+                        - Unfriend
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </Grid>
+              );
+            })}
+          </Grid>
+        </MembersContainer>
+      </ChannelMembersContainer>
     );
   } else if (loading) {
     return (
@@ -162,3 +186,56 @@ const Friends = (props) => {
 };
 
 export default Friends;
+
+const ChannelMembersContainer = styled.div`
+  flex: 0.6;
+  flex-grow: 1;
+  overflow-y: scroll;
+  margin-top: 49px;
+  float: left;
+`;
+
+const MembersContainer = styled.div`
+  margin-top: 80px;
+  margin-bottom: 2%;
+`;
+
+const HeaderLeft = styled.div`
+  position: fixed;
+  display: flex;
+
+  > h4 {
+    display: flex;
+    /* margin-left: 10px; */
+  }
+`;
+const HeaderRight = styled.div`
+  display: flex;
+  position: fixed;
+
+  align-items: right;
+  /* margin-left: 75%; */
+  right: 20px;
+  > p {
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+  }
+  @media (max-width: 991px) {
+    display: none;
+  }
+`;
+
+const Header = styled.div`
+  display: flex;
+  position: fixed;
+  width: 100%;
+  justify-content: space-between;
+  padding: 50px;
+  border-bottom: 1px solid lightgray;
+  background-color: white;
+
+  @media (max-width: 991px) {
+    padding-left: 10px;
+  }
+`;
