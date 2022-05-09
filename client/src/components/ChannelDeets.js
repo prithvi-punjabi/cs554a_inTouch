@@ -144,6 +144,7 @@ const ChannelDeets = (props) => {
                           state: {
                             prevLocation: window.location.pathname,
                             prevElement: props.currentBody,
+                            currChan: location.state.currChan,
                           },
                         });
                         setBody("user");
@@ -155,6 +156,7 @@ const ChannelDeets = (props) => {
                           state: {
                             prevLocation: window.location.pathname,
                             prevElement: props.currentBody,
+                            currChan: location.state.currChan,
                           },
                         });
                         setBody("user");

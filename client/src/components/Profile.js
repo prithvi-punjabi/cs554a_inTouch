@@ -145,7 +145,13 @@ const Profile = (props) => {
         <div className={classes.profileCard}>
           <button
             onClick={() => {
-              navigate(location.state.prevLocation);
+              if (location.state.prevLocation === "/channel/members") {
+                navigate(location.state.prevLocation, {
+                  state: { currChan: location.state.currChan },
+                });
+              } else {
+                navigate(location.state.prevLocation);
+              }
               setBody(location.state.prevElement);
             }}
           >
