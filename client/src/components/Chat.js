@@ -10,7 +10,7 @@ import useTextToxicity from "react-text-toxicity";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { predictor } from "../helper";
-import typing from "../img/typing2.gif"
+import typing from "../img/typing2.gif";
 const styles = {
   largeIcon: {
     width: 40,
@@ -36,7 +36,6 @@ function Chat(props) {
   const setBody = (type) => {
     props.currentBody(type);
   };
-
 
   //RATHER COMPLEX LOGIC FOR SCROLLING AND SHOWING LOADER
   useEffect(() => {
@@ -111,9 +110,9 @@ function Chat(props) {
 
         let h = date.getHours(),
           m = date.getMinutes();
-          if (m <10){
-            m = "0" + m
-          }
+        if (m < 10) {
+          m = "0" + m;
+        }
         time = h > 12 ? h - 12 + ":" + m + " PM" : h + ":" + m + " AM";
 
         date = date.toDateString();
@@ -163,11 +162,15 @@ function Chat(props) {
           </h4>
         </HeaderLeft>
         <HeaderRight>
-          <p className="detP"
-            onClick={() =>{ 
+          <p
+            className="detP"
+            onClick={() => {
               setBody("members");
-            navigate(`/channel/members/${currentChannel._id}`)
-            }}>
+              navigate(`/channel/members`, {
+                state: { currChan: currentChannel._id },
+              });
+            }}
+          >
             <InfoOutlinedIcon style={styles.largeIcon} />
             Details
           </p>

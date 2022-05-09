@@ -116,7 +116,7 @@ function App() {
                 <Route path="/feed" element={<Feed />} />
                 <Route path="/channels" element={<Channel />} />
                 <Route
-                  path="/channel/members/:id"
+                  path="/channel/members"
                   element={<Main component="members" />}
                 />
                 <Route path="/posts" element={<Posts />} />

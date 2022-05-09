@@ -1,7 +1,7 @@
 import { useQuery, useMutation } from "@apollo/client";
 import React from "react";
 import queries from "../queries";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import "../App.css";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
@@ -29,11 +29,12 @@ const styles = {
 };
 
 const ChannelDeets = (props) => {
+  const location = useLocation();
   const params = useParams();
   const navigate = useNavigate();
-  console.log(params);
+  console.log(location.state.currChan);
   const { loading, error, data } = useQuery(queries.channel.GET_USERS, {
-    variables: { getUsersForChannelId: params.id },
+    variables: { getUsersForChannelId: location.state.currChan },
   });
 
   const setBody = (type) => {
@@ -45,7 +46,7 @@ const ChannelDeets = (props) => {
     error: cError,
     data: cData,
   } = useQuery(queries.channel.GET_BY_ID, {
-    variables: { channelId: params.id },
+    variables: { channelId: location.state.currChan },
   });
 
   const userId = localStorage.getItem("userId");
