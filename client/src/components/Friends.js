@@ -12,6 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Button } from "@material-ui/core";
+import Swal from "sweetalert2";
 
 const Friends = (props) => {
   const { loading, error, data } = useQuery(queries.user.GET_FRIENDS, {
@@ -37,17 +38,28 @@ const Friends = (props) => {
   const setBody = (type) => {
     props.setCurrentBody(type);
   };
-  async function handleRemoveFriend(friendId, e) {
+  async function handleRemoveFriend(fname, friendId, e) {
     e.preventDefault();
-    try {
-      const { data } = await removeFriend({
-        variables: {
-          friendId: friendId,
-        },
-      });
-    } catch (e) {
-      console.log(e);
-    }
+    Swal.fire({
+      title: "Confirm Unfriending",
+      text: `Are you sure you want to remove ${fname} from your friend list?`,
+      icon: "info",
+      showDenyButton: true,
+      denyButtonText: `Oops! No!`,
+      confirmButtonText: "Yes, I'm sure!",
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        removeFriend({
+          variables: {
+            friendId: friendId,
+          },
+        });
+        Swal.fire(`${fname} was removed from your friend list`, "", "success");
+      } else if (result.isDenied) {
+        Swal.fire(`${fname} was not removed from your friend list`, "", "info");
+      }
+    });
   }
   if (data) {
     let friends = data.getFriends;
@@ -103,7 +115,7 @@ const Friends = (props) => {
                       variant="contained"
                       color="primary"
                       onClick={(e) => {
-                        handleRemoveFriend(user._id, e);
+                        handleRemoveFriend(user.name, user._id, e);
                       }}
                     >
                       - Unfriend
