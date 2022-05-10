@@ -749,9 +749,13 @@ textarea {
   width: 80%;
   height: 30%;
 }
-.mr-2{
+.mr-2 {
   color: #7b7575;
 }
-.textGray span{
+.textGray {
   color: #7b7575;
+}
+
+#subButton:disabled {
+  opacity: 0.3;
 }
