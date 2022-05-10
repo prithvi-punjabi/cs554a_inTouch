@@ -5,6 +5,7 @@ import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import "../App.css";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { CircularProgress } from "@mui/material";
 import {
   Card,
@@ -24,7 +25,7 @@ const styles = {
   },
   largerIcon: {
     width: 50,
-    height: 50,
+    height: 50
   },
 };
 
@@ -108,17 +109,19 @@ const ChannelDeets = (props) => {
               <strong>{cData && Channel.displayName}</strong>
             </h4>
           </HeaderLeft>
-          <HeaderRight></HeaderRight>
-        </Header>
-        <MembersContainer>
-          <button
+          <HeaderRight>
+          <Button
             onClick={() => {
               navigate("/main");
               setBody("channel");
             }}
           >
-            Back
-          </button>
+            <CloseOutlinedIcon style={styles.largerIcon}/>
+          </Button>
+          </HeaderRight>
+        </Header>
+        <MembersContainer>
+          
           <Grid
             container
             spacing={3}
@@ -262,17 +265,16 @@ const HeaderRight = styled.div`
   display: flex;
   position: fixed;
 
-  align-items: right;
-  /* margin-left: 75%; */
-  right: 20px;
+ margin-top: -12px;
+  right: 40px;
   > p {
     display: flex;
     align-items: center;
     font-size: 20px;
   }
-  @media (max-width: 991px) {
+  /* @media (max-width: 991px) {
     display: none;
-  }
+  } */
 `;
 
 const Header = styled.div`

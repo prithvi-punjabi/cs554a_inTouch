@@ -18,6 +18,8 @@ import MailIcon from "@mui/icons-material/Mail";
 import PhoneIcon from "@mui/icons-material/Phone";
 import CakeIcon from "@mui/icons-material/Cake";
 import { isLoggedIn } from "../helper";
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 
 const useStyles = makeStyles({
   container: {
@@ -64,6 +66,14 @@ const useStyles = makeStyles({
     height: "90%",
   },
 });
+const styles = {
+
+	largeIcon: {
+	  width: 50,
+	  height: 50	 
+	},
+  
+  };
 
 const Profile = (props) => {
   let navigate = useNavigate();
@@ -143,7 +153,8 @@ const Profile = (props) => {
           <div className={classes.outerContainerInnerLayer}></div>
         </div>
         <div className={classes.profileCard}>
-          <button
+          <br></br>
+          <Button
             onClick={() => {
               if (location.state.prevLocation === "/channel/members") {
                 navigate(location.state.prevLocation, {
@@ -154,9 +165,10 @@ const Profile = (props) => {
               }
               setBody(location.state.prevElement);
             }}
+            style={{  position:"absolute",right:"20px"}}
           >
-            Back
-          </button>
+            <CloseOutlinedIcon style={styles.largeIcon}/>
+          </Button>
           <Grid container spacing={0} direction="row">
             <Grid item xs={12} sm={8} md={6}>
               <img
@@ -170,8 +182,9 @@ const Profile = (props) => {
               sm={12}
               md={6}
               className={classes.detailsContainer}
+              style={{ textAlign:"center",padding:"10px"}}
             >
-              <Grid container>
+              <Grid container  style={{  paddingTop: "50px", alignSelf:"center"}}>
                 <Grid item xs={6}>
                   <Typography
                     variant="h3"

@@ -162,6 +162,11 @@ function Chat(props) {
           </h4>
         </HeaderLeft>
         <HeaderRight>
+          <div>
+            
+          <InfoOutlinedIcon style={styles.largeIcon} />
+          </div>
+          <div>
           <p
             className="detP"
             onClick={() => {
@@ -171,9 +176,10 @@ function Chat(props) {
               });
             }}
           >
-            <InfoOutlinedIcon style={styles.largeIcon} />
+            
             Details
           </p>
+          </div>
         </HeaderRight>
       </Header>
 
@@ -400,14 +406,17 @@ const HeaderRight = styled.div`
 
   align-items: right;
   /* margin-left: 75%; */
-  right: 20px;
-  > p {
+  right: 40px;
+  > div > p {
     display: flex;
     align-items: center;
     font-size: 20px;
+    @media (max-width: 991px) {
+    display: none;
+  }
   }
   @media (max-width: 991px) {
-    display: none;
+    right: 20px;
   }
 `;
 
