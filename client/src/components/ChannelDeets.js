@@ -5,6 +5,7 @@ import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import "../App.css";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { CircularProgress } from "@mui/material";
 import {
   Card,
@@ -24,7 +25,7 @@ const styles = {
   },
   largerIcon: {
     width: 50,
-    height: 50,
+    height: 50
   },
 };
 
@@ -53,7 +54,7 @@ const ChannelDeets = (props) => {
   const [addFriend] = useMutation(queries.user.ADD_FRIEND);
   const [removeFriend] = useMutation(queries.user.REMOVE_FRIEND);
 
-  async function handleAddFriend(friendId, e) {
+  async function handleAddFriend(friendId, e, fname) {
     e.preventDefault();
     try {
       const { data } = await addFriend({
@@ -61,22 +62,39 @@ const ChannelDeets = (props) => {
           friendId: friendId,
         },
       });
+      Swal.fire({
+        title: "Friend Added!",
+        text: `${fname} has been added to your friend list!`,
+        icon: "success",
+        confirmButtonText: "Awesome!",
+      });
     } catch (e) {
       console.log(e);
     }
   }
 
-  async function handleRemoveFriend(friendId, e) {
+  async function handleRemoveFriend(friendId, e, fname) {
     e.preventDefault();
-    try {
-      const { data } = await removeFriend({
-        variables: {
-          friendId: friendId,
-        },
-      });
-    } catch (e) {
-      console.log(e);
-    }
+    Swal.fire({
+      title: "Confirm Unfriending",
+      text: `Are you sure you want to remove ${fname} from your friend list?`,
+      icon: "info",
+      showDenyButton: true,
+      denyButtonText: `Oops! No!`,
+      confirmButtonText: "Yes, I'm sure!",
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        removeFriend({
+          variables: {
+            friendId: friendId,
+          },
+        });
+        Swal.fire(`${fname} was removed from your friend list`, "", "success");
+      } else if (result.isDenied) {
+        Swal.fire(`${fname} was not removed from your friend list`, "", "info");
+      }
+    });
   }
 
   if (data && cData) {
@@ -91,17 +109,19 @@ const ChannelDeets = (props) => {
               <strong>{cData && Channel.displayName}</strong>
             </h4>
           </HeaderLeft>
-          <HeaderRight></HeaderRight>
-        </Header>
-        <MembersContainer>
-          <button
+          <HeaderRight>
+          <Button
             onClick={() => {
               navigate("/main");
               setBody("channel");
             }}
           >
-            Back
-          </button>
+            <CloseOutlinedIcon style={styles.largerIcon}/>
+          </Button>
+          </HeaderRight>
+        </Header>
+        <MembersContainer>
+          
           <Grid
             container
             spacing={3}
@@ -127,6 +147,7 @@ const ChannelDeets = (props) => {
                           state: {
                             prevLocation: window.location.pathname,
                             prevElement: props.currentBody,
+                            currChan: location.state.currChan,
                           },
                         });
                         setBody("user");
@@ -138,6 +159,7 @@ const ChannelDeets = (props) => {
                           state: {
                             prevLocation: window.location.pathname,
                             prevElement: props.currentBody,
+                            currChan: location.state.currChan,
                           },
                         });
                         setBody("user");
@@ -175,7 +197,7 @@ const ChannelDeets = (props) => {
                           variant="contained"
                           color="primary"
                           onClick={(e) => {
-                            handleAddFriend(user._id, e);
+                            handleAddFriend(user._id, e, user.name);
                           }}
                         >
                           + Add friend
@@ -186,7 +208,7 @@ const ChannelDeets = (props) => {
                           variant="contained"
                           color="primary"
                           onClick={(e) => {
-                            handleRemoveFriend(user._id, e);
+                            handleRemoveFriend(user._id, e, user.name);
                           }}
                         >
                           - Unfriend
@@ -235,7 +257,7 @@ const HeaderLeft = styled.div`
   display: flex;
 
   > h4 {
-    display: flex;
+    /* display: flex; */
     /* margin-left: 10px; */
   }
 `;
@@ -243,16 +265,15 @@ const HeaderRight = styled.div`
   display: flex;
   position: fixed;
 
-  align-items: right;
-  /* margin-left: 75%; */
-  right: 20px;
+ margin-top: -15px;
+  right: 40px;
   > p {
     display: flex;
     align-items: center;
     font-size: 20px;
   }
   @media (max-width: 991px) {
-    display: none;
+    right: 10px;
   }
 `;
 

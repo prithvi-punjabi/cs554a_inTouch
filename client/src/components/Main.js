@@ -217,6 +217,7 @@ function Main({ component }) {
           currentBody={currentBody}
           user={data.getUser}
           showSideBar={setshowSideBar}
+          currentChannelId={currentChannelId}
           Sidebar={showSideBar}
           setSearchTerm={setSearchTerm}
           searchTerm={searchTerm}
@@ -252,7 +253,10 @@ function Main({ component }) {
           )}
 
           {currentBody && currentBody === "user" && (
-            <Profile setCurrentBody={setCurrentBody}></Profile>
+            <Profile
+              setCurrentBody={setCurrentBody}
+              currentChannelId={currentChannelId}
+            ></Profile>
           )}
 
           {data && currentBody && currentBody === "channel" && (

@@ -19,6 +19,8 @@ import MailIcon from "@mui/icons-material/Mail";
 import PhoneIcon from "@mui/icons-material/Phone";
 import CakeIcon from "@mui/icons-material/Cake";
 import { isLoggedIn } from "../helper";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 
 const useStyles = makeStyles({
   container: {
@@ -65,6 +67,12 @@ const useStyles = makeStyles({
     height: "90%",
   },
 });
+const styles = {
+  largeIcon: {
+    width: 50,
+    height: 50,
+  },
+};
 
 const Profile = (props) => {
   let navigate = useNavigate();
@@ -144,14 +152,40 @@ const Profile = (props) => {
           <div className={classes.outerContainerInnerLayer}></div>
         </div>
         <div className={classes.profileCard}>
-          <button
-            onClick={() => {
-              navigate(location.state.prevLocation);
-              setBody(location.state.prevElement);
-            }}
-          >
-            Back
-          </button>
+          <br></br>
+          {location.state !== null && (
+            <Button
+              onClick={() => {
+                if (location.state.prevLocation === "/channel/members") {
+                  console.log(props);
+                  navigate(location.state.prevLocation, {
+                    state: {
+                      currChan: location.state.currChan
+                        ? location.state.currChan
+                        : props.currentChannelId,
+                    },
+                  });
+                } else {
+                  navigate(location.state.prevLocation);
+                }
+                setBody(location.state.prevElement);
+              }}
+              style={{ position: "absolute", right: "20px" }}
+            >
+              <CloseOutlinedIcon style={styles.largeIcon} />
+            </Button>
+          )}
+          {location.state === null && (
+            <Button
+              onClick={() => {
+                setBody("feed");
+                navigate("/main");
+              }}
+              style={{ position: "absolute", right: "20px" }}
+            >
+              <CloseOutlinedIcon style={styles.largeIcon} />
+            </Button>
+          )}
           <Grid container spacing={0} direction="row">
             <Grid item xs={12} sm={8} md={6}>
               <img
@@ -165,8 +199,12 @@ const Profile = (props) => {
               sm={12}
               md={6}
               className={classes.detailsContainer}
+              style={{ textAlign: "center", padding: "10px" }}
             >
-              <Grid container>
+              <Grid
+                container
+                style={{ paddingTop: "50px", alignSelf: "center" }}
+              >
                 <Grid item xs={6}>
                   <Typography
                     variant="h3"

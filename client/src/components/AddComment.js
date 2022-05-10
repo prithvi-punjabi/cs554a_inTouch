@@ -7,6 +7,7 @@ import { predictor } from "../helper";
 
 const AddComment = (props) => {
   const [addComment] = useMutation(queries.post.ADD_COMMENT);
+  const [text, setText] = useState("");
   const textBox = useRef(null);
   const model = useRef();
   return (
@@ -23,7 +24,7 @@ const AddComment = (props) => {
               if ((x.label = "toxicity")) x.label = "toxic";
               Swal.fire({
                 title: "Toxic Text Detected!",
-                text: `Your comment has been labelled ${x.label} with a probability of ${x.probability}. You cannot post it.`,
+                text: `Your comment contains text that violates our Community Guidelines. You cannot post it.`,
                 icon: "error",
                 confirmButtonText: "I'm sorry!",
               });
@@ -40,15 +41,28 @@ const AddComment = (props) => {
           }
         }}
       >
+        <label for="newcomment" hidden>
+          Add new comment{" "}
+        </label>
         <input
+          id="newcomment"
           type="text"
           className="form-control"
           aria-label="Add Comment"
           ref={textBox}
+          onChange={(e) => setText(e.target.value)}
         />
         <div className="fonts">
           {" "}
-          <button className="fa fa-paper-plane" type="submit"></button>{" "}
+          <label for="subButtonComm" hidden>
+            Add comment Textarea
+          </label>
+          <button
+            id="subButtonComm"
+            className="fa fa-paper-plane"
+            type="submit"
+            disabled={!text}
+          ></button>{" "}
         </div>
       </form>
     </div>

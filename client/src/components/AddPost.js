@@ -13,6 +13,7 @@ import WorkOutlineOutlinedIcon from "@mui/icons-material/WorkOutlineOutlined";
 const AddPost = (props) => {
   const navigate = useNavigate();
   const [category, setCategory] = useState("");
+  const [text, setText] = useState("");
   const [image, setImage] = useState(null);
   let tBox = useRef({ current: { value: "" } });
   const model = useRef();
@@ -59,7 +60,7 @@ const AddPost = (props) => {
           if ((x.label = "toxicity")) x.label = "toxic";
           Swal.fire({
             title: "Toxic Text Detected!",
-            text: `Your post has been labelled ${x.label} with a probability of ${x.probability}. You cannot post it.`,
+            text: `Your post contains text that violates our Community Guidelines. You cannot post it.`,
             icon: "error",
             confirmButtonText: "I'm sorry!",
           });
@@ -143,9 +144,14 @@ const AddPost = (props) => {
               </div>
             </div>
             <form className="postForm" onSubmit={createPost}>
+              <label for="addpost" hidden>
+                Add post Textarea
+              </label>
               <textarea
+                id="addpost"
                 placeholder="Tell us what you're thinking..."
                 ref={tBox}
+                onChange={(e) => setText(e.target.value)}
               />
               <div className="image-upload">
                 <div
@@ -229,14 +235,15 @@ const AddPost = (props) => {
                         checked={category === "academic"}
                         onClick={(e) => setCategory(e.target.value)}
                       />
-                      <div class="academic box">
+                      <span class="academic box">
                         <span>
                           <SchoolOutlinedIcon />
                         </span>
                         <br />
                         <span>Academic</span>
-                      </div>
+                      </span>
                     </label>
+
                     <label>
                       <input
                         type="radio"
@@ -245,13 +252,13 @@ const AddPost = (props) => {
                         checked={category === "housing"}
                         onClick={(e) => setCategory(e.target.value)}
                       />
-                      <div class="housing box">
+                      <span class="housing box">
                         <span>
                           <HomeOutlinedIcon />
                         </span>
                         <br />
                         <span>Housing</span>
-                      </div>
+                      </span>
                     </label>
                     <label>
                       <input
@@ -261,13 +268,13 @@ const AddPost = (props) => {
                         checked={category === "social"}
                         onClick={(e) => setCategory(e.target.value)}
                       />
-                      <div class="social box">
+                      <span class="social box">
                         <span>
                           <ConnectWithoutContactOutlinedIcon />
                         </span>
                         <br />
                         <span>Social</span>
-                      </div>
+                      </span>
                     </label>
                     <label>
                       <input
@@ -277,19 +284,24 @@ const AddPost = (props) => {
                         checked={category === "career"}
                         onClick={(e) => setCategory(e.target.value)}
                       />
-                      <div class="career box">
+                      <span class="career box">
                         <span>
                           <WorkOutlineOutlinedIcon />
                         </span>
                         <br />
                         <span>Career</span>
-                      </div>
+                      </span>
                     </label>
                   </div>
                 </fieldset>
               </div>
               <div className="postBut">
-                <button type="submit">Post</button>
+                <label for="subButton" hidden>
+                  Post new post
+                </label>
+                <button id="subButton" type="submit" disabled={!text}>
+                  Post
+                </button>
               </div>
             </form>
           </div>

@@ -11,6 +11,11 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { predictor } from "../helper";
 import typing from "../img/typing2.gif";
+
+// import Skeleton from 'react-loading-skeleton'
+// import 'react-loading-skeleton/dist/skeleton.css'
+import Skeleton from "@mui/material/Skeleton";
+
 const styles = {
   largeIcon: {
     width: 40,
@@ -162,7 +167,7 @@ function Chat(props) {
           </h4>
         </HeaderLeft>
         <HeaderRight>
-          <p
+          <div
             className="detP"
             onClick={() => {
               setBody("members");
@@ -172,8 +177,20 @@ function Chat(props) {
             }}
           >
             <InfoOutlinedIcon style={styles.largeIcon} />
-            Details
-          </p>
+          </div>
+          <div>
+            <p
+              className="detP"
+              onClick={() => {
+                setBody("members");
+                navigate(`/channel/members`, {
+                  state: { currChan: currentChannel._id },
+                });
+              }}
+            >
+              Details
+            </p>
+          </div>
         </HeaderRight>
       </Header>
 
@@ -185,7 +202,7 @@ function Chat(props) {
             <MessageInfo>
               <h5>{props.user.userName}</h5>
               <MessageLoading>
-                <img src={typing}></img>
+                <Skeleton variant="h5" width={8.5*textBox.current.value.length}/>
               </MessageLoading>
             </MessageInfo>
           </ChannelMessagesContainer>
@@ -217,7 +234,7 @@ function Chat(props) {
                       setToxicProcessing(false);
                       Swal.fire({
                         title: "Toxic Text Detected!",
-                        text: `Your message has been labelled ${x.label} with a probability of ${x.probability}. You send post it.`,
+                        text: `Your message contains text that violates our Community Guidelines. You cannot send it.`,
                         icon: "error",
                         confirmButtonText: "I'm sorry!",
                       });
@@ -291,7 +308,7 @@ const ChannelMessagesContainer = styled.div`
 
 const MessageInfo = styled.div`
   padding-left: 10px;
-  align-items: left;
+  /* align-items: left; */
   text-align: left;
   > h5 > span {
     color: gray;
@@ -305,6 +322,9 @@ const MessageInfo = styled.div`
 `;
 const MessageDetail = styled.div`
   float: left;
+  >p{
+    text-align: left;
+  }
 `;
 const MessageLoading = styled.div`
   float: left;
@@ -398,16 +418,19 @@ const HeaderRight = styled.div`
   display: flex;
   position: fixed;
 
-  align-items: right;
+  
   /* margin-left: 75%; */
-  right: 20px;
-  > p {
+  right: 40px;
+  > div > p {
     display: flex;
     align-items: center;
     font-size: 20px;
+    @media (max-width: 991px) {
+      display: none;
+    }
   }
   @media (max-width: 991px) {
-    display: none;
+    right: 20px;
   }
 `;
 

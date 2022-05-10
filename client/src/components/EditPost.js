@@ -97,7 +97,9 @@ const EditPost = (props) => {
                     </div>
                   </div>
                   <form className="postForm" id="upForm" onSubmit={editPost}>
+                  <label for="addpost" hidden>Add post Textarea</label>
                     <textarea
+                    id="addpost"
                       value={text}
                       placeholder="Tell us what you're thinking..."
                       onChange={(e) => setText(e.target.value)}
@@ -105,7 +107,7 @@ const EditPost = (props) => {
                     <div>
                       <fieldset>
                       <div class="middle">
-                    <label>
+                  <label>
                       <input
                         type="radio"
                         value="academic"
@@ -113,14 +115,17 @@ const EditPost = (props) => {
                         checked={category === "academic"}
                         onClick={(e) => setCategory(e.target.value)}
                       />
-                      <div class="academic box">
+                      <span class="academic box">
+                      
                         <span>
                           <SchoolOutlinedIcon />
                         </span>
                         <br />
                         <span>Academic</span>
-                      </div>
-                    </label>
+                        
+                      </span>
+                      </label>
+                    
                     <label>
                       <input
                         type="radio"
@@ -129,13 +134,13 @@ const EditPost = (props) => {
                         checked={category === "housing"}
                         onClick={(e) => setCategory(e.target.value)}
                       />
-                      <div class="housing box">
+                      <span class="housing box">
                         <span>
                           <HomeOutlinedIcon />
                         </span>
                         <br />
                         <span>Housing</span>
-                      </div>
+                      </span>
                     </label>
                     <label>
                       <input
@@ -145,13 +150,13 @@ const EditPost = (props) => {
                         checked={category === "social"}
                         onClick={(e) => setCategory(e.target.value)}
                       />
-                      <div class="social box">
+                      <span class="social box">
                         <span>
                           <ConnectWithoutContactOutlinedIcon />
                         </span>
                         <br />
                         <span>Social</span>
-                      </div>
+                      </span>
                     </label>
                     <label>
                       <input
@@ -161,13 +166,13 @@ const EditPost = (props) => {
                         checked={category === "career"}
                         onClick={(e) => setCategory(e.target.value)}
                       />
-                      <div class="career box">
+                      <span class="career box">
                         <span>
                           <WorkOutlineOutlinedIcon />
                         </span>
                         <br />
                         <span>Career</span>
-                      </div>
+                      </span>
                     </label>
                   </div>
                       </fieldset>
