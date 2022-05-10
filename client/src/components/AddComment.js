@@ -7,6 +7,7 @@ import { predictor } from "../helper";
 
 const AddComment = (props) => {
   const [addComment] = useMutation(queries.post.ADD_COMMENT);
+  const [text, setText] = useState("");
   const textBox = useRef(null);
   const model = useRef();
   return (
@@ -40,18 +41,28 @@ const AddComment = (props) => {
           }
         }}
       >
-        <label for="newcomment" hidden>Add new comment </label>
+        <label for="newcomment" hidden>
+          Add new comment{" "}
+        </label>
         <input
-        id="newcomment"
+          id="newcomment"
           type="text"
           className="form-control"
           aria-label="Add Comment"
           ref={textBox}
+          onChange={(e) => setText(e.target.value)}
         />
         <div className="fonts">
           {" "}
-          <label for="subButton" hidden>Add comment Textarea</label>
-          <button id="subButton" className="fa fa-paper-plane" type="submit"></button>{" "}
+          <label for="subButton" hidden>
+            Add comment Textarea
+          </label>
+          <button
+            id="subButton"
+            className="fa fa-paper-plane"
+            type="submit"
+            disabled={!text}
+          ></button>{" "}
         </div>
       </form>
     </div>
