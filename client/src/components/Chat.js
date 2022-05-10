@@ -162,7 +162,14 @@ function Chat(props) {
           </h4>
         </HeaderLeft>
         <HeaderRight>
-          <div>
+          <div
+          className="detP"
+          onClick={() => {
+            setBody("members");
+            navigate(`/channel/members`, {
+              state: { currChan: currentChannel._id },
+            });
+          }}>
             
           <InfoOutlinedIcon style={styles.largeIcon} />
           </div>

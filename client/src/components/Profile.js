@@ -154,7 +154,7 @@ const Profile = (props) => {
         </div>
         <div className={classes.profileCard}>
           <br></br>
-          <Button
+          {location.state !== null && (<Button
             onClick={() => {
               if (location.state.prevLocation === "/channel/members") {
                 navigate(location.state.prevLocation, {
@@ -168,7 +168,18 @@ const Profile = (props) => {
             style={{  position:"absolute",right:"20px"}}
           >
             <CloseOutlinedIcon style={styles.largeIcon}/>
-          </Button>
+          </Button>)
+          }
+          {location.state === null && (<Button
+            onClick={() => {
+              setBody("feed");
+          navigate("/main");
+            }}
+            style={{  position:"absolute",right:"20px"}}
+          >
+            <CloseOutlinedIcon style={styles.largeIcon}/>
+          </Button>)
+          }
           <Grid container spacing={0} direction="row">
             <Grid item xs={12} sm={8} md={6}>
               <img
