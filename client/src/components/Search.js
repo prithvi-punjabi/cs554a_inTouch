@@ -73,9 +73,9 @@ export default function Search(props) {
     },
   });
   const {
-    dataUsers,
-    loadingUsers,
-    errorUsers,
+    loading: uLoading,
+    error: uError,
+    data: dataUsers,
     refetch: refetchUsers,
   } = useQuery(queries.user.GET_BY_NAME, {
     fetchPolicy: "cache-and-network",
