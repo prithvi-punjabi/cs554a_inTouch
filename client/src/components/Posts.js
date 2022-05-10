@@ -63,8 +63,8 @@ const Posts = (props) => {
           text: "You have made some new friends",
           confirmButtonText: "Go to feed",
         }).then(() => {
-          navigate("/main");
-          // window.location.reload();
+          //navigate("/main");
+          window.location.reload();
           setBody("feed");
         });
       }

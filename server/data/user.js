@@ -43,7 +43,7 @@ const fetchCourses = async (accessKey) => {
   validator.checkNonNull(accessKey);
   validator.checkString(accessKey);
   const { data } = await axios.get(
-    "https://sit.instructure.com/api/v1/courses?enrollment_type=student&enrollment_state=active",
+    "https://sit.instructure.com/api/v1/courses?enrollment_type=student",
     {
       headers: {
         Authorization: `Bearer ${accessKey}`,
@@ -62,7 +62,7 @@ const fetchCourses = async (accessKey) => {
     temp.name = x.course_code;
     temp.code = x.name;
     temp.end_date = x.end_at;
-    if (new Date(temp.end_date) > today || temp.end_date === null) {
+    if (temp.code.substring(0, 4) === "2022") {
       let channelNotFound = true;
       for (let j = 0; j <= allChannels.length - 1; j++) {
         if (x.name == allChannels[j].name) {
