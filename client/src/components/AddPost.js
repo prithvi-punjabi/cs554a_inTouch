@@ -299,7 +299,7 @@ const AddPost = (props) => {
                 <label for="subButton" hidden>
                   Post new post
                 </label>
-                <button id="subButton" type="submit">
+                <button id="subButton" type="submit" disabled={!text}>
                   Post
                 </button>
               </div>
