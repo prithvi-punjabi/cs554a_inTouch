@@ -6,19 +6,16 @@ import { Avatar } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import logo from "../img/inTouch.png";
 import { useNavigate } from "react-router";
-import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
-import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 // import ArrowDropDownCircleTwoToneIcon from '@mui/icons-material/ArrowDropDownCircleTwoTone';
 
 const styles = {
-
-	largeIcon: {
-	  width: 35,
-	  height: 40	 
-	},
-  
-  };
-
+  largeIcon: {
+    width: 35,
+    height: 40,
+  },
+};
 
 function Navbar(props) {
   const navigate = useNavigate();
@@ -42,7 +39,7 @@ function Navbar(props) {
             }}
           >
             {/* <i className="fa fa-bars"></i> */}
-            <MenuOutlinedIcon style={styles.largeIcon}/>
+            <MenuOutlinedIcon style={styles.largeIcon} />
           </div>
         )}
 
@@ -52,9 +49,9 @@ function Navbar(props) {
             onClick={() => {
               setSidebar(false);
             }}
-          > 
+          >
             {/* <i className="fa fa-bars"></i> */}
-            <CloseOutlinedIcon style={styles.largeIcon}/>
+            <CloseOutlinedIcon style={styles.largeIcon} />
           </div>
         )}
 
