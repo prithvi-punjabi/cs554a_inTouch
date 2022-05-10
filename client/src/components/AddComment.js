@@ -40,7 +40,9 @@ const AddComment = (props) => {
           }
         }}
       >
+        <label for="newcomment" hidden>Add new comment </label>
         <input
+        id="newcomment"
           type="text"
           className="form-control"
           aria-label="Add Comment"
@@ -48,7 +50,8 @@ const AddComment = (props) => {
         />
         <div className="fonts">
           {" "}
-          <button className="fa fa-paper-plane" type="submit"></button>{" "}
+          <label for="subButton" hidden>Add comment Textarea</label>
+          <button id="subButton" className="fa fa-paper-plane" type="submit"></button>{" "}
         </div>
       </form>
     </div>

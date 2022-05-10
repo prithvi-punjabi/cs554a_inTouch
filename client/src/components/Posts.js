@@ -211,6 +211,7 @@ const Posts = (props) => {
                           )}
                           {userId === post.user._id && (
                             <div>
+                              <label for="dropdown-basic-button" hidden>Edit or delete dropdown </label>
                               <DropdownButton
                                 id="dropdown-basic-button"
                                 variant="default"
@@ -246,7 +247,7 @@ const Posts = (props) => {
                               {post.likes.length}
                             </small>
                           </div>
-                          <div className="d-flex flex-row muted-color">
+                          <div className="textGray d-flex flex-row muted-color ">
                             {" "}
                             {post.comments.length !== 1 && (
                               <span>{`${post.comments.length}`} comments</span>
