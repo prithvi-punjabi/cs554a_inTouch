@@ -13,6 +13,7 @@ import WorkOutlineOutlinedIcon from "@mui/icons-material/WorkOutlineOutlined";
 const AddPost = (props) => {
   const navigate = useNavigate();
   const [category, setCategory] = useState("");
+  const [text, setText] = useState("");
   const [image, setImage] = useState(null);
   let tBox = useRef({ current: { value: "" } });
   const model = useRef();
@@ -146,6 +147,7 @@ const AddPost = (props) => {
               <textarea
                 placeholder="Tell us what you're thinking..."
                 ref={tBox}
+                onChange={(e) => setText(e.target.value)}
               />
               <div className="image-upload">
                 <div
@@ -289,7 +291,9 @@ const AddPost = (props) => {
                 </fieldset>
               </div>
               <div className="postBut">
-                <button type="submit">Post</button>
+                <button type="submit" disabled={!text}>
+                  Post
+                </button>
               </div>
             </form>
           </div>
