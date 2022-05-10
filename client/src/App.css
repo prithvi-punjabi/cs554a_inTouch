@@ -756,6 +756,7 @@ textarea {
   color: #7b7575;
 }
 
-#subButton:disabled {
+#subButton:disabled,
+#subButtonComm:disabled {
   opacity: 0.3;
 }

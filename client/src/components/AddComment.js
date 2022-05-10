@@ -54,11 +54,11 @@ const AddComment = (props) => {
         />
         <div className="fonts">
           {" "}
-          <label for="subButton" hidden>
+          <label for="subButtonComm" hidden>
             Add comment Textarea
           </label>
           <button
-            id="subButton"
+            id="subButtonComm"
             className="fa fa-paper-plane"
             type="submit"
             disabled={!text}
