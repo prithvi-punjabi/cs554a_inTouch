@@ -12,6 +12,7 @@ import ChannelDeets from "./ChannelDeets";
 import Friends from "./Friends";
 import queries from "../queries";
 import { CircularProgress } from "@mui/material";
+import Search from "./Search";
 //currentBody fun
 function Main({ component }) {
   const userId = localStorage.getItem("userId");
@@ -26,6 +27,7 @@ function Main({ component }) {
   const [showSideBar, setshowSideBar] = useState(true);
   const [skip, setSkip] = useState(false);
   const [userQCalled, setUserQCalled] = useState(false);
+  const [searchTerm, setSearchTerm] = useState();
   // const [userData, ]
   //QUERY FOR USER OBJECT
   const { loading, data, error } = useQuery(queries.user.GET_BY_ID, {
@@ -216,6 +218,8 @@ function Main({ component }) {
           user={data.getUser}
           showSideBar={setshowSideBar}
           Sidebar={showSideBar}
+          setSearchTerm={setSearchTerm}
+          searchTerm={searchTerm}
         ></Navbar>
         <Appbody>
           <Sidebar
@@ -237,6 +241,14 @@ function Main({ component }) {
               currentBody={currentBody}
               user={data.getUser}
             ></Posts>
+          )}
+
+          {currentBody && currentBody === "search" && (
+            <Search
+              setCurrentBody={setCurrentBody}
+              currentBody={currentBody}
+              searchTerm={searchTerm}
+            ></Search>
           )}
 
           {currentBody && currentBody === "user" && (

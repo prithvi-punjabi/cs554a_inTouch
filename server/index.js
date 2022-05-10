@@ -89,6 +89,7 @@ const loginRequiredOperations = [
   "DeleteMessage",
   "UpdateMessageRead",
   "GetFriends",
+  "GetByQuery",
 ];
 
 //Creating Server Instance with Socket enabling Config

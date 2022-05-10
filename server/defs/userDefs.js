@@ -41,6 +41,7 @@ const typeDefs = gql`
     loginUser(email: String!, password: String!): userLogin
     getFriendRecommendations: [user]
     getFriends: [user]
+    getByName(username: String!): [user]
   }
   type Mutation {
     createUser(
@@ -71,6 +72,10 @@ const userResolvers = {
         friends.push(thisUser);
       }
       return friends;
+    },
+    getByName: async (_, args, context) => {
+      const users = await userData.getByName(args.username);
+      return users;
     },
     getFriendRecommendations: async (_, args, context) => {
       const recommendations = await userData.getFriendRecommendations(

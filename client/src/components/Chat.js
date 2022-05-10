@@ -3,7 +3,7 @@ import styled from "styled-components";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import { useMutation, useQuery, useSubscription } from "@apollo/client";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { Button } from "@material-ui/core";
+import { Button } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import queries from "../queries";
 import useTextToxicity from "react-text-toxicity";

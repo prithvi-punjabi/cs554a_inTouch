@@ -18,6 +18,10 @@ function Navbar(props) {
     props.showSideBar(type);
   };
 
+  const setSearchTerm = (searchTerm) => {
+    props.setSearchTerm(searchTerm);
+  };
+
   return (
     <NavbarContainer>
       <NavbarLeft>
@@ -55,7 +59,17 @@ function Navbar(props) {
       </NavbarLeft>
       <NavbarSearch>
         <SearchIcon />
-        <input placeholder="Search here"></input>
+        <form
+          action="#"
+          onSubmit={(e) => {
+            e.preventDefault();
+            setBody("search");
+            setSearchTerm(document.getElementById("searchInput").value);
+            navigate("/main");
+          }}
+        >
+          <input id="searchInput" placeholder="Search here"></input>
+        </form>
       </NavbarSearch>
 
       <NavbarRight>
@@ -102,7 +116,7 @@ const NavbarSearch = styled.div`
   padding: 2px 25px;
   color: white;
   border: 1px white solid;
-  > input {
+  > form > input {
     background-color: transparent;
     border: none;
     text-align: center;

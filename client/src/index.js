@@ -5,7 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import store from "./store";
-import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const theme = createTheme({
   palette: {
@@ -18,9 +18,9 @@ const theme = createTheme({
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <MuiThemeProvider theme={theme}>
+      <ThemeProvider theme={theme}>
         <App />
-      </MuiThemeProvider>
+      </ThemeProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")
