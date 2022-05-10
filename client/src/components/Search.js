@@ -62,7 +62,7 @@ export default function Search(props) {
   const [value, setValue] = React.useState(0);
   const userId = localStorage.getItem("userId");
   const navigate = useNavigate();
-  const searchTerm = props.searchTerm != null;
+  const searchTerm = props.searchTerm;
 
   const { data, loading, error } = useQuery(queries.post.GET_BY_QUERY, {
     fetchPolicy: "cache-and-network",
