@@ -202,7 +202,7 @@ function Chat(props) {
             <MessageInfo>
               <h5>{props.user.userName}</h5>
               <MessageLoading>
-                <Skeleton variant="h5" width={150} />
+                <Skeleton variant="h5" width={8.5*textBox.current.value.length}/>
               </MessageLoading>
             </MessageInfo>
           </ChannelMessagesContainer>
@@ -308,7 +308,7 @@ const ChannelMessagesContainer = styled.div`
 
 const MessageInfo = styled.div`
   padding-left: 10px;
-  align-items: left;
+  /* align-items: left; */
   text-align: left;
   > h5 > span {
     color: gray;
@@ -322,6 +322,9 @@ const MessageInfo = styled.div`
 `;
 const MessageDetail = styled.div`
   float: left;
+  >p{
+    text-align: left;
+  }
 `;
 const MessageLoading = styled.div`
   float: left;
@@ -415,7 +418,7 @@ const HeaderRight = styled.div`
   display: flex;
   position: fixed;
 
-  align-items: right;
+  
   /* margin-left: 75%; */
   right: 40px;
   > div > p {

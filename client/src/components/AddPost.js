@@ -144,7 +144,11 @@ const AddPost = (props) => {
               </div>
             </div>
             <form className="postForm" onSubmit={createPost}>
+              <label for="addpost" hidden>
+                Add post Textarea
+              </label>
               <textarea
+                id="addpost"
                 placeholder="Tell us what you're thinking..."
                 ref={tBox}
                 onChange={(e) => setText(e.target.value)}
@@ -231,14 +235,15 @@ const AddPost = (props) => {
                         checked={category === "academic"}
                         onClick={(e) => setCategory(e.target.value)}
                       />
-                      <div class="academic box">
+                      <span class="academic box">
                         <span>
                           <SchoolOutlinedIcon />
                         </span>
                         <br />
                         <span>Academic</span>
-                      </div>
+                      </span>
                     </label>
+
                     <label>
                       <input
                         type="radio"
@@ -247,13 +252,13 @@ const AddPost = (props) => {
                         checked={category === "housing"}
                         onClick={(e) => setCategory(e.target.value)}
                       />
-                      <div class="housing box">
+                      <span class="housing box">
                         <span>
                           <HomeOutlinedIcon />
                         </span>
                         <br />
                         <span>Housing</span>
-                      </div>
+                      </span>
                     </label>
                     <label>
                       <input
@@ -263,13 +268,13 @@ const AddPost = (props) => {
                         checked={category === "social"}
                         onClick={(e) => setCategory(e.target.value)}
                       />
-                      <div class="social box">
+                      <span class="social box">
                         <span>
                           <ConnectWithoutContactOutlinedIcon />
                         </span>
                         <br />
                         <span>Social</span>
-                      </div>
+                      </span>
                     </label>
                     <label>
                       <input
@@ -279,19 +284,22 @@ const AddPost = (props) => {
                         checked={category === "career"}
                         onClick={(e) => setCategory(e.target.value)}
                       />
-                      <div class="career box">
+                      <span class="career box">
                         <span>
                           <WorkOutlineOutlinedIcon />
                         </span>
                         <br />
                         <span>Career</span>
-                      </div>
+                      </span>
                     </label>
                   </div>
                 </fieldset>
               </div>
               <div className="postBut">
-                <button type="submit" disabled={!text}>
+                <label for="subButton" hidden>
+                  Post new post
+                </label>
+                <button id="subButton" type="submit">
                   Post
                 </button>
               </div>

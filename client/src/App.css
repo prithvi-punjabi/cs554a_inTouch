@@ -497,7 +497,7 @@ button {
 
 .loginhere {
   color: #555;
-  font-weight: 500px;
+  font-weight: 500;
   font-size: medium;
   text-align: center;
   margin-top: 20px;
@@ -630,6 +630,7 @@ textarea {
 
 .likeCount {
   padding-left: 12%;
+  color: #7b7575;
 }
 
 #dropdown-basic-button::after {
@@ -747,4 +748,10 @@ textarea {
 .howToImg {
   width: 80%;
   height: 30%;
+}
+.mr-2{
+  color: #7b7575;
+}
+.textGray span{
+  color: #7b7575;
 }
