@@ -257,7 +257,7 @@ const HeaderLeft = styled.div`
   display: flex;
 
   > h4 {
-    display: flex;
+    /* display: flex; */
     /* margin-left: 10px; */
   }
 `;
@@ -265,16 +265,16 @@ const HeaderRight = styled.div`
   display: flex;
   position: fixed;
 
- margin-top: -12px;
+ margin-top: -15px;
   right: 40px;
   > p {
     display: flex;
     align-items: center;
     font-size: 20px;
   }
-  /* @media (max-width: 991px) {
-    display: none;
-  } */
+  @media (max-width: 991px) {
+    right: 10px;
+  }
 `;
 
 const Header = styled.div`

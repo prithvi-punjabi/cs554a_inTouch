@@ -464,6 +464,6 @@ const PostDiv = styled.div`
   flex: 0.6;
   flex-grow: 1;
   overflow-y: scroll;
-  margin-top: 4%;
+  margin-top: 60px;
   float: left;
 `;

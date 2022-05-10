@@ -11,6 +11,11 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { predictor } from "../helper";
 import typing from "../img/typing2.gif";
+
+// import Skeleton from 'react-loading-skeleton'
+// import 'react-loading-skeleton/dist/skeleton.css'
+import Skeleton from '@mui/material/Skeleton';
+
 const styles = {
   largeIcon: {
     width: 40,
@@ -196,9 +201,9 @@ function Chat(props) {
           <ChannelMessagesContainer key={"loader"}>
             <img src={props.user.profilePicture}></img>
             <MessageInfo>
-              <h5>{props.user.userName}</h5>
+              <h5>{props.user.userName}</h5>            
               <MessageLoading>
-                <img src={typing}></img>
+                <Skeleton variant="h5" width={150}/>
               </MessageLoading>
             </MessageInfo>
           </ChannelMessagesContainer>
