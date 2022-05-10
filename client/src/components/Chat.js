@@ -105,6 +105,7 @@ function Chat(props) {
   const mapper = (chat) => {
     // console.log(chat);
     return chat.map((message, index) => {
+      console.log(message);
       if (index <= chat.length - 1) {
         let days = Math.floor(
           (new Date() - new Date(message.dateCreated)) / (1000 * 3600 * 24)
@@ -124,7 +125,10 @@ function Chat(props) {
 
         return (
           <ChannelMessagesContainer key={message._id}>
-            <img src={message.user.profilePicture}></img>
+            <img
+              src={message.user.profilePicture}
+              alt={message.user.userName}
+            ></img>
 
             <MessageInfo>
               <h5>
@@ -198,11 +202,17 @@ function Chat(props) {
         {chat}
         {toxicProcessing && (
           <ChannelMessagesContainer key={"loader"}>
-            <img src={props.user.profilePicture}></img>
+            <img
+              src={props.user.profilePicture}
+              alt={props.user.userName}
+            ></img>
             <MessageInfo>
               <h5>{props.user.userName}</h5>
               <MessageLoading>
-                <Skeleton variant="h5" width={8.5*textBox.current.value.length}/>
+                <Skeleton
+                  variant="h5"
+                  width={8.5 * textBox.current.value.length}
+                />
               </MessageLoading>
             </MessageInfo>
           </ChannelMessagesContainer>
@@ -258,9 +268,10 @@ function Chat(props) {
             <input
               placeholder={`Send text in ${currentChannel.name}`}
               ref={textBox}
+              aria-label={`Send text in ${currentChannel.name}`}
             />
             <div>
-              <Button type="submit">
+              <Button type="submit" aria-label="Send message">
                 {" "}
                 <SendIcon style={styles.largerIcon} />
               </Button>
@@ -322,7 +333,7 @@ const MessageInfo = styled.div`
 `;
 const MessageDetail = styled.div`
   float: left;
-  >p{
+  > p {
     text-align: left;
   }
 `;
@@ -418,7 +429,6 @@ const HeaderRight = styled.div`
   display: flex;
   position: fixed;
 
-  
   /* margin-left: 75%; */
   right: 40px;
   > div > p {
