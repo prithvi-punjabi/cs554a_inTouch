@@ -14,7 +14,7 @@ import typing from "../img/typing2.gif";
 
 // import Skeleton from 'react-loading-skeleton'
 // import 'react-loading-skeleton/dist/skeleton.css'
-import Skeleton from '@mui/material/Skeleton';
+import Skeleton from "@mui/material/Skeleton";
 
 const styles = {
   largeIcon: {
@@ -168,18 +168,6 @@ function Chat(props) {
         </HeaderLeft>
         <HeaderRight>
           <div
-          className="detP"
-          onClick={() => {
-            setBody("members");
-            navigate(`/channel/members`, {
-              state: { currChan: currentChannel._id },
-            });
-          }}>
-            
-          <InfoOutlinedIcon style={styles.largeIcon} />
-          </div>
-          <div>
-          <p
             className="detP"
             onClick={() => {
               setBody("members");
@@ -188,9 +176,20 @@ function Chat(props) {
               });
             }}
           >
-            
-            Details
-          </p>
+            <InfoOutlinedIcon style={styles.largeIcon} />
+          </div>
+          <div>
+            <p
+              className="detP"
+              onClick={() => {
+                setBody("members");
+                navigate(`/channel/members`, {
+                  state: { currChan: currentChannel._id },
+                });
+              }}
+            >
+              Details
+            </p>
           </div>
         </HeaderRight>
       </Header>
@@ -201,9 +200,9 @@ function Chat(props) {
           <ChannelMessagesContainer key={"loader"}>
             <img src={props.user.profilePicture}></img>
             <MessageInfo>
-              <h5>{props.user.userName}</h5>            
+              <h5>{props.user.userName}</h5>
               <MessageLoading>
-                <Skeleton variant="h5" width={150}/>
+                <Skeleton variant="h5" width={150} />
               </MessageLoading>
             </MessageInfo>
           </ChannelMessagesContainer>
@@ -235,7 +234,7 @@ function Chat(props) {
                       setToxicProcessing(false);
                       Swal.fire({
                         title: "Toxic Text Detected!",
-                        text: `Your message has been labelled ${x.label} with a probability of ${x.probability}. You send post it.`,
+                        text: `Your message contains text that violates our Community Guidelines. You cannot send it.`,
                         icon: "error",
                         confirmButtonText: "I'm sorry!",
                       });
@@ -424,8 +423,8 @@ const HeaderRight = styled.div`
     align-items: center;
     font-size: 20px;
     @media (max-width: 991px) {
-    display: none;
-  }
+      display: none;
+    }
   }
   @media (max-width: 991px) {
     right: 20px;

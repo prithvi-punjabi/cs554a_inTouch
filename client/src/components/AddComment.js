@@ -23,7 +23,7 @@ const AddComment = (props) => {
               if ((x.label = "toxicity")) x.label = "toxic";
               Swal.fire({
                 title: "Toxic Text Detected!",
-                text: `Your comment has been labelled ${x.label} with a probability of ${x.probability}. You cannot post it.`,
+                text: `Your comment contains text that violates our Community Guidelines. You cannot post it.`,
                 icon: "error",
                 confirmButtonText: "I'm sorry!",
               });
