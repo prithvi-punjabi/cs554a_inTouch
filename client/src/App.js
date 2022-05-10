@@ -85,7 +85,7 @@ const splitLink = split(
     );
   },
   wsLink,
-  from([authLink, errorLink, httpLink])
+  from([errorLink, authLink, httpLink])
 );
 const client = new ApolloClient({
   cache: new InMemoryCache(),

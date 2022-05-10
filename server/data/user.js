@@ -167,6 +167,23 @@ const getFriends = async (userId) => {
   }
 };
 
+const getByName = async (username) => {
+  validator.checkString(username, "username");
+  const userCol = await userCollection();
+  const users = await userCol
+    .find({
+      name: { $regex: `.*${username}.*`, $options: "i" },
+    })
+    .toArray();
+  if (users && Array.isArray(users) && users.length != 0) {
+    return users;
+  } else {
+    const error = new Error("No users found with name " + username);
+    error.code = common.errorCode.NOT_FOUND;
+    throw error;
+  }
+};
+
 const getFriendRecommendations = async (user) => {
   validator.checkNonNull(user._id);
   validator.checkString(user._id);
@@ -335,4 +352,5 @@ module.exports = {
   delFriend,
   changeReadStatus,
   getFriends,
+  getByName,
 };

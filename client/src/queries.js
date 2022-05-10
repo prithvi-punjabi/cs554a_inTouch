@@ -9,6 +9,36 @@ const user = {
       }
     }
   `,
+  GET_BY_NAME: gql`
+    query GetByName($username: String!) {
+      getByName(username: $username) {
+        _id
+        name
+        email
+        password
+        profilePicture
+        userName
+        bio
+        designation
+        gender
+        contactNo
+        dob
+        courses {
+          id
+          name
+          code
+          end_date
+        }
+        privacy
+        friends
+        readStatus {
+          c_id
+          mCount
+          cName
+        }
+      }
+    }
+  `,
   GET_FRIENDS: gql`
     query GetFriends {
       getFriends {

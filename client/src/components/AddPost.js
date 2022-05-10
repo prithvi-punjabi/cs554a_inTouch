@@ -5,7 +5,7 @@ import { useNavigate } from "react-router";
 import { uploadFile, predictor } from "../helper";
 import Swal from "sweetalert2";
 import styled from "styled-components";
-import { Button } from "@material-ui/core";
+import { Button } from "@mui/material";
 import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import ConnectWithoutContactOutlinedIcon from "@mui/icons-material/ConnectWithoutContactOutlined";

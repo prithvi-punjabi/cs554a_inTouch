@@ -14,7 +14,7 @@ import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import queries from "../queries";
 import { useLazyQuery, useQuery, useSubscription } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@material-ui/core";
+import { Button } from "@mui/material";
 import { useBadge } from "@mui/base";
 
 function Sidebar(props) {

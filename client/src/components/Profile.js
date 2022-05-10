@@ -12,7 +12,8 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import { Button, makeStyles } from "@material-ui/core";
+import { Button } from "@mui/material";
+import { makeStyles } from "@material-ui/styles";
 import PersonIcon from "@mui/icons-material/Person";
 import MailIcon from "@mui/icons-material/Mail";
 import PhoneIcon from "@mui/icons-material/Phone";

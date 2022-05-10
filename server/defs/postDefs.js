@@ -98,7 +98,7 @@ const postResolvers = {
     },
     getByQuery: async (_, args, context) => {
       const user = context.user;
-      const queryAllPosts = await postData.getByQuery(user, args.query);
+      const queryAllPosts = await postData.getByQuery(user, args.queryFields);
       return queryAllPosts;
     },
     getPostsForUser: async (_, args, context) => {

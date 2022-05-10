@@ -22,7 +22,7 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import { Button } from "@material-ui/core";
+import { Button } from "@mui/material";
 import Swal from "sweetalert2";
 const newlyAdded = [];
 const Posts = (props) => {
