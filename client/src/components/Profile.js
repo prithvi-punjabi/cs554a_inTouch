@@ -154,7 +154,7 @@ const Profile = (props) => {
   const [showCardProfile, setShowCardProfile] = useState(false);
 
   useEffect(() => {
-    window.matchMedia("(max-width: 1340px)").addEventListener("change", (e) => {
+    window.matchMedia("(max-width: 1442px)").addEventListener("change", (e) => {
       // console.log(e);
 
       if (e.matches === true) {
@@ -273,7 +273,7 @@ const Profile = (props) => {
                 {user.bio}
               </Typography>
               <Grid container style={{ padding: "10px 0px" }}>
-                <Grid item xs={6} style={{ padding: "0px", width: "70%" }}>
+                <Grid item xs={6} style={{ padding: "0px", width: "50%" }}>
                   <ListItemButton>
                     <ListItemIcon>
                       <PersonIcon color="primary" />
@@ -284,7 +284,7 @@ const Profile = (props) => {
                     />
                   </ListItemButton>
                 </Grid>
-                <Grid item xs={6} style={{ padding: "0px", width: "70%" }}>
+                <Grid item xs={6} style={{ padding: "0px", width: "50%" }}>
                   <ListItemButton>
                     <ListItemIcon>
                       <MailIcon color="primary" />
@@ -297,7 +297,7 @@ const Profile = (props) => {
                 </Grid>
 
                 {user.contactNo && (
-                  <Grid item xs={6} style={{ padding: "0px", width: "70%" }}>
+                  <Grid item xs={6} style={{ padding: "0px", width: "50%" }}>
                     <ListItemButton>
                       <ListItemIcon>
                         <PhoneIcon color="primary" />
@@ -311,7 +311,7 @@ const Profile = (props) => {
                 )}
 
                 {user.contactNo && (
-                  <Grid item xs={6} style={{ padding: "0px", width: "70%" }}>
+                  <Grid item xs={6} style={{ padding: "0px", width: "50%" }}>
                     <ListItemButton>
                       <ListItemIcon>
                         <CakeIcon color="primary" />
@@ -338,7 +338,7 @@ const Profile = (props) => {
                   return (
                     <ListItem
                       disablePadding
-                      style={{ padding: "0px", width: "70%" }}
+                      style={{ padding: "0px", width: "100%" }}
                     >
                       <ListItemButton>
                         <ListItemText
