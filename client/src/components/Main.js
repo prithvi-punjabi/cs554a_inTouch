@@ -19,7 +19,6 @@ import bambooSfx from "../sound/ios-bamboo.mp3";
 import duckSfx from "../sound/duck.mp3";
 import hmmSfx from "../sound/hmm.mp3";
 
-
 function Main({ component, person }) {
   const userId = localStorage.getItem("userId");
 
@@ -133,12 +132,14 @@ function Main({ component, person }) {
   useEffect(() => {
     if (cError) {
       playDuck();
-      Swal.fire({
-        title: "Oops!",
-        text: "Couldn't fetch channel for the user",
-        icon: "error",
-        confirmButtonText: "I'll fix it!",
-      });
+      if (!Swal.isVisible()) {
+        Swal.fire({
+          title: "Oops!",
+          text: "Couldn't fetch channel for the user",
+          icon: "error",
+          confirmButtonText: "I'll fix it!",
+        });
+      }
     }
   }, [cError]);
 
@@ -218,9 +219,7 @@ function Main({ component, person }) {
     } else {
       setShowCardProfile(false);
     }
-    
   });
-
 
   if (data) {
     return (
