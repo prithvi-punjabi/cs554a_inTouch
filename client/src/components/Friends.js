@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import queries from "../queries";
-import { useQuery, useMutation } from "@apollo/client";
+import { useQuery, useMutation, useLazyQuery } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Link } from "@mui/material";
 import {
   Card,
   CardActions,
@@ -26,32 +26,77 @@ const styles = {
     height: 50,
   },
 };
+const newlyAdded = [];
 
 const Friends = (props) => {
   const navigate = useNavigate();
+  const [recommendations, setRecommendations] = useState();
   const { loading, error, data } = useQuery(queries.user.GET_FRIENDS, {
     fetchPolicy: "cache-and-network",
   });
-  const [removeFriend] = useMutation(queries.user.REMOVE_FRIEND, {
-    update(cache, { data: removeFriend }) {
-      const friends = cache.readQuery({
-        query: queries.user.GET_FRIENDS,
-      });
-      console.log(removeFriend);
-      cache.writeQuery({
-        query: queries.user.GET_FRIENDS,
-        data: {
-          getFriends: friends.getFriends.filter(
-            (e) => e._id !== removeFriend.deleteFriend._id
-          ),
-        },
-      });
-    },
-  });
+  const [addFriend] = useMutation(queries.user.ADD_FRIEND);
+  const [removeFriend] = useMutation(queries.user.REMOVE_FRIEND);
+  const [getFriendRecommendations] = useLazyQuery(
+    queries.user.GET_FRIEND_RECOMMENDATIONS
+  );
 
+  const userId = localStorage.getItem("userId");
   const setBody = (type) => {
     props.setCurrentBody(type);
   };
+
+  async function handleAddFriend(friendId, e) {
+    e.preventDefault();
+    try {
+      const { data } = await addFriend({
+        variables: {
+          friendId: friendId,
+        },
+      });
+      newlyAdded.push(friendId);
+      const newRecommendations = recommendations.map((user) => {
+        if (user._id.toString() == friendId) {
+          return data.addFriend;
+        }
+        return user;
+      });
+      if (newlyAdded.length == 4) {
+        Swal.fire({
+          icon: "success",
+          title: "Congratulations",
+          text: "You have made some new friends",
+          confirmButtonText: "Go to feed",
+        }).then(() => {
+          //navigate("/main");
+          window.location.reload();
+          setBody("feed");
+        });
+      }
+      setRecommendations(newRecommendations);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async function fetchRecommendations() {
+    try {
+      const { data } = await getFriendRecommendations();
+      if (
+        data &&
+        data.getFriendRecommendations &&
+        data.getFriendRecommendations.length > 0
+      ) {
+        setRecommendations(data.getFriendRecommendations);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    fetchRecommendations();
+  }, []);
+
   async function handleRemoveFriend(fname, friendId, e) {
     e.preventDefault();
     Swal.fire({
@@ -82,7 +127,7 @@ const Friends = (props) => {
         <Header>
           <HeaderLeft>
             <StarBorderIcon style={styles.largeIcon} />
-            <h4>Friends</h4>
+            <h4>Friends &nbsp; {friends && <span>({friends.length})</span>}</h4>
           </HeaderLeft>
           <HeaderRight></HeaderRight>
         </Header>
@@ -169,6 +214,96 @@ const Friends = (props) => {
                 </Grid>
               );
             })}
+          </Grid>
+          <Typography
+            variant="h5"
+            component="h3"
+            style={{
+              color: "#dc3545",
+              fontWeight: "bold",
+              margin: "2% 5%",
+            }}
+            align="left"
+          >
+            Recommendations
+          </Typography>
+          <Grid
+            container
+            spacing={3}
+            style={{ marginTop: "0px", padding: "1% 5%" }}
+          >
+            {recommendations &&
+              recommendations.map((user) => {
+                return (
+                  <Grid item xs={12} sm={6} md={4} lg={3} key={user._id}>
+                    <Card style={{ borderRadius: "7px", height: "57vh" }}>
+                      <Link
+                        to={`/user/${user._id}`}
+                        style={{ textDecoration: "none", color: "#dc3545" }}
+                      >
+                        <CardMedia
+                          component="img"
+                          style={{ height: "30vh" }}
+                          image={user.profilePicture}
+                          alt={user.name}
+                        />
+                        <CardContent>
+                          <Typography
+                            style={{
+                              display: "-webkit-box",
+                              overflow: "hidden",
+                              WebkitBoxOrient: "vertical",
+                              WebkitLineClamp: 1,
+                            }}
+                            gutterBottom
+                            variant="h5"
+                            component="div"
+                          >
+                            {user.name}
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            color="text.secondary"
+                            style={{
+                              display: "-webkit-box",
+                              overflow: "hidden",
+                              WebkitBoxOrient: "vertical",
+                              WebkitLineClamp: 3,
+                            }}
+                          >
+                            {user.bio}
+                          </Typography>
+                        </CardContent>
+                        <CardActions style={{ justifyContent: "center" }}>
+                          {userId != user._id &&
+                            !user.friends.includes(userId) && (
+                              <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={(e) => {
+                                  handleAddFriend(user._id, e);
+                                }}
+                              >
+                                + Add friend
+                              </Button>
+                            )}
+                          {userId != user._id && user.friends.includes(userId) && (
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              onClick={(e) => {
+                                handleRemoveFriend(user._id, e);
+                              }}
+                            >
+                              - Unfriend
+                            </Button>
+                          )}
+                        </CardActions>
+                      </Link>
+                    </Card>
+                  </Grid>
+                );
+              })}
           </Grid>
         </MembersContainer>
       </ChannelMembersContainer>

@@ -211,7 +211,9 @@ const Posts = (props) => {
                           )}
                           {userId === post.user._id && (
                             <div>
-                              <label for="dropdown-basic-button" hidden>Edit or delete dropdown </label>
+                              <label for="dropdown-basic-button" hidden>
+                                Edit or delete dropdown{" "}
+                              </label>
                               <DropdownButton
                                 id="dropdown-basic-button"
                                 variant="default"
