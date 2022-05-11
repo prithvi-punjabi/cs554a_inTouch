@@ -34,10 +34,40 @@ const Friends = (props) => {
   const { loading, error, data } = useQuery(queries.user.GET_FRIENDS, {
     fetchPolicy: "cache-and-network",
   });
-  const [addFriend] = useMutation(queries.user.ADD_FRIEND);
-  const [removeFriend] = useMutation(queries.user.REMOVE_FRIEND);
+  const [addFriend] = useMutation(queries.user.ADD_FRIEND, {
+    update(cache, { data: addFriend }) {
+      const friends = cache.readQuery({
+        query: queries.user.GET_FRIENDS,
+      });
+      const recco = cache.readQuery({
+        query: queries.user.GET_FRIEND_RECOMMENDATIONS,
+      });
+      cache.writeQuery({
+        query: queries.user.GET_FRIENDS,
+        data: {
+          getFriends: [...friends.getFriends, ...[addFriend.addFriend]],
+        },
+      });
+    },
+  });
+  const [removeFriend] = useMutation(queries.user.REMOVE_FRIEND, {
+    update(cache, { data: removeFriend }) {
+      const friends = cache.readQuery({
+        query: queries.user.GET_FRIENDS,
+      });
+      cache.writeQuery({
+        query: queries.user.GET_FRIENDS,
+        data: {
+          getFriends: friends.getFriends.filter(
+            (e) => e._id !== removeFriend.deleteFriend._id
+          ),
+        },
+      });
+    },
+  });
   const [getFriendRecommendations] = useLazyQuery(
-    queries.user.GET_FRIEND_RECOMMENDATIONS
+    queries.user.GET_FRIEND_RECOMMENDATIONS,
+    { fetchPolicy: "cache-first" }
   );
 
   const userId = localStorage.getItem("userId");
@@ -369,6 +399,7 @@ const Header = styled.div`
   padding: 50px;
   border-bottom: 1px solid lightgray;
   background-color: white;
+  z-index: 1;
 
   @media (max-width: 991px) {
     padding-left: 10px;
