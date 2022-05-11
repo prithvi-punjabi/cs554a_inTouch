@@ -4,15 +4,13 @@ import { useQuery } from "@apollo/client";
 import styled from "styled-components";
 import { Avatar } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
-import logo from "../img/inTouch.png";
+import logo from "../img/logoNav(no-text).png";
 import { useNavigate } from "react-router";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import Badge from "@mui/material/Badge";
 import DropdownButton from "react-bootstrap/esm/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
-
-// import ArrowDropDownCircleTwoToneIcon from '@mui/icons-material/ArrowDropDownCircleTwoTone';
 
 const styles = {
   largeIcon: {
@@ -47,7 +45,7 @@ function Navbar(props) {
   return (
     <NavbarContainer>
       <NavbarLeft>
-        {/* <img src={logo} className="App-logo" alt="inTouch Logo" /> */}
+        <img src={logo} className="App-logo" alt="inTouch Logo" />
         {props.showSideBar && !props.Sidebar && (
           <div
             className="sidebar-toggle"
@@ -148,6 +146,27 @@ const NavbarLeft = styled.div`
   display: flex;
   align-items: center;
   margin-left: 20px;
+  >img{
+    margin-top:75px;
+    /* margin-left: 15px; */
+    height: 173px; 
+    width: 170px;
+    /* border-radius: 20px; */
+    @media (max-width: 991px) {
+    margin-top:28px;
+    margin-left: 0px;
+    margin-right: 10px;
+    height: 113px; 
+    width: 110px;
+    }
+    @media (max-width: 480px) {
+    margin-top:1px;
+    margin-left: 0px;
+    margin-right: 0px;
+    height: 73px; 
+    width: 70px;
+    }
+  }
 `;
 
 const NavbarRight = styled.div`
@@ -161,6 +180,9 @@ const NavbarRight = styled.div`
     bottom: 8px;
     right: 20px;
   }
+  @media (max-width: 480px) {
+    right: 0px;
+    }
 `;
 
 const NavbarSearch = styled.div`
@@ -186,6 +208,9 @@ const NavbarSearch = styled.div`
       color: white;
       text-align: left;
       padding: 0 0;
+    }
+    @media (max-width: 480px) {
+      max-width: 3vw;
     }
   }
 `;

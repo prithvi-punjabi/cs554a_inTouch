@@ -67,6 +67,9 @@ function Sidebar(props) {
 
   return (
     <SidebarContainer style={styleStatus}>
+      <br></br>
+      <br></br>
+      <br></br>
       <h1 hidden></h1>
       <Sidebarheader>
         <Sidebarinfo>{props.user && <h2>{props.user.name}</h2>}</Sidebarinfo>
