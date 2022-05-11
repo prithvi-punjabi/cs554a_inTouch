@@ -86,7 +86,7 @@ const styles = {
 const Profile = (props) => {
   let navigate = useNavigate();
   const location = useLocation();
-  console.log(location.state);
+
   const params = useParams();
   useEffect(() => {
     if (!isLoggedIn()) {
@@ -151,27 +151,14 @@ const Profile = (props) => {
       console.log(e);
     }
   }
-  const [showCardProfile, setShowCardProfile] = useState(false);
-
-  useEffect(() => {
-    window.matchMedia("(max-width: 1442px)").addEventListener("change", (e) => {
-      // console.log(e);
-
-      if (e.matches === true) {
-        setShowCardProfile(true);
-      }
-      if (e.matches === false) {
-        setShowCardProfile(false);
-      }
-    });
-  });
+  
 
   if (user) {
     let currUserId = localStorage.getItem("userId");
     return (
       <>
         
-        {!showCardProfile && 
+        {!props.showCardProfile && 
         (<div className={classes.container}>
           <div className={classes.outerContainer}>
           <div className={classes.outerContainerUpparLayer}></div>
@@ -371,7 +358,7 @@ const Profile = (props) => {
         </div>
         )
         }
-        {showCardProfile && (
+        {props.showCardProfile && (
           
           
 

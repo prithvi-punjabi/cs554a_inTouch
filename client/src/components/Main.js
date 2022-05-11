@@ -33,6 +33,7 @@ function Main({ component, person }) {
   const [skip, setSkip] = useState(false);
   const [userQCalled, setUserQCalled] = useState(false);
   const [searchTerm, setSearchTerm] = useState();
+  const [showCard, setShowCardProfile] = useState(false);
   const [playBamboo] = useSound(bambooSfx);
   const [playDuck] = useSound(duckSfx);
   const [playHmm] = useSound(hmmSfx);
@@ -198,6 +199,29 @@ function Main({ component, person }) {
     }
   }, [rData]);
 
+  useEffect(() => {
+    window.matchMedia("(max-width: 1442px)").addEventListener("change", (e) => {
+      // console.log(e);
+
+      if (e.matches === true) {
+        setShowCardProfile(true);
+      }
+      if (e.matches === false) {
+        setShowCardProfile(false);
+      }
+    });
+  });
+
+  useEffect(() => {
+    if (window.matchMedia("(max-width: 1442px)").matches) {
+      setShowCardProfile(true);
+    } else {
+      setShowCardProfile(false);
+    }
+    
+  });
+
+
   if (data) {
     return (
       <>
@@ -241,10 +265,11 @@ function Main({ component, person }) {
             ></Search>
           )}
 
-          {currentBody && currentBody === "user" && (
+          {currentBody && currentBody === "user" && person !== "self" && (
             <Profile
               setCurrentBody={setCurrentBody}
               currentChannelId={currentChannelId}
+              showCardProfile={showCard}
             ></Profile>
           )}
 
@@ -252,6 +277,7 @@ function Main({ component, person }) {
             <Profile
               setCurrentBody={setCurrentBody}
               currentChannelId={currentChannelId}
+              showCardProfile={showCard}
             ></Profile>
           )}
 
