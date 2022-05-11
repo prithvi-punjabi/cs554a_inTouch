@@ -8,7 +8,7 @@ import logo from "../img/inTouch.png";
 import { useNavigate } from "react-router";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import Badge from '@mui/material/Badge';
+import Badge from "@mui/material/Badge";
 import DropdownButton from "react-bootstrap/esm/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
 
@@ -73,60 +73,69 @@ function Navbar(props) {
           </div> */}
       </NavbarLeft>
       <NavbarSearch>
-        <SearchIcon />
         <form
           action="#"
           onSubmit={(e) => {
+            const s = document.getElementById("searchInput").value;
             e.preventDefault();
+            if (s == null || s == "" || s.trim() == "") return;
             setBody("search");
-            setSearchTerm(document.getElementById("searchInput").value);
+            setSearchTerm(s);
             navigate("/main");
           }}
         >
-          <input id="searchInput" placeholder="Search here"></input>
+          <input
+            id="searchInput"
+            placeholder="Search here"
+            className="align-left"
+          ></input>
         </form>
+        <SearchIcon />
       </NavbarSearch>
 
       <NavbarRight>
-      <StyledBadge
-        overlap="circular"
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        variant="dot"
-      >
-        <DropdownButton
-        id="dropdown-basic-button"
-        className="drop"
-        variant="default"
-        size="sm"
-        title={
-        <NavbarAvatar
-        src={props.user.profilePicture}
-        alt={"no img"}
-        
-      />}
+        <StyledBadge
+          overlap="circular"
+          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+          variant="dot"
         >
-          <div>
-          <Dropdown.Item onClick={() => {
-          setBody("feed");
-          setBody("user");
-          navigate("/profile", {
-            state: {
-              prevLocation: window.location.pathname,
-              prevElement: props.currentBody,
-            },
-          });
-        }}>Profile</Dropdown.Item>
-        </div>
-        <div>
-          <Dropdown.Item onClick={() => {
-                    localStorage.removeItem("token");
-                    localStorage.removeItem("userId");
-                    navigate("/login");
-                  }}>Logout
-                  </Dropdown.Item>
-          </div>
-         </DropdownButton>
-        
+          <DropdownButton
+            id="dropdown-basic-button"
+            className="drop"
+            variant="default"
+            size="sm"
+            title={
+              <NavbarAvatar src={props.user.profilePicture} alt={"no img"} />
+            }
+          >
+            <div>
+              <Dropdown.Item
+                onClick={() => {
+                  setBody("feed");
+                  setBody("user");
+                  navigate("/profile", {
+                    state: {
+                      prevLocation: window.location.pathname,
+                      prevElement: props.currentBody,
+                    },
+                  });
+                }}
+              >
+                Profile
+              </Dropdown.Item>
+            </div>
+            <div>
+              <Dropdown.Item
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  localStorage.removeItem("userId");
+                  navigate("/login");
+                }}
+              >
+                Logout
+              </Dropdown.Item>
+            </div>
+          </DropdownButton>
         </StyledBadge>
       </NavbarRight>
     </NavbarContainer>
@@ -149,8 +158,8 @@ const NavbarRight = styled.div`
   align-items: flex-end;
   /* margin-left: 200px; */
   right: 20px;
-  .drop{
-    bottom:8px;
+  .drop {
+    bottom: 8px;
     right: 20px;
   }
 `;
@@ -158,7 +167,7 @@ const NavbarRight = styled.div`
 const NavbarSearch = styled.div`
   flex: 0.5;
   margin-right: 31%;
- 
+
   opacity: 1;
   border-radius: 6px;
   background-color: var(--intouch-color);
@@ -170,13 +179,13 @@ const NavbarSearch = styled.div`
   > form > input {
     background-color: transparent;
     border: none;
-    text-align: center;
-    min-width: 33vw;
+    text-align: left;
+    min-width: 30vw;
     outline: 0;
     color: white;
     ::placeholder {
       color: white;
-      text-align: center;
+      text-align: left;
       padding: 0 0;
     }
   }
@@ -203,28 +212,26 @@ const NavbarAvatar = styled(Avatar)`
   }
 `;
 
-
 const StyledBadge = styled(Badge)(({ theme }) => ({
-  '& .MuiBadge-badge': {
-    backgroundColor: '#44b700',
+  "& .MuiBadge-badge": {
+    backgroundColor: "#44b700",
     top: 34,
-      marginRight:"28px",
-      // marginTop:"15px",
-      right:-1,
-    color: '#44b700',
+    marginRight: "28px",
+    // marginTop:"15px",
+    right: -1,
+    color: "#44b700",
     boxShadow: `0 0 0 2px `,
-    '&::after': {
-      position: 'absolute',
+    "&::after": {
+      position: "absolute",
       top: 0,
       left: 0,
-      
-      width: '100%',
-      height: '100%',
-      borderRadius: '50%',
-      animation: 'ripple 1.2s infinite ease-in-out',
-      border: '1px solid currentColor',
+
+      width: "100%",
+      height: "100%",
+      borderRadius: "50%",
+      animation: "ripple 1.2s infinite ease-in-out",
+      border: "1px solid currentColor",
       content: '""',
     },
   },
-  
 }));

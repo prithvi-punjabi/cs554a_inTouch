@@ -41,6 +41,7 @@ const AddPost = (props) => {
   };
 
   async function createPost(e) {
+    setText("");
     e.preventDefault();
     if (!category) {
       Swal.fire({
@@ -49,6 +50,7 @@ const AddPost = (props) => {
         icon: "error",
         confirmButtonText: "I'll fix it!",
       });
+      setText("...");
       return;
     }
     const predictions = await predictor(tBox.current.value, model);
@@ -64,6 +66,7 @@ const AddPost = (props) => {
             icon: "error",
             confirmButtonText: "I'm sorry!",
           });
+          setText("...");
         }
       });
       if (!isToxic) {
@@ -90,11 +93,15 @@ const AddPost = (props) => {
               icon: "error",
               confirmButtonText: "I'll fix it!",
             });
+            setText("...");
           });
         }
         tBox.current.value = "";
         setCategory("");
         setImage("");
+        document.getElementById("imgPost").src = "#";
+        document.getElementById("div-imgPost").style.display = "none";
+        setImage(null);
       }
     }
   }
