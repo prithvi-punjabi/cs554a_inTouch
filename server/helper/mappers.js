@@ -14,15 +14,10 @@ module.exports = {
   async channelMapCheck(userId, channelId) {
     const channelMapCol = await channelMapCollection();
     const channelMap = await channelMapCol.findOne({ name: "CHANNEL_MAP" });
-    console.log("FROM Channel Map Check checking userId,channelId");
-    console.log(typeof userId, typeof channelId);
-    console.log(channelMap[channelId].indexOf(ObjectId(userId)));
     //made a change after right comment//Turns out String thing worked while it shouldnt,probably requires change
     if (channelMap[channelId].indexOf(userId) === -1) {
-      console.log("returned false");
       return false;
     } else {
-      console.log("returned true");
       return true;
     }
   },
@@ -32,7 +27,6 @@ module.exports = {
     //   console.log(channelMap);
     //   let map = { name: "CHANNEL_MAP" };
     if (channelMap == null) {
-      console.log("Channel Map null");
       await channelMapCol.insertOne({ name: "CHANNEL_MAP" });
     }
     //   else {
@@ -63,7 +57,6 @@ module.exports = {
       String(userId)
     );
     for (let j = 0; j <= channelsForUser.length - 1; j++) {
-      console.log(channelsForUser[j]._id);
       await this.channelAndUser(
         userId,
         channelsForUser[j]._id,
@@ -79,7 +72,6 @@ const channelToUser = async (userId, channelId) => {
   //   console.log(channelMap);
   //   let map = { name: "CHANNEL_MAP" };
   if (channelMap == null) {
-    console.log("Channel Map null");
     await channelMapCol.insertOne({ name: "CHANNEL_MAP" });
   }
   //   else {
@@ -114,7 +106,6 @@ const sample = async () => {
       String(allUsers[i]._id)
     );
     for (let j = 0; j <= channelsForUser.length - 1; j++) {
-      console.log(channelsForUser[j]._id);
       await channelToUser(
         allUsers[i]._id,
         channelsForUser[j]._id,

@@ -316,7 +316,7 @@ async function main() {
       "Female",
       "2129099978",
       "2000-11-16",
-      [toString()]
+      []
     );
     const DwightSchrute = await seedFuncs.addUser(
       "Dwight Schrute",
@@ -350,6 +350,52 @@ async function main() {
       "1966-01-20",
       []
     );
+
+    const LewisHamilton = await seedFuncs.addUser(
+      "Lewis Hamilton",
+      "lewisham@stevens.edu",
+      "Lewis123!",
+      "https://cdn-5.motorsport.com/images/mgl/0mb95oa2/s800/lewis-hamilton-mercedes-1.jpg",
+      "lewishamilton",
+      "I'm an F1 driver who's at Stevens to complete my Masters in Computer Science! (I know I know, but I love to code as much as I love to race!)",
+      [
+        {
+          id: 56734,
+          name: "Web Programming II",
+          code: "2022S CS 554-A",
+          end_date: "2022-05-18T00:00:00Z",
+        },
+        {
+          id: 56780,
+          name: "Introduction to Cloud Computing",
+          code: "2022S CS 524-A",
+          end_date: null,
+        },
+        {
+          id: 56806,
+          name: "Database Management Systems I",
+          code: "2022S CS 561-B",
+          end_date: null,
+        },
+      ],
+      "Male",
+      "2124411996",
+      "1985-01-07",
+      []
+    );
+    await userData.addFriend(
+      LewisHamilton._id.toString(),
+      PatrickMountain._id.toString()
+    );
+    await userData.addFriend(
+      LewisHamilton._id.toString(),
+      TristanPrice._id.toString()
+    );
+    await userData.addFriend(
+      LewisHamilton._id.toString(),
+      DwightSchrute._id.toString()
+    );
+
     const post1 = await seedFuncs.addPost(
       {
         _id: JaneDoe._id,
@@ -465,6 +511,118 @@ async function main() {
       [],
       [],
       "academic"
+    );
+
+    const post6 = await seedFuncs.addPost(
+      {
+        _id: LewisHamilton._id,
+        name: LewisHamilton.name,
+        userName: LewisHamilton.userName,
+        profilePicture: LewisHamilton.profilePicture,
+      },
+      "Slow start to this season because I've been grinding for finals. But now that these finals are done with, I'm gunning for my 8th WDC!",
+      "https://videos.cults3d.com/vNS1bv-QrJXrWGrDyQtCv1aWoe8=/516x516/https://files.cults3d.com/uploaders/13701591/illustration-file/fad72f1f-ca5f-4c43-afe5-f938043a5577/Webp.net-gifmaker%20(7).gif",
+      [PatrickMountain._id.toString(), TristanPrice._id.toString()],
+      [
+        {
+          _id: new ObjectId(),
+          user: {
+            _id: PatrickMountain._id,
+            name: PatrickMountain.name,
+            userName: PatrickMountain.userName,
+            profilePicture: PatrickMountain.profilePicture,
+          },
+          comment:
+            "Ah man, this is everything. I wish I had the time to make it down to Miami this year.",
+          dateCreated: new Date(new Date().toUTCString()),
+        },
+      ],
+      "social"
+    );
+
+    const post7 = await seedFuncs.addPost(
+      {
+        _id: JasonLively._id,
+        name: JasonLively.name,
+        userName: JasonLively.userName,
+        profilePicture: JasonLively.profilePicture,
+      },
+      "It's crazy how adding a simple regularization method, like a Dropout for example, can almost completely alleviate overfitting.",
+      "",
+      [
+        JohnDoe._id.toString(),
+        MikeDowry._id.toString(),
+        MonicaPrice._id.toString(),
+      ],
+      [
+        {
+          _id: new ObjectId(),
+          user: {
+            _id: JohnDoe._id,
+            name: JohnDoe.name,
+            userName: JohnDoe.userName,
+            profilePicture: JohnDoe.profilePicture,
+          },
+          comment: "Haha, looks like you just did Assignment 2.",
+          dateCreated: new Date(new Date().toUTCString()),
+        },
+      ],
+      "academic"
+    );
+
+    const post8 = await seedFuncs.addPost(
+      {
+        _id: MikeDowry._id,
+        name: MikeDowry.name,
+        userName: MikeDowry.userName,
+        profilePicture: MikeDowry.profilePicture,
+      },
+      "Need a roommate, on an urgent basis. Let me know if anyone is looking.",
+      "",
+      [],
+      [],
+      "housing"
+    );
+
+    const post9 = await seedFuncs.addPost(
+      {
+        _id: DwightSchrute._id,
+        name: DwightSchrute.name,
+        userName: DwightSchrute.userName,
+        profilePicture: DwightSchrute.profilePicture,
+      },
+      "Looking for a career change... Michael Scott Paper Company just isn't doing it for me anymore. Let me know if you guys have any leads.",
+      "",
+      [],
+      [
+        {
+          _id: new ObjectId(),
+          user: {
+            _id: LewisHamilton._id,
+            name: LewisHamilton.name,
+            userName: LewisHamilton.userName,
+            profilePicture: LewisHamilton.profilePicture,
+          },
+          comment:
+            "Well.. I have a spot on my pit crew? Lol jk I love you my dude.",
+          dateCreated: new Date(new Date().toUTCString()),
+        },
+      ],
+      "career"
+    );
+
+    const post10 = await seedFuncs.addPost(
+      {
+        _id: NatashaZigler._id,
+        name: NatashaZigler.name,
+        userName: NatashaZigler.userName,
+        profilePicture: NatashaZigler.profilePicture,
+      },
+      "Guys I have the cutest cat in the world!!! Just look!",
+      "https://images.unsplash.com/photo-1529778873920-4da4926a72c2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Y3V0ZSUyMGNhdHxlbnwwfHwwfHw%3D&w=1000&q=80",
+      [],
+      [],
+      "social"
     );
     console.log("Seed completed!");
   } catch (e) {

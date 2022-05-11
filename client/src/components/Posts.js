@@ -271,12 +271,13 @@ const Posts = (props) => {
                                 >
                                   <img
                                     src={comment.user.profilePicture}
-                                    width="40"
-                                    className="rounded-image"
+                                    width="45"
+                                    height="42"
+                                    className="rounded-circle"
                                     alt={comment.user.userName}
                                     onClick={() => {
                                       setBody("user");
-                                      navigate(`/user/${post.user._id}`, {
+                                      navigate(`/user/${comment.user._id}`, {
                                         state: {
                                           prevLocation:
                                             window.location.pathname,
