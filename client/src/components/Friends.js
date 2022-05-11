@@ -75,13 +75,19 @@ const Friends = (props) => {
     props.setCurrentBody(type);
   };
 
-  async function handleAddFriend(friendId, e) {
+  async function handleAddFriend(friendId, e, fname) {
     e.preventDefault();
     try {
       const { data } = await addFriend({
         variables: {
           friendId: friendId,
         },
+      });
+      Swal.fire({
+        title: "Friend Added!",
+        text: `${fname} has been added to your friend list!`,
+        icon: "success",
+        confirmButtonText: "Awesome!",
       });
       newlyAdded.push(friendId);
       const newRecommendations = recommendations.map((user) => {
@@ -311,7 +317,7 @@ const Friends = (props) => {
                                 variant="contained"
                                 color="primary"
                                 onClick={(e) => {
-                                  handleAddFriend(user._id, e);
+                                  handleAddFriend(user._id, e, user.name);
                                 }}
                               >
                                 + Add friend
@@ -322,7 +328,7 @@ const Friends = (props) => {
                               variant="contained"
                               color="primary"
                               onClick={(e) => {
-                                handleRemoveFriend(user._id, e);
+                                handleRemoveFriend(user._id, e, user.name);
                               }}
                             >
                               - Unfriend
