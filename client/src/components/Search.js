@@ -199,7 +199,7 @@ export default function Search(props) {
   console.log(dataUsers);
 
   return (
-    <div
+    <TabContainer
       style={{
         marginTop: "5%",
         flex: "0.6",
@@ -528,10 +528,18 @@ export default function Search(props) {
           </Grid>
         </PostDiv>
       </TabPanel>
-    </div>
+    </TabContainer>
   );
 }
 
 const PostDiv = styled.div`
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
+`;
+
+const TabContainer = styled.div`
+  flex: 0.7;
+  flex-grow: 1;
+  margin-top: 50px;
+  width: 100%;
+  overflow-y: scroll;  
 `;
