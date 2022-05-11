@@ -13,13 +13,18 @@ import Friends from "./Friends";
 import queries from "../queries";
 import { CircularProgress } from "@mui/material";
 import Search from "./Search";
-//currentBody fun
-function Main({ component }) {
+import Swal from "sweetalert2";
+import useSound from "use-sound";
+import bambooSfx from "../sound/ios-bamboo.mp3";
+import duckSfx from "../sound/duck.mp3";
+import hmmSfx from "../sound/hmm.mp3";
+
+
+function Main({ component, person }) {
   const userId = localStorage.getItem("userId");
 
   let navigate = useNavigate();
   const [allChannels, setAllChannels] = useState(null); //allChannels Main ARRAY
-  // const [allChannelsArr, setAllChannelsArr] = useState([]);
   const [readStatusObj, setReadStatusObj] = useState([]);
   const [currentBody, setCurrentBody] = useState(component);
   const [currentChannelId, setCurrentChannelId] = useState(null);
@@ -28,15 +33,23 @@ function Main({ component }) {
   const [skip, setSkip] = useState(false);
   const [userQCalled, setUserQCalled] = useState(false);
   const [searchTerm, setSearchTerm] = useState();
-  // const [userData, ]
+  const [playBamboo] = useSound(bambooSfx);
+  const [playDuck] = useSound(duckSfx);
+  const [playHmm] = useSound(hmmSfx);
   //QUERY FOR USER OBJECT
   const { loading, data, error } = useQuery(queries.user.GET_BY_ID, {
     variables: { userId: userId },
-    // skip: userSkip,
+
     fetchPolicy: "network-only",
     errorPolicy: "all",
     onError: (error) => {
-      console.log(error);
+      playDuck();
+      Swal.fire({
+        title: "Oops!",
+        text: "Couldn't fetch User",
+        icon: "error",
+        confirmButtonText: "I'll fix it!",
+      });
     },
   });
 
@@ -45,9 +58,6 @@ function Main({ component }) {
     queries.user.UPDATE_MESSAGE_READ
   );
 
-  if (rError) {
-    console.log(rError);
-  }
   //QUERY FOR GETTING CHANNELS FOR USER (RUNS ONLY ONCE)
   const {
     loading: cLoading,
@@ -80,17 +90,12 @@ function Main({ component }) {
   //INITIATING READ VALUES
   useEffect(() => {
     if (data) {
-      console.log(data);
-      console.log("reading from initial user");
-      console.log(data.getUser.readStatus);
       let readStatusObjTemp = {};
       data.getUser.readStatus.forEach((element) => {
-        // console.log(allChannels);
         let newObj = {};
         newObj = { ...element };
         readStatusObjTemp[element.c_id] = newObj;
       });
-      console.log(readStatusObjTemp);
       setReadStatusObj(readStatusObjTemp);
       setUserQCalled(true);
     }
@@ -99,13 +104,11 @@ function Main({ component }) {
   //UPDATING READ STATUS ON NEW MESSAGE ARRIVAL ****** THIS IS KINDA BOTHERSOME**** CHECK IF BUGS
   useEffect(() => {
     if (allChannels && readStatusObj) {
-      console.log("Updating values on new message (ALL CHANNELS CHANGED)");
       let readStatusTemp = { ...readStatusObj };
       for (let key in readStatusTemp) {
         readStatusTemp[key].cCount =
           allChannels[readStatusTemp[key].c_id].messages.length; // NEW MESSAGE LENGTH VALUES
       }
-      console.log(readStatusTemp);
       setReadStatusObj(readStatusTemp);
     }
   }, [allChannels, userQCalled]);
@@ -118,7 +121,6 @@ function Main({ component }) {
       for (let i = 0; i <= channels.length - 1; i++) {
         allChatTemp[channels[i]._id] = channels[i];
       }
-      console.log(allChatTemp);
       setAllChannels(allChatTemp);
     }
     if (!cLoading && !!cData) {
@@ -129,16 +131,20 @@ function Main({ component }) {
   //ERROR CONSOLE ON INITIAL GET CHANNEL
   useEffect(() => {
     if (cError) {
-      console.log(cError);
+      playDuck();
+      Swal.fire({
+        title: "Oops!",
+        text: "Couldn't fetch channel for the user",
+        icon: "error",
+        confirmButtonText: "I'll fix it!",
+      });
     }
   }, [cError]);
 
-  //SELECTED CHANNEL OBJ CONSOLE
+  //SETTING CURRENT CHANNEL TO STATE
   useEffect(() => {
     if (allChannels !== null && currentChannelId) {
       setCurrentChannel(allChannels[currentChannelId]);
-      console.log("Selected channel Obj");
-      console.log(currentChannelId);
     }
   }, [currentChannelId, allChannels]);
 
@@ -147,12 +153,6 @@ function Main({ component }) {
     function distributor(prevChannels, channels) {
       let allChatTemp = { ...prevChannels };
       allChatTemp[String(channels._id)] = channels;
-      // let index = allChatTemp.findIndex((ele, ind) => {
-      //   return String(ele._id) == String(channels._id);
-      // });
-      // allChatTemp[index] = channels;
-      /////////
-      // console.log(allChatTemp);
       return allChatTemp;
     }
     async function fetchData(channels) {
@@ -165,13 +165,15 @@ function Main({ component }) {
         currentBody === "channel" &&
         currentChannelId === String(channels._id)
       ) {
-        console.log("pehli baat");
         dbUpdateRead({
           variables: {
             c_id: String(channels._id),
             mCount: channels.messages.length,
           },
         });
+        playHmm();
+      } else {
+        playBamboo();
       }
     }
     if (subData !== undefined) {
@@ -182,31 +184,18 @@ function Main({ component }) {
 
   //UPDATED READ VALUE SETTER
   useEffect(() => {
-    console.log("due here");
     if (rData) {
       //MIGHT REQUIRE ALL CHANNELS TO BE NOT EMPTY
-      console.log("gotin");
       let readStatusObj = {};
       rData.readChange.forEach((element) => {
-        // console.log(allChannels);
         let newObj = {};
         newObj = { ...element };
         newObj.cCount = allChannels[element.c_id].messages.length; // NEW MESSAGES COUNT VALUE
 
         readStatusObj[element.c_id] = newObj;
       });
-      console.log(readStatusObj);
       setReadStatusObj(readStatusObj);
     }
-    // else if (allChannels !== null && readStatusObj !== null) {
-    //   let newObj = { ...readStatusObj };
-    //   for (let obj in newObj) {
-    //     console.log(obj);
-    //     obj.cCount = allChannels[obj.c_id].messages.length;
-    //   }
-    //   setReadStatusObj(newObj);
-    // }
-    console.log("bruh");
   }, [rData]);
 
   if (data) {
@@ -253,6 +242,13 @@ function Main({ component }) {
           )}
 
           {currentBody && currentBody === "user" && (
+            <Profile
+              setCurrentBody={setCurrentBody}
+              currentChannelId={currentChannelId}
+            ></Profile>
+          )}
+
+          {currentBody && currentBody === "user" && person === "self" && (
             <Profile
               setCurrentBody={setCurrentBody}
               currentChannelId={currentChannelId}

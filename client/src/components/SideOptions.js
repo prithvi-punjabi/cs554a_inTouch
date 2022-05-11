@@ -21,10 +21,6 @@ function SideOptions({ Icon, title, read }) {
   if (read > 0) {
     reading = true;
   }
-  if (Icon) {
-    console.log("when ICON");
-    console.log(read);
-  }
 
   return (
     <OptionContainer>

@@ -10,6 +10,9 @@ import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import ConnectWithoutContactOutlinedIcon from "@mui/icons-material/ConnectWithoutContactOutlined";
 import WorkOutlineOutlinedIcon from "@mui/icons-material/WorkOutlineOutlined";
+import useSound from "use-sound";
+import duckSfx from "../sound/duck.mp3";
+
 const AddPost = (props) => {
   const navigate = useNavigate();
   const [category, setCategory] = useState("");
@@ -17,6 +20,7 @@ const AddPost = (props) => {
   const [image, setImage] = useState(null);
   let tBox = useRef({ current: { value: "" } });
   const model = useRef();
+  const [playDuck] = useSound(duckSfx);
   const [addPost] = useMutation(queries.post.ADD, {
     update(cache, { data: addPost }) {
       let post = cache.readQuery({
@@ -44,6 +48,7 @@ const AddPost = (props) => {
     setText("");
     e.preventDefault();
     if (!category) {
+      playDuck();
       Swal.fire({
         title: "Error!",
         text: "Please choose a category for your post!",
@@ -60,6 +65,7 @@ const AddPost = (props) => {
         if (x.match === true) {
           isToxic = true;
           if ((x.label = "toxicity")) x.label = "toxic";
+          playDuck();
           Swal.fire({
             title: "Toxic Text Detected!",
             text: `Your post contains text that violates our Community Guidelines. You cannot post it.`,
@@ -87,6 +93,7 @@ const AddPost = (props) => {
               category: category,
             },
           }).catch((e) => {
+            playDuck();
             Swal.fire({
               title: "Error!",
               text: e.message,

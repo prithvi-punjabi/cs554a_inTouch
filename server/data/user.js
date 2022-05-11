@@ -210,6 +210,7 @@ const getFriendRecommendations = async (user) => {
 };
 
 const loginUser = async (email, password) => {
+  console.log(email, password);
   validator.checkNonNull(email);
   validator.checkNonNull(password);
 
@@ -218,6 +219,8 @@ const loginUser = async (email, password) => {
 
   const usercol = await userCollection();
   const user = await usercol.findOne({ email: email.toLowerCase() });
+  console.log("221 user:");
+  console.log(user);
   if (user == null) {
     const error = new Error("Either username or password is invalid");
     error.code = common.errorCode.FORBIDDEN;

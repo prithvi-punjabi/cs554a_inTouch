@@ -56,7 +56,6 @@ const Signup = () => {
                     });
                   }
                 } catch (e) {
-                  console.log(e);
                   Swal.fire({
                     title: "Oops!",
                     text: `${e.message}`,

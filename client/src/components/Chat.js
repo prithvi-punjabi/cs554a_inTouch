@@ -10,11 +10,9 @@ import useTextToxicity from "react-text-toxicity";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { predictor } from "../helper";
-import typing from "../img/typing2.gif";
-
-// import Skeleton from 'react-loading-skeleton'
-// import 'react-loading-skeleton/dist/skeleton.css'
 import Skeleton from "@mui/material/Skeleton";
+import useSound from "use-sound";
+import duckSfx from "../sound/duck.mp3";
 
 const styles = {
   largeIcon: {
@@ -31,12 +29,13 @@ function Chat(props) {
   const messageRef = useRef(null);
   const textBox = useRef(null);
   const navigate = useNavigate();
-  console.log(props);
   const [message, setMessage] = useState("");
   const [currentChannel, setCurrentChannel] = useState(props.currentChannel);
   const [toxicProcessing, setToxicProcessing] = useState(false);
+  const [btnDisable, setBtnDisable] = useState(false);
   const [toxicScroller, setToxicScroller] = useState(false);
   const model = useRef();
+  const [playDuck] = useSound(duckSfx);
 
   const setBody = (type) => {
     props.currentBody(type);
@@ -50,7 +49,6 @@ function Chat(props) {
       });
     }
     if (props.currentChannel !== currentChannel) {
-      console.log("CALLED ME");
       setCurrentChannel(props.currentChannel);
       setToxicProcessing(false);
     }
@@ -77,35 +75,13 @@ function Chat(props) {
     }
   }, [props, currentChannel, toxicProcessing]);
   useEffect(() => {}, [props]);
-  //   const { data, loading, error } = useSubscription(
-  //     queries.channel.SUBSCRIBE_MESSAGE,
-  //     {
-  //       variables: {
-  //         channelId: props.currentChannel._id,
-  //       },
-  //     }
-  //   );
-
-  //   if (data) {
-  //     console.log(data);
-  //   }
-  //   if (error) {
-  //     console.log(error);
-  //   }
-
-  //REFRESHING CHANNEL ON NEW MESSAGE
-  //   useEffect(() => {
-  //     if (data) setCurrentChannel(data.channel);
-  //   }, [data]);
 
   //SENDING MESSAGE
   const [addMessage] = useMutation(queries.channel.ADD_MESSAGE);
 
   //POPULATOR FUNCTIONS
   const mapper = (chat) => {
-    // console.log(chat);
     return chat.map((message, index) => {
-      console.log(message);
       if (index <= chat.length - 1) {
         let days = Math.floor(
           (new Date() - new Date(message.dateCreated)) / (1000 * 3600 * 24)
@@ -227,6 +203,8 @@ function Chat(props) {
             method="POST"
             onSubmit={async (e) => {
               e.preventDefault();
+              textBox.current.readOnly = true;
+              setBtnDisable(true);
               setToxicProcessing(true);
               setToxicScroller(true);
               setTimeout(async () => {
@@ -234,7 +212,6 @@ function Chat(props) {
                   textBox.current.value,
                   model
                 );
-                console.log(toxicProcessing);
                 let isToxic = false;
                 if (predictions) {
                   predictions.forEach((x) => {
@@ -242,12 +219,15 @@ function Chat(props) {
                       isToxic = true;
                       if ((x.label = "toxicity")) x.label = "toxic";
                       setToxicProcessing(false);
+                      playDuck();
                       Swal.fire({
                         title: "Toxic Text Detected!",
                         text: `Your message contains text that violates our Community Guidelines. You cannot send it.`,
                         icon: "error",
                         confirmButtonText: "I'm sorry!",
                       });
+                      textBox.current.readOnly = false;
+                      setBtnDisable(false);
                     }
                   });
                 }
@@ -259,7 +239,8 @@ function Chat(props) {
                       message: textBox.current.value,
                     },
                   });
-
+                  textBox.current.readOnly = false;
+                  setBtnDisable(false);
                   textBox.current.value = "";
                 }
               }, 500);
@@ -271,7 +252,11 @@ function Chat(props) {
               aria-label={`Send text in ${currentChannel.name}`}
             />
             <div>
-              <Button type="submit" aria-label="Send message">
+              <Button
+                type="submit"
+                aria-label="Send message"
+                disabled={btnDisable}
+              >
                 {" "}
                 <SendIcon style={styles.largerIcon} />
               </Button>
