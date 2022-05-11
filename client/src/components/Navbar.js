@@ -35,6 +35,15 @@ function Navbar(props) {
     props.setSearchTerm(searchTerm);
   };
 
+  function handleSubmit(e) {
+    e.preventDefault();
+    const s = document.getElementById("searchInput").value;
+    if (s == null || s == "" || s.trim() == "") return;
+    setBody("search");
+    setSearchTerm(s);
+    navigate("/main");
+  }
+
   return (
     <NavbarContainer>
       <NavbarLeft>
@@ -73,24 +82,14 @@ function Navbar(props) {
           </div> */}
       </NavbarLeft>
       <NavbarSearch>
-        <form
-          action="#"
-          onSubmit={(e) => {
-            const s = document.getElementById("searchInput").value;
-            e.preventDefault();
-            if (s == null || s == "" || s.trim() == "") return;
-            setBody("search");
-            setSearchTerm(s);
-            navigate("/main");
-          }}
-        >
+        <form action="#" id="searchForm" onSubmit={handleSubmit}>
           <input
             id="searchInput"
             placeholder="Search here"
             className="align-left"
           ></input>
         </form>
-        <SearchIcon />
+        <SearchIcon onClick={handleSubmit} />
       </NavbarSearch>
 
       <NavbarRight>
