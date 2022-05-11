@@ -146,25 +146,25 @@ const NavbarLeft = styled.div`
   display: flex;
   align-items: center;
   margin-left: 20px;
-  >img{
-    margin-top:75px;
+  > img {
+    margin-top: 75px;
     /* margin-left: 15px; */
-    height: 173px; 
+    height: 173px;
     width: 170px;
     /* border-radius: 20px; */
     @media (max-width: 991px) {
-    margin-top:28px;
-    margin-left: 0px;
-    margin-right: 10px;
-    height: 113px; 
-    width: 110px;
+      margin-top: 28px;
+      margin-left: 0px;
+      margin-right: 10px;
+      height: 113px;
+      width: 110px;
     }
     @media (max-width: 480px) {
-    margin-top:1px;
-    margin-left: 0px;
-    margin-right: 0px;
-    height: 73px; 
-    width: 70px;
+      margin-top: 1px;
+      margin-left: 0px;
+      margin-right: 0px;
+      height: 73px;
+      width: 70px;
     }
   }
 `;
@@ -182,7 +182,7 @@ const NavbarRight = styled.div`
   }
   @media (max-width: 480px) {
     right: 0px;
-    }
+  }
 `;
 
 const NavbarSearch = styled.div`

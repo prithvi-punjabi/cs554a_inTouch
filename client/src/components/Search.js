@@ -14,6 +14,7 @@ import LikePost from "./LikePost";
 import AddComment from "./AddComment";
 import DeleteComment from "./DeleteComment";
 import { makeVar, useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import Swal from "sweetalert2";
 import queries from "../queries";
 import {
   Card,
@@ -141,58 +142,47 @@ export default function Search(props) {
     setValue(newValue);
   };
 
-  async function handleAddFriend(friendId, e) {
+  async function handleAddFriend(friendId, e, fname) {
     e.preventDefault();
-    // try {
-    //   const { data } = await addFriend({
-    //     variables: {
-    //       friendId: friendId,
-    //     },
-    //   });
-    //   newlyAdded.push(friendId);
-    //   const newRecommendations = recommendations.map((user) => {
-    //     if (user._id.toString() == friendId) {
-    //       return data.addFriend;
-    //     }
-    //     return user;
-    //   });
-    //   if (newlyAdded.length == 4) {
-    //     Swal.fire({
-    //       icon: "success",
-    //       title: "Congratulations",
-    //       text: "You have made some new friends",
-    //       confirmButtonText: "Go to feed",
-    //     }).then(() => {
-    //       navigate("/main");
-    //       // window.location.reload();
-    //       setBody("feed");
-    //     });
-    //   }
-    //   setRecommendations(newRecommendations);
-    // } catch (e) {
-    //   console.log(e);
-    // }
+    try {
+      const { data } = await addFriend({
+        variables: {
+          friendId: friendId,
+        },
+      });
+      Swal.fire({
+        title: "Friend Added!",
+        text: `${fname} has been added to your friend list!`,
+        icon: "success",
+        confirmButtonText: "Awesome!",
+      });
+    } catch (e) {
+      console.log(e);
+    }
   }
 
-  async function handleRemoveFriend(friendId, e) {
+  async function handleRemoveFriend(friendId, e, fname) {
     e.preventDefault();
-    // try {
-    //   const { data } = await removeFriend({
-    //     variables: {
-    //       friendId: friendId,
-    //     },
-    //   });
-    //   newlyAdded.splice(newlyAdded.indexOf(friendId), 1);
-    //   const newRecommendations = recommendations.map((user) => {
-    //     if (user._id.toString() == friendId) {
-    //       return data.deleteFriend;
-    //     }
-    //     return user;
-    //   });
-    //   setRecommendations(newRecommendations);
-    // } catch (e) {
-    //   console.log(e);
-    // }
+    Swal.fire({
+      title: "Confirm Unfriending",
+      text: `Are you sure you want to remove ${fname} from your friend list?`,
+      icon: "info",
+      showDenyButton: true,
+      denyButtonText: `Oops! No!`,
+      confirmButtonText: "Yes, I'm sure!",
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        removeFriend({
+          variables: {
+            friendId: friendId,
+          },
+        });
+        Swal.fire(`${fname} was removed from your friend list`, "", "success");
+      } else if (result.isDenied) {
+        Swal.fire(`${fname} was not removed from your friend list`, "", "info");
+      }
+    });
   }
 
   console.log("dataUsers");
@@ -502,7 +492,7 @@ export default function Search(props) {
                                 variant="contained"
                                 color="primary"
                                 onClick={(e) => {
-                                  handleAddFriend(user._id, e);
+                                  handleAddFriend(user._id, e, user.name);
                                 }}
                               >
                                 + Add friend
@@ -513,7 +503,7 @@ export default function Search(props) {
                               variant="contained"
                               color="primary"
                               onClick={(e) => {
-                                handleRemoveFriend(user._id, e);
+                                handleRemoveFriend(user._id, e, user.name);
                               }}
                             >
                               - Unfriend
@@ -541,5 +531,5 @@ const TabContainer = styled.div`
   flex-grow: 1;
   margin-top: 50px;
   width: 100%;
-  overflow-y: scroll;  
+  overflow-y: scroll;
 `;
