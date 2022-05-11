@@ -22,9 +22,19 @@ import { isLoggedIn } from "../helper";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 
+import {
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia
+ 
+} from "@mui/material";
+import styled from "styled-components";
+
 const useStyles = makeStyles({
   container: {
-    height: "70%",
+    height: "100px",
+    // width: "100%"
   },
   outerContainer: {
     position: "absolute",
@@ -44,9 +54,9 @@ const useStyles = makeStyles({
     position: "absolute",
     borderRadius: "10px",
     background: "white",
-    height: "80%",
+    height: "650px",
     width: "70%",
-    margin: "6% 5%",
+    margin: "160px 100px",
     boxShadow: "2px 10px 30px grey",
   },
   profilePicture: {
@@ -54,7 +64,6 @@ const useStyles = makeStyles({
     objectPosition: "center",
     width: "40%",
     height: "80%",
-    maxHeight: "100%",
     position: "absolute",
     top: "10%",
     borderRadius: "10px",
@@ -142,16 +151,33 @@ const Profile = (props) => {
       console.log(e);
     }
   }
+  const [showCardProfile, setShowCardProfile] = useState(false);
+
+  useEffect(() => {
+    window.matchMedia("(max-width: 1340px)").addEventListener("change", (e) => {
+      // console.log(e);
+
+      if (e.matches === true) {
+        setShowCardProfile(true);
+      }
+      if (e.matches === false) {
+        setShowCardProfile(false);
+      }
+    });
+  });
 
   if (user) {
     let currUserId = localStorage.getItem("userId");
     return (
-      <div className={classes.container}>
-        <div className={classes.outerContainer}>
+      <>
+        
+        {!showCardProfile && 
+        (<div className={classes.container}>
+          <div className={classes.outerContainer}>
           <div className={classes.outerContainerUpparLayer}></div>
           <div className={classes.outerContainerInnerLayer}></div>
         </div>
-        <div className={classes.profileCard}>
+          <div className={classes.profileCard}>
           <br></br>
           {location.state !== null && (
             <Button
@@ -187,7 +213,7 @@ const Profile = (props) => {
             </Button>
           )}
           <Grid container spacing={0} direction="row">
-            <Grid item xs={12} sm={8} md={6}>
+            <Grid item xs={10} sm={8} md={6} >
               <img
                 className={classes.profilePicture}
                 src={user.profilePicture}
@@ -342,7 +368,216 @@ const Profile = (props) => {
             </Grid>
           </Grid>
         </div>
-      </div>
+        </div>
+        )
+        }
+        {showCardProfile && (
+          
+          
+
+          
+            <ChannelMembersContainer>
+              {location.state !== null && (
+            <Button
+              onClick={() => {
+                if (location.state.prevLocation === "/channel/members") {
+                  console.log(props);
+                  navigate(location.state.prevLocation, {
+                    state: {
+                      currChan: location.state.currChan
+                        ? location.state.currChan
+                        : props.currentChannelId,
+                    },
+                  });
+                } else {
+                  navigate(location.state.prevLocation);
+                }
+                setBody(location.state.prevElement);
+              }}
+              style={{ position: "absolute", right: "20px" }}
+            >
+              <CloseOutlinedIcon style={styles.largeIcon} />
+            </Button>
+          )}
+          {location.state === null && (
+            <Button
+              onClick={() => {
+                setBody("feed");
+                navigate("/main");
+              }}
+              style={{ position: "absolute", right: "20px" }}
+            >
+              <CloseOutlinedIcon style={styles.largeIcon} />
+              
+            </Button>
+          )}
+              <MembersContainer>
+          <Card
+            style={{
+              borderRadius: "7px",
+              height: "100%",
+              width: "100%",
+              cursor: "pointer",
+            }}
+          >
+            <CardMedia
+              component="img"
+              style={{ height: "30vh" }}
+              image={user.profilePicture}
+              alt={user.name}
+              
+            />
+            <CardContent
+              
+            >
+              <Typography
+                style={{
+                  display: "-webkit-box",
+                  overflow: "hidden",
+                  WebkitBoxOrient: "vertical",
+                  WebkitLineClamp: 1,
+                }}
+                gutterBottom
+                variant="h3"
+                component="div"
+              >
+                {user.name}
+              </Typography>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                style={{
+                  display: "-webkit-box",
+                  overflow: "hidden",
+                  WebkitBoxOrient: "vertical",
+                  WebkitLineClamp: 3,
+                }}
+              >
+                {user.bio}
+              </Typography>
+            </CardContent>
+            <CardActions style={{ justifyContent: "center" }}>
+
+              {currUserId != user._id && !user.friends.includes(currUserId) && (
+                  
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      align="center"
+                      onClick={handleAddFriend}
+                    >
+                      + Add friend
+                    </Button>
+     
+                )}
+                {currUserId != user._id && user.friends.includes(currUserId) && (
+                  <Button
+                      variant="contained"
+                      color="primary"
+                      align="center"
+                      onClick={handleRemoveFriend}
+                    >
+                      - Unfriend
+                    </Button>
+                  
+                )}
+            </CardActions>
+            <Grid container style={{ padding: "10px 0px" }}>
+                <Grid item xs={6} style={{ padding: "0px", width: "70%" }}>
+                  <ListItemButton>
+                    
+                      <PersonIcon color="primary" />
+                    
+                    <ListItemText
+                      primary={user.userName}
+                      style={{ textAlign: "left" }}
+                    />
+                  </ListItemButton>
+                {/* </Grid>
+                <Grid item xs={6} style={{ padding: "0px", width: "70%" }}> */}
+                  <ListItemButton>
+                    
+                      <MailIcon color="primary" />
+                    
+                    <ListItemText
+                      primary={user.email}
+                      style={{ textAlign: "left" }}
+                    />
+                  </ListItemButton>
+                </Grid>
+
+                {user.contactNo && (
+                  <Grid item xs={6} style={{ padding: "0px", width: "70%" }}>
+                    <ListItemButton>
+                     
+                        <PhoneIcon color="primary" />
+                      
+                      <ListItemText
+                        primary={user.contactNo}
+                        style={{ textAlign: "left" }}
+                      />
+                    </ListItemButton>
+                  </Grid>
+                )}
+
+                {user.contactNo && (
+                  // <Grid item xs={6} style={{ padding: "0px", width: "70%" }}>
+                    <ListItemButton>
+                     
+                        <CakeIcon color="primary" />
+                      
+                      <ListItemText
+                        primary={user.dob}
+                        style={{ textAlign: "left" }}
+                      />
+                    </ListItemButton>
+                  // </Grid>
+                )}
+              </Grid>
+
+
+              <CardContent
+              
+            >
+              <Typography
+                style={{
+                  display: "-webkit-box",
+                  overflow: "hidden",
+                  WebkitBoxOrient: "vertical",
+                  WebkitLineClamp: 1,
+                }}
+                gutterBottom
+                variant="h5"
+                component="div"
+              >
+               <strong>Channels</strong>
+              </Typography>
+              <List>
+                {user.courses.map((course) => {
+                  return (
+                    <ListItem
+                      disablePadding
+                      style={{ padding: "0px", width: "100%" }}
+                    >
+                      <ListItemButton>
+                        <ListItemText
+                          primary={course.code + " " + course.name}
+                          style={{ textAlign: "left" }}
+                        />
+                      </ListItemButton>
+                    </ListItem>
+                  );
+                })}
+              </List>
+            </CardContent>
+          </Card>
+          </MembersContainer>
+          </ChannelMembersContainer>
+          
+        )
+        }
+        
+      </>
     );
   } else if (error) {
     Swal.fire({
@@ -359,3 +594,24 @@ const Profile = (props) => {
 };
 
 export default Profile;
+
+const ChannelMembersContainer = styled.div`
+  flex: 0.7;
+  flex-grow: 1;
+ /* height: 100%; */
+  margin-top: 120px;
+  width: 100%;
+  /* display: flex; */
+  overflow-y: scroll;
+  
+  
+`;
+
+const MembersContainer = styled.div`
+  margin-top: 50px;
+  margin-left: 20%;
+  margin-right: 20%;
+  margin-bottom: 50px;
+ 
+  /*  */
+`;
