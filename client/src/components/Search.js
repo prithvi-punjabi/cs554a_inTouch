@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Posts from "./Posts";
 import styled from "styled-components";
 import { useNavigate } from "react-router";
 import DropdownButton from "react-bootstrap/DropdownButton";
@@ -13,7 +12,7 @@ import EditPost from "./EditPost";
 import LikePost from "./LikePost";
 import AddComment from "./AddComment";
 import DeleteComment from "./DeleteComment";
-import { makeVar, useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import Swal from "sweetalert2";
 import queries from "../queries";
 import {
@@ -65,7 +64,7 @@ export default function Search(props) {
   const navigate = useNavigate();
   const searchTerm = props.searchTerm;
 
-  const { data, loading, error } = useQuery(queries.post.GET_BY_QUERY, {
+  const { data, error } = useQuery(queries.post.GET_BY_QUERY, {
     fetchPolicy: "cache-and-network",
     variables: {
       queryFields: {
@@ -73,63 +72,17 @@ export default function Search(props) {
       },
     },
   });
-  const {
-    loading: uLoading,
-    error: uError,
-    data: dataUsers,
-    refetch: refetchUsers,
-  } = useQuery(queries.user.GET_BY_NAME, {
-    fetchPolicy: "cache-and-network",
-    variables: {
-      username: searchTerm,
-    },
-  });
+  const { error: uError, data: dataUsers } = useQuery(
+    queries.user.GET_BY_NAME,
+    {
+      fetchPolicy: "cache-and-network",
+      variables: {
+        username: searchTerm,
+      },
+    }
+  );
 
   console.log(`Error: ${error}`);
-
-  // async function fetchPosts() {
-  //   try {
-  //     const response = await getPostsBySearch();
-  //     const data = response.data;
-  //     if (data && data.getByQuery) {
-  //       setPosts(data.getByQuery);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-
-  // async function fetchUsers() {
-  //   try {
-  //     const { data } = await getUsersByName();
-  //     if (data && data.getByName) {
-  //       setUsers(data.getByName);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   refetch({
-  //     refetchWritePolicy: "overwrite",
-  //     nextFetchPolicy: "network-only",
-  //     fetchPolicy: "network-only",
-  //     variables: {
-  //       queryFields: {
-  //         search: searchTerm,
-  //       },
-  //     },
-  //   });
-  //   refetchUsers({
-  //     fetchPolicy: "network-only",
-  //     nextFetchPolicy: "network-only",
-  //     refetchWritePolicy: "overwrite",
-  //     variables: {
-  //       username: searchTerm,
-  //     },
-  //   });
-  // }, [props.searchTerm]);
 
   const [addFriend] = useMutation(queries.user.ADD_FRIEND);
   const [removeFriend] = useMutation(queries.user.REMOVE_FRIEND);
@@ -145,7 +98,7 @@ export default function Search(props) {
   async function handleAddFriend(friendId, e, fname) {
     e.preventDefault();
     try {
-      const { data } = await addFriend({
+      await addFriend({
         variables: {
           friendId: friendId,
         },
@@ -184,9 +137,6 @@ export default function Search(props) {
       }
     });
   }
-
-  console.log("dataUsers");
-  console.log(dataUsers);
 
   return (
     <TabContainer
@@ -235,26 +185,21 @@ export default function Search(props) {
                                 alt={post.user.userName}
                                 onClick={() => {
                                   setBody("user");
-                                  {
-                                    userId === post.user._id &&
-                                      navigate("/profile", {
-                                        state: {
-                                          prevLocation:
-                                            window.location.pathname,
-                                          prevElement: props.currentBody,
-                                        },
-                                      });
-                                  }
-                                  {
-                                    userId !== post.user._id &&
-                                      navigate(`/user/${post.user._id}`, {
-                                        state: {
-                                          prevLocation:
-                                            window.location.pathname,
-                                          prevElement: props.currentBody,
-                                        },
-                                      });
-                                  }
+                                  userId === post.user._id &&
+                                    navigate("/profile", {
+                                      state: {
+                                        prevLocation: window.location.pathname,
+                                        prevElement: props.currentBody,
+                                      },
+                                    });
+
+                                  userId !== post.user._id &&
+                                    navigate(`/user/${post.user._id}`, {
+                                      state: {
+                                        prevLocation: window.location.pathname,
+                                        prevElement: props.currentBody,
+                                      },
+                                    });
                                 }}
                                 style={{ cursor: "pointer" }}
                               />
@@ -264,26 +209,24 @@ export default function Search(props) {
                                   className="font-weight-bold"
                                   onClick={() => {
                                     setBody("user");
-                                    {
-                                      userId === post.user._id &&
-                                        navigate("/profile", {
-                                          state: {
-                                            prevLocation:
-                                              window.location.pathname,
-                                            prevElement: props.currentBody,
-                                          },
-                                        });
-                                    }
-                                    {
-                                      userId !== post.user._id &&
-                                        navigate(`/user/${post.user._id}`, {
-                                          state: {
-                                            prevLocation:
-                                              window.location.pathname,
-                                            prevElement: props.currentBody,
-                                          },
-                                        });
-                                    }
+
+                                    userId === post.user._id &&
+                                      navigate("/profile", {
+                                        state: {
+                                          prevLocation:
+                                            window.location.pathname,
+                                          prevElement: props.currentBody,
+                                        },
+                                      });
+
+                                    userId !== post.user._id &&
+                                      navigate(`/user/${post.user._id}`, {
+                                        state: {
+                                          prevLocation:
+                                            window.location.pathname,
+                                          prevElement: props.currentBody,
+                                        },
+                                      });
                                   }}
                                   style={{ cursor: "pointer" }}
                                 >
@@ -496,7 +439,7 @@ export default function Search(props) {
                           </Typography>
                         </CardContent>
                         <CardActions style={{ justifyContent: "center" }}>
-                          {userId != user._id &&
+                          {userId !== user._id &&
                             !user.friends.includes(userId) && (
                               <Button
                                 variant="contained"
@@ -508,17 +451,18 @@ export default function Search(props) {
                                 + Add friend
                               </Button>
                             )}
-                          {userId != user._id && user.friends.includes(userId) && (
-                            <Button
-                              variant="contained"
-                              color="primary"
-                              onClick={(e) => {
-                                handleRemoveFriend(user._id, e, user.name);
-                              }}
-                            >
-                              - Unfriend
-                            </Button>
-                          )}
+                          {userId !== user._id &&
+                            user.friends.includes(userId) && (
+                              <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={(e) => {
+                                  handleRemoveFriend(user._id, e, user.name);
+                                }}
+                              >
+                                - Unfriend
+                              </Button>
+                            )}
                         </CardActions>
                       </Link>
                     </Card>

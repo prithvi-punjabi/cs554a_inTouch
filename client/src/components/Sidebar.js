@@ -1,27 +1,17 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import SideOptions from "./SideOptions";
-// import InboxIcon from "@material-ui/icons"
 
 import InboxIcon from "@mui/icons-material/Inbox";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ArrowRightOutlinedIcon from "@mui/icons-material/ArrowRightOutlined";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import AddIcon from "@mui/icons-material/Add";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 
-import queries from "../queries";
-import { useLazyQuery, useQuery, useSubscription } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@mui/material";
-import { useBadge } from "@mui/base";
 
 function Sidebar(props) {
   const navigate = useNavigate();
-  let userId = localStorage.getItem("userId");
   //PROPS
-  const data = props.allChannels;
   const readObj = props.readObj;
   const readArr = props.readArr;
   //STATES
@@ -147,10 +137,10 @@ function Sidebar(props) {
                   read={
                     readObj[String(ch.c_id)] &&
                     readObj[String(ch.c_id)].cCount -
-                      readObj[String(ch.c_id)].mCount !=
+                      readObj[String(ch.c_id)].mCount !==
                       NaN &&
                     readObj[String(ch.c_id)].cCount -
-                      readObj[String(ch.c_id)].mCount !=
+                      readObj[String(ch.c_id)].mCount !==
                       0 &&
                     (String(ch.c_id) !== String(props.currentChannelId) ||
                       (String(ch.c_id) === String(props.currentChannelId) &&
