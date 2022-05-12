@@ -82,7 +82,7 @@ function Navbar(props) {
       <NavbarSearch>
         <form action="#" id="searchForm" onSubmit={handleSubmit}>
           <input
-            aria-label="Search"
+            aria-label="Back"
             id="searchInput"
             placeholder="Search here"
             className="align-left"
