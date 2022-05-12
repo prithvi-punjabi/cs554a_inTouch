@@ -42,15 +42,6 @@ function Main({ component, person }) {
 
     fetchPolicy: "network-only",
     errorPolicy: "all",
-    onError: (error) => {
-      playDuck();
-      Swal.fire({
-        title: "Oops!",
-        text: "Couldn't fetch User",
-        icon: "error",
-        confirmButtonText: "I'll fix it!",
-      });
-    },
   });
 
   //READ STATUS UPDATE
