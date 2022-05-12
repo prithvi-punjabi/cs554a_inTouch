@@ -40,6 +40,7 @@ function Navbar(props) {
     setBody("search");
     setSearchTerm(s);
     navigate("/main");
+    document.getElementById("searchInput").value = "";
   }
 
   return (

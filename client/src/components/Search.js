@@ -196,9 +196,6 @@ export default function Search(props) {
         flexGrow: "1",
       }}
     >
-      <Typography variant="h6" component="h6">
-        Showing search result for {searchTerm}
-      </Typography>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
@@ -212,6 +209,10 @@ export default function Search(props) {
       </Box>
       <TabPanel value={value} index={0}>
         <PostDiv>
+          <Typography variant="h6" component="h6">
+            Showing posts for{" "}
+            <span style={{ fontWeight: "bold" }}>'{searchTerm}'</span>
+          </Typography>
           <div className="displayContainer">
             {data &&
               data.getByQuery &&
@@ -432,11 +433,20 @@ export default function Search(props) {
                   </div>
                 );
               })}
+            {error && (
+              <Typography variant="h6" component="h6">
+                No post found
+              </Typography>
+            )}
           </div>
         </PostDiv>
       </TabPanel>
       <TabPanel value={value} index={1}>
         <PostDiv>
+          <Typography variant="h6" component="h6">
+            Showing users for{" "}
+            <span style={{ fontWeight: "bold" }}>'{searchTerm}'</span>
+          </Typography>
           <Grid
             container
             spacing={3}
@@ -516,6 +526,11 @@ export default function Search(props) {
                 );
               })}
           </Grid>
+          {uError && (
+            <Typography variant="h6" component="h6" style={{ marginTop: "3%" }}>
+              No user found
+            </Typography>
+          )}
         </PostDiv>
       </TabPanel>
     </TabContainer>
