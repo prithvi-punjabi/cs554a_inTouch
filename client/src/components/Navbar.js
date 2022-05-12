@@ -1,5 +1,4 @@
 import React from "react";
-import queries from "../queries";
 import { useQuery } from "@apollo/client";
 import styled from "styled-components";
 import { Avatar } from "@material-ui/core";

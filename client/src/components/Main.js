@@ -36,7 +36,7 @@ function Main({ component, person }) {
   const [playBamboo] = useSound(bambooSfx);
   const [playDuck] = useSound(duckSfx);
   const [playHmm] = useSound(hmmSfx);
-  //QUERY FOR USER OBJECT
+  //QUERY FOR USER OBJECt
   const { loading, data, error } = useQuery(queries.user.GET_BY_ID, {
     variables: { userId: userId },
 
