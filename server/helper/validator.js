@@ -72,7 +72,11 @@ module.exports = {
   },
 
   checkGender(genderCode, varName) {
-    if (genderCode == null || genderCode=="") throw `Must pass gender`;
+    if (genderCode == null || genderCode == "") {
+      const error = new Error(`You must enter your gender`);
+      error.code = common.errorCode.BAD_REQUEST;
+      throw error;
+    }
     genderCode = Number(genderCode);
     if (isNaN(genderCode)) throw `${varName} must be a number`;
     let isValid = false;
@@ -156,6 +160,11 @@ module.exports = {
   },
 
   checkDob: (input) => {
+    if (!input) {
+      const error = new Error(`You need to supply your date of birth`);
+      error.code = common.errorCode.BAD_REQUEST;
+      throw error;
+    }
     let today = new Date().toLocaleDateString();
     let currmonth = parseInt(today.split("/")[0]);
     let currday = parseInt(today.split("/")[1]);
@@ -165,6 +174,17 @@ module.exports = {
     let year = parseInt(input.split("-")[0]);
     if (currmonth === month && currday === day && curryear === year) {
       const error = new Error(`Your birthday cannot be today`);
+      error.code = common.errorCode.BAD_REQUEST;
+      throw error;
+    }
+    if (
+      (day > currday && month == currmonth && year == curryear) ||
+      (day > currday && month > currmonth && year > curryear) ||
+      (month > currmonth && year > curryear) ||
+      (month > currmonth && year == curryear) ||
+      year > curryear
+    ) {
+      const error = new Error(`Your birthday cannot be in the future`);
       error.code = common.errorCode.BAD_REQUEST;
       throw error;
     }
@@ -206,17 +226,6 @@ module.exports = {
       }
     }
     // Check if inputted date is in the future
-    if (
-      (day > currday && month == currmonth && year == curryear) ||
-      (day > currday && month > currmonth && year > curryear) ||
-      (month > currmonth && year > curryear) ||
-      (month > currmonth && year == curryear) ||
-      year > curryear
-    ) {
-      const error = new Error(`Your birthday cannot be in the future`);
-      error.code = common.errorCode.BAD_REQUEST;
-      throw error;
-    }
   },
 
   isEmptyObject(obj) {
