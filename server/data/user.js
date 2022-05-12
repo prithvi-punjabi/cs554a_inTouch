@@ -105,7 +105,19 @@ const create = async (
   const userCol = await userCollection();
   const existingUser = await userCol.findOne({ userName: userName });
   if (existingUser != null) {
-    throw `Username not available!`;
+    const error = new Error(
+      `The username you have supplid is not available! Please pick another one.`
+    );
+    error.code = common.errorCode.BAD_REQUEST;
+    throw error;
+  }
+  const existingUser2 = await userCol.findOne({ email: canvasUser.email });
+  if (existingUser2 !== null) {
+    const error = new Error(
+      `A student has already registed an account on inTouch with the same Canvas authorization. If you feel like this is a mistake, please contact the Stevens IT Help Desk, as someone else may have access to your Canvas Access Token.`
+    );
+    error.code = common.errorCode.BAD_REQUEST;
+    throw error;
   }
 
   password = await bcrypt.hash(password, common.saltRounds);
