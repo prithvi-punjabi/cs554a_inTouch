@@ -196,6 +196,7 @@ const AddPost = (props) => {
                 >
                   <img
                     id="imgPost"
+                    src="#"
                     alt="image to be uploaded"
                     style={{
                       width: "100px",
