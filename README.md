@@ -60,7 +60,7 @@ If you have to add a feature, please fork the repo and create a pull request.
 4. Push to the Branch (`git push origin feature/Feature`)
 5. Open a Pull Request
 
-<p align="right">(<a href="#top">back to top</a>)</p>
-
 **Note:** If you are **forking this repository**, you will have to create a .env file on the server, and add a variable named SECRET with any secret key for the JWT Token. You will also have to create a .env file on the client, with 2 variables, REACT_APP_AWS_ID and REACT_APP_AWS_SECRET, with your AWS keys.
 If you have the project zip file (Prof. Hill / TAs), the .env files will be in the respective project directories.
+
+<p align="right">(<a href="#top">back to top</a>)</p>
