@@ -55,7 +55,6 @@ const fetchCourses = async (accessKey) => {
   const allChannels = await channelData.getAll();
 
   for (let i = 0; i <= data.length - 1; i++) {
-    console.log(data[i]);
     let x = data[i];
     let temp = {};
     temp.id = x.id;
@@ -101,7 +100,6 @@ const create = async (
 
   const canvasUser = await fetchUser(accessKey);
   const userCourses = await fetchCourses(accessKey);
-  console.log(userCourses);
   const userCol = await userCollection();
   const existingUser = await userCol.findOne({ userName: userName });
   if (existingUser != null) {
@@ -222,7 +220,7 @@ const getFriendRecommendations = async (user) => {
 };
 
 const loginUser = async (email, password) => {
-  console.log(email, password);
+
   validator.checkNonNull(email);
   validator.checkNonNull(password);
 
@@ -231,8 +229,7 @@ const loginUser = async (email, password) => {
 
   const usercol = await userCollection();
   const user = await usercol.findOne({ email: email.toLowerCase() });
-  console.log("221 user:");
-  console.log(user);
+
   if (user == null) {
     const error = new Error("Either username or password is invalid");
     error.code = common.errorCode.FORBIDDEN;
@@ -272,7 +269,7 @@ const addFriend = async (userId, friendId) => {
       { _id: userId },
       { $push: { friends: friendId } }
     );
-    console.log(addedFriend.modifiedCount);
+
     if (addedFriend.modifiedCount == 0) {
       const error = new Error("Could not add friend");
       error.code = common.errorCode.INTERNAL_SERVER_ERROR;
@@ -289,7 +286,7 @@ const addFriend = async (userId, friendId) => {
       { _id: ObjectId(friendId) },
       { $push: { friends: userId.toString() } }
     );
-    console.log(addedFriend.modifiedCount);
+
     if (addedFriend.modifiedCount == 0) {
       const error = new Error("Could not add friend");
       error.code = common.errorCode.INTERNAL_SERVER_ERROR;

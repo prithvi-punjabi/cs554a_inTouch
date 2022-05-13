@@ -46,9 +46,7 @@ const getUser = async (userId) => {
 const getByUser = async (id) => {
   validator.checkNonNull(id);
   validator.checkString(id, "UserId");
-  // id = utils.parseObjectId(id);
   const userDoc = await getUser(id);
-  // console.log(userDoc)
   const channelCol = await channelCollection();
   let channel = await channelCol
     .find({
@@ -59,13 +57,6 @@ const getByUser = async (id) => {
       },
     })
     .toArray();
-  // console.log(channel)
-  // if (channel == null) {
-  // 	throw new MyError(
-  // 		errorCode.NOT_FOUND,
-  // 		`No channel found with id - ${id.toString()}`
-  // 	);
-  // }
   return channel;
 };
 

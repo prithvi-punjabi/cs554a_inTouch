@@ -403,7 +403,7 @@ const HeaderRight = styled.div`
   display: flex;
   position: fixed;
 
-  align-items: right;
+  /* align-items: right; */
   /* margin-left: 75%; */
   right: 20px;
   > p {

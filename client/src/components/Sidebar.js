@@ -60,7 +60,7 @@ function Sidebar(props) {
       <br></br>
       <br></br>
       <br></br>
-      <h1 hidden></h1>
+      <h1 hidden>Sidebar</h1>
       <Sidebarheader>
         <Sidebarinfo>{props.user && <h2>{props.user.name}</h2>}</Sidebarinfo>
       </Sidebarheader>
