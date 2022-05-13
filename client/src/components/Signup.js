@@ -122,12 +122,22 @@ const Signup = () => {
                     });
                   }
                 } catch (e) {
-                  Swal.fire({
-                    title: "Oops!",
-                    text: `${e.message}`,
-                    icon: "error",
-                    confirmButtonText: "I'll fix it!",
-                  });
+                  console.log(typeof e.message.slice(e.message.length - 3));
+                  if (e.message.slice(e.message.length - 3) == "401") {
+                    Swal.fire({
+                      title: "Oops!",
+                      text: `We could not create your account? Are you entering the correct access token?`,
+                      icon: "error",
+                      confirmButtonText: "I'll fix it!",
+                    });
+                  } else {
+                    Swal.fire({
+                      title: "Oops!",
+                      text: `${e.message}`,
+                      icon: "error",
+                      confirmButtonText: "I'll fix it!",
+                    });
+                  }
                 }
               }}
             >
