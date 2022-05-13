@@ -1,4 +1,10 @@
+*{
+  margin:0;
+}
+
 body {
+  --intouch-color: #a32638;
+  --intouch-color1: #7a1d2b;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
