@@ -582,9 +582,14 @@ const ChannelMembersContainer = styled.div`
 
 const MembersContainer = styled.div`
   margin-top: 50px;
-  margin-left: 20%;
-  margin-right: 20%;
+  margin-left: 18%;
+  margin-right: 18%;
   margin-bottom: 50px;
-
+  @media (max-width: 480px) {
+    margin-top: 50px;
+  margin-left: 15%;
+  margin-right: 15%;
+  margin-bottom: 50px;
+  }
   /*  */
 `;
