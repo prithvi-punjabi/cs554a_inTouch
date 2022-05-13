@@ -63,4 +63,15 @@ If you have to add a feature, please fork the repo and create a pull request.
 **Note:** If you are **forking this repository**, you will have to create a .env file on the server, and add a variable named SECRET with any secret key for the JWT Token. You will also have to create a .env file on the client, with 2 variables, REACT_APP_AWS_ID and REACT_APP_AWS_SECRET, with your AWS keys.
 If you have the project zip file (Prof. Hill / TAs), the .env files will be in the respective project directories.
 
+## Dummy users
+
+|          Emails          | Passwords |
+| :----------------------: | :-------: |
+|   johndoe1@stevens.edu   | John123!  |
+|  janedoe778@stevens.edu  | Jane123!  |
+| mikedow1997@stevens.edu  | Mike123!  |
+| jasonlive998@stevens.edu | Jason123! |
+
+You can use these accounts to log in (after you seed the db). There are more users, you can view their emails in your database. The passwords are the first name (first letter capitalized) followed by 123!
+
 <p align="right">(<a href="#top">back to top</a>)</p>
