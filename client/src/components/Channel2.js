@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery, useSubscription } from "@apollo/client";
 import queries from "../queries";
 import { MediaStoreData } from "aws-sdk";
+import Swal from "sweetalert2";
 const Channel2 = ({ userChannels, user }) => {
   //   console.log(userChannels, user);
   const textBox = useRef(null);
@@ -65,6 +66,15 @@ const Channel2 = ({ userChannels, user }) => {
         method="POST"
         onSubmit={(e) => {
           e.preventDefault();
+          if (textBox.current.value && textBox.current.value.trim() == "") {
+            Swal.fire({
+              title: "Error!",
+              text: "Message cannot be empty!",
+              icon: "error",
+              confirmButtonText: "I'll fix it!",
+            });
+            return;
+          }
           addMessage({
             variables: {
               channelId: userChannels[0]._id,

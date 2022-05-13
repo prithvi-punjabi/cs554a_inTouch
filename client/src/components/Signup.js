@@ -29,6 +29,72 @@ const Signup = () => {
               onSubmit={async (e) => {
                 e.preventDefault();
                 try {
+                  if (
+                    !accessKey ||
+                    !accessKey.value ||
+                    accessKey.value.trim() == ""
+                  ) {
+                    Swal.fire({
+                      title: "Error!",
+                      text: "Please enter access token to signup!",
+                      icon: "error",
+                      confirmButtonText: "I'll fix it!",
+                    });
+                    return;
+                  }
+                  if (
+                    !userName ||
+                    !userName.value ||
+                    userName.value.trim() == ""
+                  ) {
+                    Swal.fire({
+                      title: "Error!",
+                      text: "Please enter username to signup!",
+                      icon: "error",
+                      confirmButtonText: "I'll fix it!",
+                    });
+                    return;
+                  }
+                  if (!password || !password.value || password.value == "") {
+                    Swal.fire({
+                      title: "Error!",
+                      text: "Please enter password to signup!",
+                      icon: "error",
+                      confirmButtonText: "I'll fix it!",
+                    });
+                    return;
+                  }
+                  if (
+                    !contactNo ||
+                    !contactNo.value ||
+                    contactNo.value.trim() == ""
+                  ) {
+                    Swal.fire({
+                      title: "Error!",
+                      text: "Please enter contact number to signup!",
+                      icon: "error",
+                      confirmButtonText: "I'll fix it!",
+                    });
+                    return;
+                  }
+                  if (!gender || !gender.value || gender.value == "") {
+                    Swal.fire({
+                      title: "Error!",
+                      text: "Please select gender to signup!",
+                      icon: "error",
+                      confirmButtonText: "I'll fix it!",
+                    });
+                    return;
+                  }
+                  if (!dob || !dob.value || dob.value == "") {
+                    Swal.fire({
+                      title: "Error!",
+                      text: "Please select date of birth to signup!",
+                      icon: "error",
+                      confirmButtonText: "I'll fix it!",
+                    });
+                    return;
+                  }
                   const thisUser = await signUp({
                     variables: {
                       accessKey: accessKey.value,

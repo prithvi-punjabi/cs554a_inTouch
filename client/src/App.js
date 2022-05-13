@@ -46,8 +46,11 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
     graphQLErrors.forEach((error) => {
       // console.log(`${error.extensions.exception.stacktrace[0].split(":")[0]}`);
       if (
+        error.extensions &&
+        error.extensions.exception &&
+        error.extensions.exception.stacktrace &&
         error.extensions.exception.stacktrace[0].split(":")[0] ==
-        "TokenExpiredError"
+          "TokenExpiredError"
       ) {
         Swal.fire({
           icon: "error",

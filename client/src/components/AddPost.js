@@ -58,6 +58,17 @@ const AddPost = (props) => {
       setText("...");
       return;
     }
+    if (!tBox.current.value || tBox.current.value.trim() == "") {
+      playDuck();
+      Swal.fire({
+        title: "Error!",
+        text: "Please add a description for the post!",
+        icon: "error",
+        confirmButtonText: "I'll fix it!",
+      });
+      setText("...");
+      return;
+    }
     const predictions = await predictor(tBox.current.value, model);
     if (predictions) {
       let isToxic = false;

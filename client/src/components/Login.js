@@ -32,6 +32,26 @@ const Login = () => {
     e.preventDefault();
 
     try {
+      if (!email || email.trim() == "") {
+        Swal.fire({
+          title: "Error!",
+          text: "Please enter email to login!",
+          icon: "error",
+          confirmButtonText: "I'll fix it!",
+        });
+        setEmail("");
+        return;
+      }
+      if (!password || password == "") {
+        Swal.fire({
+          title: "Error!",
+          text: "Please enter password to login!",
+          icon: "error",
+          confirmButtonText: "I'll fix it!",
+        });
+        setPassword("");
+        return;
+      }
       const { data } = await loginUser({ variables: { email, password } });
       if (data.loginUser === null) {
         throw new Error("Either username or password is invalid");

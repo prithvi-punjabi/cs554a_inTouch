@@ -4,12 +4,15 @@ import queries from "../queries";
 import useTextToxicity from "react-text-toxicity";
 import Swal from "sweetalert2";
 import { predictor } from "../helper";
+import useSound from "use-sound";
+import duckSfx from "../sound/duck.mp3";
 
 const AddComment = (props) => {
   const [addComment] = useMutation(queries.post.ADD_COMMENT);
   const [text, setText] = useState("");
   const textBox = useRef(null);
   const model = useRef();
+  const [playDuck] = useSound(duckSfx);
   return (
     <div className="comment-input">
       {" "}
@@ -31,6 +34,16 @@ const AddComment = (props) => {
             }
           });
           if (!isToxic) {
+            if (!textBox.current.value || textBox.current.value.trim() == "") {
+              playDuck();
+              Swal.fire({
+                icon: "error",
+                title: "Comment cannot be empty",
+              }).then(() => {
+                textBox.current.value = "";
+              });
+              return;
+            }
             const com = await addComment({
               variables: {
                 postId: props.postId,

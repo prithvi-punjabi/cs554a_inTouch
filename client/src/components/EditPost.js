@@ -39,6 +39,24 @@ const EditPost = (props) => {
         }
       });
     }
+    if (!text || text.trim() == "") {
+      Swal.fire({
+        title: "Error!",
+        text: "Please add a description for the post!",
+        icon: "error",
+        confirmButtonText: "I'll fix it!",
+      });
+      return;
+    }
+    if (!category || category.trim() == "") {
+      Swal.fire({
+        title: "Error!",
+        text: "Please choose a category for the post!",
+        icon: "error",
+        confirmButtonText: "I'll fix it!",
+      });
+      return;
+    }
     if (isToxic === false) {
       let data = await updatePost({
         variables: { postId: props.post._id, text: text, category: category },
@@ -97,84 +115,84 @@ const EditPost = (props) => {
                     </div>
                   </div>
                   <form className="postForm" id="upForm" onSubmit={editPost}>
-                  <label for="addpost" hidden>Add post Textarea</label>
+                    <label for="addpost" hidden>
+                      Add post Textarea
+                    </label>
                     <textarea
-                    id="addpost"
+                      id="addpost"
                       value={text}
                       placeholder="Tell us what you're thinking..."
                       onChange={(e) => setText(e.target.value)}
                     />
                     <div>
                       <fieldset>
-                      <div class="middle">
-                  <label>
-                      <input
-                        type="radio"
-                        value="academic"
-                        name="category"
-                        checked={category === "academic"}
-                        onClick={(e) => setCategory(e.target.value)}
-                      />
-                      <span class="academic box">
-                      
-                        <span>
-                          <SchoolOutlinedIcon />
-                        </span>
-                        <br />
-                        <span>Academic</span>
-                        
-                      </span>
-                      </label>
-                    
-                    <label>
-                      <input
-                        type="radio"
-                        value="housing"
-                        name="category"
-                        checked={category === "housing"}
-                        onClick={(e) => setCategory(e.target.value)}
-                      />
-                      <span class="housing box">
-                        <span>
-                          <HomeOutlinedIcon />
-                        </span>
-                        <br />
-                        <span>Housing</span>
-                      </span>
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        value="social"
-                        name="category"
-                        checked={category === "social"}
-                        onClick={(e) => setCategory(e.target.value)}
-                      />
-                      <span class="social box">
-                        <span>
-                          <ConnectWithoutContactOutlinedIcon />
-                        </span>
-                        <br />
-                        <span>Social</span>
-                      </span>
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        value="career"
-                        name="category"
-                        checked={category === "career"}
-                        onClick={(e) => setCategory(e.target.value)}
-                      />
-                      <span class="career box">
-                        <span>
-                          <WorkOutlineOutlinedIcon />
-                        </span>
-                        <br />
-                        <span>Career</span>
-                      </span>
-                    </label>
-                  </div>
+                        <div class="middle">
+                          <label>
+                            <input
+                              type="radio"
+                              value="academic"
+                              name="category"
+                              checked={category === "academic"}
+                              onClick={(e) => setCategory(e.target.value)}
+                            />
+                            <span class="academic box">
+                              <span>
+                                <SchoolOutlinedIcon />
+                              </span>
+                              <br />
+                              <span>Academic</span>
+                            </span>
+                          </label>
+
+                          <label>
+                            <input
+                              type="radio"
+                              value="housing"
+                              name="category"
+                              checked={category === "housing"}
+                              onClick={(e) => setCategory(e.target.value)}
+                            />
+                            <span class="housing box">
+                              <span>
+                                <HomeOutlinedIcon />
+                              </span>
+                              <br />
+                              <span>Housing</span>
+                            </span>
+                          </label>
+                          <label>
+                            <input
+                              type="radio"
+                              value="social"
+                              name="category"
+                              checked={category === "social"}
+                              onClick={(e) => setCategory(e.target.value)}
+                            />
+                            <span class="social box">
+                              <span>
+                                <ConnectWithoutContactOutlinedIcon />
+                              </span>
+                              <br />
+                              <span>Social</span>
+                            </span>
+                          </label>
+                          <label>
+                            <input
+                              type="radio"
+                              value="career"
+                              name="category"
+                              checked={category === "career"}
+                              onClick={(e) => setCategory(e.target.value)}
+                            />
+                            <span class="career box">
+                              <span>
+                                <WorkOutlineOutlinedIcon />
+                              </span>
+                              <br />
+                              <span>Career</span>
+                            </span>
+                          </label>
+                        </div>
                       </fieldset>
                     </div>
                   </form>
@@ -187,7 +205,7 @@ const EditPost = (props) => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button  variant="btn-lg btn-danger" type="submit" form="upForm">
+          <Button variant="btn-lg btn-danger" type="submit" form="upForm">
             Save Changes
           </Button>
         </Modal.Footer>
