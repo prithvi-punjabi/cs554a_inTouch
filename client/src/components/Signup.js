@@ -122,7 +122,6 @@ const Signup = () => {
                     });
                   }
                 } catch (e) {
-                  console.log(typeof e.message.slice(e.message.length - 3));
                   if (e.message.slice(e.message.length - 3) == "401") {
                     Swal.fire({
                       title: "Oops!",
