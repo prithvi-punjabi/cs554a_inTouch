@@ -160,6 +160,7 @@ const Profile = (props) => {
               <br></br>
               {location.state !== null && (
                 <Button
+                  aria-label="Back"
                   onClick={() => {
                     if (location.state.prevLocation === "/channel/members") {
                       console.log(props);
@@ -177,18 +178,25 @@ const Profile = (props) => {
                   }}
                   style={{ position: "absolute", right: "20px" }}
                 >
-                  <CloseOutlinedIcon style={styles.largeIcon} />
+                  <CloseOutlinedIcon
+                    style={styles.largeIcon}
+                    aria-label="Back"
+                  />
                 </Button>
               )}
               {location.state === null && (
                 <Button
+                  aria-label="Back"
                   onClick={() => {
                     setBody("feed");
                     navigate("/main");
                   }}
                   style={{ position: "absolute", right: "20px" }}
                 >
-                  <CloseOutlinedIcon style={styles.largeIcon} />
+                  <CloseOutlinedIcon
+                    style={styles.largeIcon}
+                    aria-label="Back"
+                  />
                 </Button>
               )}
               <Grid container spacing={0} direction="row">
@@ -380,7 +388,7 @@ const Profile = (props) => {
                 }}
                 style={{ position: "absolute", right: "20px" }}
               >
-                <CloseOutlinedIcon style={styles.largeIcon} />
+                <CloseOutlinedIcon style={styles.largeIcon} aria-label="Back" />
               </Button>
             )}
             {location.state === null && (
@@ -391,7 +399,7 @@ const Profile = (props) => {
                 }}
                 style={{ position: "absolute", right: "20px" }}
               >
-                <CloseOutlinedIcon style={styles.largeIcon} />
+                <CloseOutlinedIcon style={styles.largeIcon} aria-label="Back" />
               </Button>
             )}
             <MembersContainer>

@@ -1,5 +1,4 @@
 import React from "react";
-import queries from "../queries";
 import { useQuery } from "@apollo/client";
 import styled from "styled-components";
 import { Avatar } from "@material-ui/core";
@@ -54,7 +53,6 @@ function Navbar(props) {
               setSidebar(true);
             }}
           >
-            {/* <i className="fa fa-bars"></i> */}
             <MenuOutlinedIcon style={styles.largeIcon} />
           </div>
         )}
@@ -66,23 +64,16 @@ function Navbar(props) {
               setSidebar(false);
             }}
           >
-            {/* <i className="fa fa-bars"></i> */}
+
             <CloseOutlinedIcon style={styles.largeIcon} />
           </div>
         )}
 
-        {/* 
-          <div className="sidebar-toggle" 
-        onClick={()=>{
-          setSidebar(false);
-        }}
-        >
-         <i className="fa-solid fa-xmark"></i>
-          </div> */}
       </NavbarLeft>
       <NavbarSearch>
         <form action="#" id="searchForm" onSubmit={handleSubmit}>
           <input
+            aria-label="Back"
             id="searchInput"
             placeholder="Search here"
             className="align-left"
@@ -96,7 +87,7 @@ function Navbar(props) {
           overlap="circular"
           anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
           variant="dot"
-        >
+        ></StyledBadge>
           <DropdownButton
             id="dropdown-basic-button"
             className="drop"
@@ -134,7 +125,7 @@ function Navbar(props) {
               </Dropdown.Item>
             </div>
           </DropdownButton>
-        </StyledBadge>
+        
       </NavbarRight>
     </NavbarContainer>
   );
@@ -149,10 +140,8 @@ const NavbarLeft = styled.div`
   margin-left: 20px;
   > img {
     margin-top: 75px;
-    /* margin-left: 15px; */
     height: 173px;
     width: 170px;
-    /* border-radius: 20px; */
     @media (max-width: 991px) {
       margin-top: 28px;
       margin-left: 0px;
@@ -175,16 +164,37 @@ const NavbarRight = styled.div`
   display: flex;
   position: fixed;
   align-items: flex-end;
-  /* margin-left: 200px; */
   right: 20px;
   .drop {
-    bottom: 8px;
+    bottom: 0px;
     right: 20px;
   }
   @media (max-width: 480px) {
     right: 0px;
   }
 `;
+
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  "& .MuiBadge-badge": {
+    backgroundColor: "#44b700",
+    top: -17,
+    marginRight: "0px",
+    right: -50,
+    color: "#44b700",
+    boxShadow: `0 0 0 2px `,
+    "&::after": {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      borderRadius: "50%",
+      animation: "ripple 1.2s infinite ease-in-out",
+      border: "1px solid currentColor",
+      content: '""',
+    },
+  },
+}));
 
 const NavbarSearch = styled.div`
   flex: 0.5;
@@ -237,26 +247,4 @@ const NavbarAvatar = styled(Avatar)`
   }
 `;
 
-const StyledBadge = styled(Badge)(({ theme }) => ({
-  "& .MuiBadge-badge": {
-    backgroundColor: "#44b700",
-    top: 34,
-    marginRight: "28px",
-    // marginTop:"15px",
-    right: -1,
-    color: "#44b700",
-    boxShadow: `0 0 0 2px `,
-    "&::after": {
-      position: "absolute",
-      top: 0,
-      left: 0,
 
-      width: "100%",
-      height: "100%",
-      borderRadius: "50%",
-      animation: "ripple 1.2s infinite ease-in-out",
-      border: "1px solid currentColor",
-      content: '""',
-    },
-  },
-}));

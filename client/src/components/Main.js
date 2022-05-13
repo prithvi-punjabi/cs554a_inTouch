@@ -36,21 +36,12 @@ function Main({ component, person }) {
   const [playBamboo] = useSound(bambooSfx);
   const [playDuck] = useSound(duckSfx);
   const [playHmm] = useSound(hmmSfx);
-  //QUERY FOR USER OBJECT
+  //QUERY FOR USER OBJECt
   const { loading, data, error } = useQuery(queries.user.GET_BY_ID, {
     variables: { userId: userId },
 
     fetchPolicy: "network-only",
     errorPolicy: "all",
-    onError: (error) => {
-      playDuck();
-      Swal.fire({
-        title: "Oops!",
-        text: "Couldn't fetch User",
-        icon: "error",
-        confirmButtonText: "I'll fix it!",
-      });
-    },
   });
 
   //READ STATUS UPDATE

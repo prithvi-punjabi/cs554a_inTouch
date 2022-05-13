@@ -757,6 +757,6 @@ textarea {
 }
 
 #subButton:disabled,
-#subButtonComm:disabled {
-  opacity: 0.3;
+.fa-paper-plane:disabled {
+  opacity: 0.78;
 }
