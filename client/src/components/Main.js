@@ -42,6 +42,18 @@ function Main({ component, person }) {
 
     fetchPolicy: "network-only",
     errorPolicy: "all",
+    onError: (error) => {
+      playDuck();
+      Swal.fire({
+        icon: "error",
+        title: "Token expired",
+        text: "Please login again",
+      }).then(() => {
+        //we can't use useNavigate here
+        window.localStorage.clear();
+        window.location.href = "/login";
+      });
+    },
   });
 
   //READ STATUS UPDATE
