@@ -10,6 +10,8 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import Badge from "@mui/material/Badge";
 import DropdownButton from "react-bootstrap/esm/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
+import LogoutIcon from '@mui/icons-material/Logout';
+import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 
 const styles = {
   largeIcon: {
@@ -97,7 +99,7 @@ function Navbar(props) {
               <NavbarAvatar src={props.user.profilePicture} alt={"no img"} />
             }
           >
-            <div>
+            
               <Dropdown.Item
                 onClick={() => {
                   setBody("feed");
@@ -110,10 +112,10 @@ function Navbar(props) {
                   });
                 }}
               >
-                Profile
+                <span className="drop3"><PermIdentityIcon  /></span>
+                <span className="drop1">Profile</span>
               </Dropdown.Item>
-            </div>
-            <div>
+            
               <Dropdown.Item
                 onClick={() => {
                   localStorage.removeItem("token");
@@ -121,9 +123,12 @@ function Navbar(props) {
                   navigate("/login");
                 }}
               >
-                Logout
+                <span className="drop3"><LogoutIcon  /></span>
+                
+                <span className="drop1">Logout</span>
+                
               </Dropdown.Item>
-            </div>
+           
           </DropdownButton>
         
       </NavbarRight>
@@ -168,6 +173,13 @@ const NavbarRight = styled.div`
   .drop {
     bottom: 0px;
     right: 20px;
+  }
+  .drop1 {
+    padding: 10px;
+    margin-left: 5px;
+  }
+  .drop3 {
+    margin-left: 12px;
   }
   @media (max-width: 480px) {
     right: 0px;
