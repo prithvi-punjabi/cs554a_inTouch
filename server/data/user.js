@@ -109,7 +109,9 @@ const create = async (
     error.code = common.errorCode.BAD_REQUEST;
     throw error;
   }
-  const existingUser2 = await userCol.findOne({ email: canvasUser.email });
+  const existingUser2 = await userCol.findOne({
+    email: canvasUser.email.toLowerCase(),
+  });
   if (existingUser2 !== null) {
     const error = new Error(
       `A student has already registed an account on inTouch with the same Canvas authorization. If you feel like this is a mistake, please contact the Stevens IT Help Desk, as someone else may have access to your Canvas Access Token.`
@@ -220,7 +222,6 @@ const getFriendRecommendations = async (user) => {
 };
 
 const loginUser = async (email, password) => {
-
   validator.checkNonNull(email);
   validator.checkNonNull(password);
 
