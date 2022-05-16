@@ -51,7 +51,7 @@ const serverCleanup = useServer(
   {
     schema,
     onConnect: async (ctx) => {
-      console.log("New client connected");
+      // console.log("New client connected");
       // console.log(ctx);
       //   // Check authentication every time a client connects.
       //   if (tokenIsNotValid(ctx.connectionParams)) {

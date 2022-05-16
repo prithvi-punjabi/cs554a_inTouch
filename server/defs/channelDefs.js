@@ -152,7 +152,7 @@ const channelResolvers = {
       //   userName: "BigBoss",
       //   profilePicture: "invalid url",
       // };
-      console.log(args);
+      // console.log(args);
       const addedMessage = await channelData.addMessage(
         args.channelId,
         user,

@@ -205,6 +205,21 @@ function Chat(props) {
               e.preventDefault();
               textBox.current.readOnly = true;
               setBtnDisable(true);
+              if (
+                !textBox.current.value ||
+                textBox.current.value.trim() == ""
+              ) {
+                playDuck();
+                Swal.fire({
+                  title: "Error!",
+                  text: "Please enter message content",
+                  icon: "error",
+                  confirmButtonText: "I'll fix it!",
+                });
+                textBox.current.readOnly = false;
+                setBtnDisable(false);
+                return;
+              }
               setToxicProcessing(true);
               setToxicScroller(true);
               setTimeout(async () => {
@@ -244,6 +259,7 @@ function Chat(props) {
                   textBox.current.value = "";
                 }
               }, 500);
+              
             }}
           >
             <input
